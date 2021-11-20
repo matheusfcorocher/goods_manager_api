@@ -5,10 +5,25 @@ CREATE TABLE pilots (
 	 age integer,
 	 credits integer,
    location_planet VARCHAR(30)
+   fk contracts
+   fk ships
 );
 CREATE TABLE ships (
    id SERIAL PRIMARY KEY NOT NULL,
 	 fuel_capacity integer,
 	 fuel_level integer,
    weight_capacity integer
+);
+CREATE TABLE contracts (
+   id SERIAL PRIMARY KEY NOT NULL,
+   description VARCHAR(50),
+   payload integer fk resources,
+   origin planet integer fk planets,
+   destination planet integer fk planets,
+   value integer
+);
+CREATE TABLE resources (
+   id SERIAL PRIMARY KEY NOT NULL,
+   name VARCHAR(25),
+   weight integer
 );
