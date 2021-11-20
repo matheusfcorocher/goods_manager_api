@@ -1,1 +1,14 @@
 CREATE DATABASE goods_manager_database;
+CREATE TABLE pilots (
+   pilot_certification integer PRIMARY KEY,
+	 name VARCHAR(25),
+	 age integer,
+	 credits integer,
+   location_planet VARCHAR(30)
+);
+CREATE TABLE ships (
+   id SERIAL PRIMARY KEY NOT NULL,
+	 fuel_capacity integer,
+	 fuel_level integer,
+   weight_capacity integer
+);
