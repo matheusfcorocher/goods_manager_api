@@ -4,11 +4,11 @@ const typeString = { type: "string" };
 const pilot = {
   type: "object",
   properties: {
-    pilot_certification: typeNumber,
+    pilotCertification: typeNumber,
     name: typeString,
     age: typeNumber,
     credits: typeNumber,
-    location_planet: typeString,
+    locationPlanet: typeString,
   },
 };
 
@@ -23,7 +23,7 @@ const getAllPilotsSchema = {
 
 const getPilotSchema = {
   params: {
-    pilot_certification: typeNumber,
+    pilotCertification: typeNumber,
   },
   response: {
     200: pilot
@@ -33,13 +33,13 @@ const getPilotSchema = {
 const postPilotSchema = {
   body: {
     type: 'object',
-    required: ['pilot_certification', 'name', 'age', 'credits', 'location_planet'],
+    required: ['pilotCertification', 'name', 'age', 'credits', 'locationPlanet'],
     properties: {
-      pilot_certification: typeNumber,
+      pilotCertification: typeNumber,
       name: typeString,
       age: typeNumber,
       credits: typeNumber,
-      location_planet: typeString,
+      locationPlanet: typeString,
     },
   },
   response: {
@@ -54,11 +54,11 @@ const updatePilotSchema = {
       name: typeString,
       age: typeNumber,
       credits: typeNumber,
-      location_planet: typeString,
+      locationPlanet: typeString,
     },
   },
   params: {
-    pilot_certification: typeNumber, // convert pilot_c... to number
+    pilotCertification: typeNumber, // convert pilotC... to number
   },
   response: {
     200: typeString, 
@@ -67,7 +67,7 @@ const updatePilotSchema = {
 
 const deletePilotSchema = {
   params: {
-    pilot_certification: typeNumber, // converts the id param to number
+    pilotCertification: typeNumber, // converts the id param to number
   },
   response: {
     200: typeString,

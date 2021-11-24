@@ -40,10 +40,10 @@ const deletePilotOpts = {
 
 const pilotsRoutes = (fastify, options, done) => {
   fastify.get("/api/pilots", getAllPilotsOpts);
-  fastify.get("/api/pilots/:pilot_certification", getPilotOpts);
+  fastify.get("/api/pilots/:pilotCertification", getPilotOpts);
   fastify.post("/api/pilots/new", postPilotOpts);
-  fastify.put('/api/pilots/edit/:pilot_certification', updatePilotOpts);
-  fastify.delete('/api/pilots/:pilot_certification', deletePilotOpts);
+  fastify.put('/api/pilots/edit/:pilotCertification', updatePilotOpts);
+  fastify.delete('/api/pilots/:pilotCertification', deletePilotOpts);
 
   done();
 };

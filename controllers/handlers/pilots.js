@@ -1,69 +1,106 @@
-const pilots = require("../../models/pilots");
+const models = require("../../models/index.js");
+const Pilots = models.Pilots;
 
-const getAllPilotsHandler = (req, reply) => {
+const getAllPilotsHandler = async (req, reply) => {
+    const pilots = await Pilots.findAll(); 
     reply.send(pilots);
 }
 
-const getPilotHandler = (req, reply) => {
-  const { pilot_certification } = req.params;
+const getPilotHandler = async (req, reply) => {
+  const { pilotCertification } = req.params;
   
-  const pilot = pilots.filter((pilot) => {
-    return pilot.pilot_certification === pilot_certification;
-  })[0];
+  const pilot = await Pilots.findAll({
+    where: {
+      pilotCertification: pilotCertification
+    }
+  });
+  // const pilot = pilots.filter((pilot) => {
+  //   return pilot.pilot_certification === pilot_certification;
+  // })[0];
 
-  if(!pilot) {
-    return repply.status(404).send({
+  if(Object.keys(pilot).length === 0) {
+    return reply.status(404).send({
       errorMsg: 'Pilot not found',
     });
   }
 
-  reply.send(pilot);
+  reply.send(pilot[0]);
 }
 
-const postPilotHandler = (req, reply) => {
-  const { pilot_certification, name, age, credits, location_planet } = req.body; 
+const postPilotHandler = async (req, reply) => {
+  const { pilotCertification, name, age, credits, locationPlanet } = req.body; 
 
-  pilots.push({ pilot_certification, name, age, credits, location_planet });
-
-  reply.send('Pilot added');
-};
-
-const updatePilotHandler = (req, reply) => {
-  const { name, age, credits, location_planet } = req.body; 
-  const { pilot_certification } = req.params;
-
-  const pilot = pilots.filter((pilot) => {
-    return pilot.pilot_certification === pilot_certification;
-  })[0];
-
-  if(!pilot) {
-    return repply.status(404).send({
-      errorMsg: 'Pilot not found',
+  const pilot = await Pilots.findAll({
+    where: {
+      pilotCertification: pilotCertification
+    }
+  });
+  // const pilot = pilots.filter((pilot) => {
+  //   return pilot.pilot_certification === pilot_certification;
+  // })[0];
+  
+  if(Object.keys(pilot).length === 1) {
+    return reply.status(500).send({
+      errorMsg: 'Pilot was already exist!',
     });
   }
 
-  pilot.name = name;
-  pilot.age = age;
-  pilot.credits = credits;
-  pilot.location_planet = location_planet;
+  await Pilots.create({ pilotCertification, name, age, credits, locationPlanet });
 
-  reply.send('Pilot updated');
+  reply.send('Pilot added!');
 };
 
-const deletePilotHandler = (req, reply) => {
-  const { pilot_certification } = req.params;
+const updatePilotHandler = async (req, reply) => {
+  const { name, age, credits, locationPlanet } = req.body; 
+  const { pilotCertification } = req.params;
 
-  const pilotIndex = pilots.findIndex((pilot) => {
-    return pilot.pilot_certification === pilot_certification;
+  const pilot = await Pilots.findAll({
+    where: {
+      pilotCertification: pilotCertification
+    }
   });
 
-  if (pilotIndex === -1) {
-    return reply.status(404).send(new Error("Pilot not found"));
+  if(Object.keys(pilot).length === 0) {
+    return reply.status(404).send({
+      errorMsg: 'Pilot not found!',
+    });
   }
 
-  pilots.splice(pilotIndex, 1);
+  await Pilots.update(
+    { 
+      name,
+      age,
+      credits,
+      locationPlanet 
+    }, {
+    where: {
+      pilotCertification: pilotCertification
+    }
+  });
 
-  return reply.send('Pilot deleted');
+  reply.send('Pilot updated!');
+};
+
+const deletePilotHandler = async (req, reply) => {
+  const { pilotCertification } = req.params;
+
+  const pilot = await Pilots.findAll({
+    where: {
+      pilotCertification: pilotCertification
+    }
+  });
+
+  if(Object.keys(pilot).length === 0) {
+    return reply.status(404).send(new Error("Pilot not found"));
+  }
+  
+  await Pilots.destroy({
+    where: {
+      pilotCertification
+    }
+  });
+
+  return reply.send('Pilot deleted!');
 };
 
 module.exports = { getAllPilotsHandler, getPilotHandler, postPilotHandler, updatePilotHandler, deletePilotHandler };
