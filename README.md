@@ -25,3 +25,5 @@ yarn
 5-) Run the command yarn db:migrate for run migrations in your database and create the necessary tables.
 
 6-) Run the command yarn db:seeds for run the seed's files to populate the tables.
+
+7-)Testing endpoints of api:
