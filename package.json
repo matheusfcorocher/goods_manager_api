@@ -1,0 +1,33 @@
+{
+  "name": "goods_manager_api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "https://github.com/matheusfcorocher/goods_manager_api.git",
+  "author": "Matheus <matheuscorocher@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "sequelize-cli": "^6.3.0"
+  },
+  "dependencies": {
+    "config": "^3.3.6",
+    "dotenv": "^10.0.0",
+    "fastify": "^3.24.0",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.12.0-alpha.1"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "dev": "nodemon -r dotenv/config app.js",
+    "db:create": "sequelize-cli db:create",
+    "db:c:model": "sequelize-cli model:generate --name",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:migrate:undo": "sequelize-cli db:migrate:undo",
+    "db:g:migration": "sequelize-cli migration:generate --name", 
+    "db:g:seed": "sequelize-cli seed:generate --name",
+    "db:seeds": "sequelize-cli db:seed:all",
+    "db:seeds:undo:all": "sequelize-cli db:seed:undo:all"
+  }
+}
