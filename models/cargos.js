@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Cargos.hasOne(models.Resources, {
-        foreignKey: 'resourceId',
+        foreignKey: 'id',
         onDelete: 'CASCADE',
       }),
       Cargos.belongsTo(models.Contracts, {

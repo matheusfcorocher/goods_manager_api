@@ -23,7 +23,7 @@ module.exports = {
         references: {
           model: 'Cargos',
           key: 'id',
-          as: 'ResourceId',
+          as: 'cargoId',
         }
       },
       description: {

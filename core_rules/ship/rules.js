@@ -4,4 +4,4 @@ const isPossibleToShipCarry = (shipWeight, TotalCargoWeight) => {
     return false;
 }
 
-module.exports = { isPossibleToShipCarry};
+module.exports = { isPossibleToShipCarry };

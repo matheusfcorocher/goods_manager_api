@@ -17,7 +17,7 @@ module.exports = {
         references: {
           model: 'Resources',
           key: 'id',
-          as: 'ResourceId',
+          as: 'resourceId',
         }
       },
       createdAt: {

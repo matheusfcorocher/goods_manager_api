@@ -1,49 +1,49 @@
 const {
   getAllResourcesSchema,
-  getResourcesSchema,
-  postResourcesSchema,
-  updateResourcesSchema,
-  deleteResourcesSchema,
+  getResourceSchema,
+  postResourceSchema,
+  updateResourceSchema,
+  deleteResourceSchema,
 } = require("../controllers/schemas/resources.js");
 const {
   getAllResourcesHandler,
-  getResourcesHandler,
-  postResourcesHandler,
-  updateResourcesHandler,
-  deleteResourcesHandler,
+  getResourceHandler,
+  postResourceHandler,
+  updateResourceHandler,
+  deleteResourceHandler,
 } = require("../controllers/handlers/resources.js");
 
-const getAllResourcessOpts = {
+const getAllResourcesOpts = {
   schema: getAllResourcesSchema,
   handler: getAllResourcesHandler,
 };
 
-const getResourcesOpts = {
-  schema: getResourcesSchema,
-  handler: getResourcesHandler,
+const getResourceOpts = {
+  schema: getResourceSchema,
+  handler: getResourceHandler,
 };
 
-const postResourcesOpts = {
-  schema: postResourcesSchema,
-  handler: postResourcesHandler,
+const postResourceOpts = {
+  schema: postResourceSchema,
+  handler: postResourceHandler,
 };
 
-const updateResourcesOpts = {
-  schema: updateResourcesSchema,
-  handler: updateResourcesHandler,
+const updateResourceOpts = {
+  schema: updateResourceSchema,
+  handler: updateResourceHandler,
 };
 
-const deleteResourcesOpts = {
-  schema: deleteResourcesSchema,
-  handler: deleteResourcesHandler,
+const deleteResourceOpts = {
+  schema: deleteResourceSchema,
+  handler: deleteResourceHandler,
 };
 
 const resourcesRoutes = (fastify, options, done) => {
-  fastify.get("/api/resources", getAllResourcessOpts);
-  fastify.get("/api/resources/:id", getResourcesOpts);
-  fastify.post("/api/resources/new", postResourcesOpts);
-  fastify.put('/api/resources/edit/:id', updateResourcesOpts);
-  fastify.delete('/api/resources/:id', deleteResourcesOpts);
+  fastify.get("/api/resources", getAllResourcesOpts);
+  fastify.get("/api/resources/:id", getResourceOpts);
+  fastify.post("/api/resources/new", postResourceOpts);
+  fastify.put('/api/resources/edit/:id', updateResourceOpts);
+  fastify.delete('/api/resources/:id', deleteResourceOpts);
 
   done();
 };

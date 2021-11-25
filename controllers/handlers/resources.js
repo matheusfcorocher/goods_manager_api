@@ -14,10 +14,7 @@ const getResourceHandler = async (req, reply) => {
       id,
     },
   });
-  // const resource = resources.filter((resource) => {
-  //   return resource.resource_certification === resource_certification;
-  // })[0];
-
+ 
   if (Object.keys(resource).length === 0) {
     return reply.status(404).send({
       errorMsg: "Resource not found",

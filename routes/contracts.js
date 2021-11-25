@@ -1,49 +1,49 @@
 const {
   getAllContractsSchema,
-  getContractsSchema,
-  postContractsSchema,
-  updateContractsSchema,
-  deleteContractsSchema,
+  getContractSchema,
+  postContractSchema,
+  updateContractSchema,
+  deleteContractSchema,
 } = require("../controllers/schemas/contracts.js");
 const {
   getAllContractsHandler,
-  getContractsHandler,
-  postContractsHandler,
-  updateContractsHandler,
-  deleteContractsHandler,
+  getContractHandler,
+  postContractHandler,
+  updateContractHandler,
+  deleteContractHandler,
 } = require("../controllers/handlers/contracts.js");
 
-const getAllContractssOpts = {
+const getAllContractsOpts = {
   schema: getAllContractsSchema,
   handler: getAllContractsHandler,
 };
 
-const getContractsOpts = {
-  schema: getContractsSchema,
-  handler: getContractsHandler,
+const getContractOpts = {
+  schema: getContractSchema,
+  handler: getContractHandler,
 };
 
-const postContractsOpts = {
-  schema: postContractsSchema,
-  handler: postContractsHandler,
+const postContractOpts = {
+  schema: postContractSchema,
+  handler: postContractHandler,
 };
 
-const updateContractsOpts = {
-  schema: updateContractsSchema,
-  handler: updateContractsHandler,
+const updateContractOpts = {
+  schema: updateContractSchema,
+  handler: updateContractHandler,
 };
 
-const deleteContractsOpts = {
-  schema: deleteContractsSchema,
-  handler: deleteContractsHandler,
+const deleteContractOpts = {
+  schema: deleteContractSchema,
+  handler: deleteContractHandler,
 };
 
 const contractsRoutes = (fastify, options, done) => {
-  fastify.get("/api/contracts", getAllContractssOpts);
-  fastify.get("/api/contracts/:id", getContractsOpts);
-  fastify.post("/api/contracts/new", postContractsOpts);
-  fastify.put('/api/contracts/edit/:id', updateContractsOpts);
-  fastify.delete('/api/contracts/:id', deleteContractsOpts);
+  fastify.get("/api/contracts", getAllContractsOpts);
+  fastify.get("/api/contracts/:id", getContractOpts);
+  fastify.post("/api/contracts/new", postContractOpts);
+  fastify.put('/api/contracts/edit/:id', updateContractOpts);
+  fastify.delete('/api/contracts/:id', deleteContractOpts);
 
   done();
 };
