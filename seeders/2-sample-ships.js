@@ -9,7 +9,7 @@ module.exports = {
           pilotCertification: 1234567,
           fuelCapacity: 500,
           fuelLevel: 2,
-          weightCapacity: 1000,
+          weightCapacity: 1800,
           createdAt: new Date(),
           updatedAt: new Date(),
         },

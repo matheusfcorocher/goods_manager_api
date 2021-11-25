@@ -17,11 +17,11 @@ module.exports = {
           as: 'pilotCertification',
         }
       },
-      resourceId: {
+      cargoId: {
         type: Sequelize.INTEGER,
         onDelete: "CASCADE",
         references: {
-          model: 'Resources',
+          model: 'Cargos',
           key: 'id',
           as: 'ResourceId',
         }
@@ -37,6 +37,9 @@ module.exports = {
       },
       value: {
         type: Sequelize.INTEGER
+      },
+      contractStatus: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
