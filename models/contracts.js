@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     cargoId: DataTypes.INTEGER,
     originPlanet: DataTypes.STRING,
     destinationPlanet: DataTypes.STRING,
-    value: DataTypes.INTEGER
+    value: DataTypes.INTEGER,
+    contractStatus: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Contracts',

@@ -21,6 +21,9 @@ const getAllContractsSchema = {
       items: contract,
     },
   },
+  querystring: {
+    contractStatus: typeString,
+  }
 };
 
 const getContractSchema = {
@@ -57,6 +60,32 @@ const postContractSchema = {
   },
 };
 
+const postContractsSchema = {
+  body: {
+    type: "array",
+    items: contract,
+    // required: [
+    //   "cargoId",
+    //   "description",
+    //   "originPlanet",
+    //   "destinationPlanet",
+    //   "value",
+    // ],
+    // properties: {
+    //   pilotCertification: typeNumber,
+    //   cargoId: typeNumber,
+    //   description: typeString,
+    //   originPlanet: typeString,
+    //   destinationPlanet: typeString,
+    //   value: typeNumber,
+    //   contractStatus: typeString,
+    // },
+  },
+  response: {
+    200: typeString,
+  },
+};
+
 const updateContractSchema = {
   body: {
     type: "object",
@@ -68,6 +97,38 @@ const updateContractSchema = {
         destinationPlanet: typeString,
         value: typeNumber,
         contractStatus: typeString,
+    },
+  },
+  params: {
+    id: typeNumber,
+  },
+  response: {
+    200: typeString,
+  },
+};
+
+const acceptContractSchema = {
+  body: {
+    type: "object",
+    required: ["pilotCertification"],
+    properties: {
+        pilotCertification: typeNumber,
+    },
+  },
+  params: {
+    id: typeNumber,
+  },
+  response: {
+    200: typeString,
+  },
+};
+
+const fulfillContractSchema = {
+  body: {
+    type: "object",
+    required: ["pilotCertification"],
+    properties: {
+        pilotCertification: typeNumber,
     },
   },
   params: {
@@ -91,6 +152,9 @@ module.exports = {
   getAllContractsSchema,
   getContractSchema,
   postContractSchema,
+  postContractsSchema,
   updateContractSchema,
   deleteContractSchema,
+  acceptContractSchema,
+  fulfillContractSchema
 };
