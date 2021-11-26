@@ -10,13 +10,13 @@ module.exports = {
       },
       pilotCertification: {
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        unique: true,
-        references: {
-          model: 'Pilots',
-          key: 'pilotCertification',
-          as: 'pilotCertification',
-        }
+        // onDelete: 'CASCADE',
+        // unique: true,
+        // references: {
+        //   model: 'Pilots',
+        //   key: 'pilotCertification',
+        //   as: 'pilotCertification',
+        // }
       },
       fuelCapacity: {
         type: Sequelize.INTEGER

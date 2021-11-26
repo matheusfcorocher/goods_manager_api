@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Ships.belongsTo(models.Pilots, {
+        targetKey: 'pilotCertification',
         foreignKey: 'pilotCertification',
         onDelete: 'CASCADE',
       })

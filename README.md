@@ -99,3 +99,17 @@ body:
 }
 
 ```
+
+6-) Fulfilling contracts
+
+You can use this route for fulfill a contracts:
+
+```
+/api/contracts/fulfill/:idContract
+The body need for this route is below:
+
+body:
+{
+    "pilotCertification": 1235867
+}
+```

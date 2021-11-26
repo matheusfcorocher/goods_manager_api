@@ -1,3 +1,5 @@
+const { travelFuelCost } = require("../../core_rules/travel/rules.js");
+const { Sequelize } = require("../../models/index.js");
 const models = require("../../models/index.js");
 const { Contracts, Pilots, Ships } = models;
 
@@ -146,7 +148,11 @@ const acceptContractHandler = async (req, reply) => {
     });
   }
 
-  if (contract.contractStatus === "CREATED") {
+  //must be in the planet
+
+  //verify weight of ship
+  
+  if (contract[0].contractStatus === "CREATED") {
     const contractStatus = "IN PROGRESS";
     await Contracts.update(
       {
@@ -176,7 +182,6 @@ const fulfillContractHandler = async (req, reply) => {
     },
   });
 
-  console.log(contract);
 
   if (Object.keys(contract).length === 0) {
     return reply.status(404).send({
@@ -187,25 +192,57 @@ const fulfillContractHandler = async (req, reply) => {
   if (contract[0].contractStatus == "IN PROGRESS") {
     const contractStatus = "FINISHED";
     const pilot = await Pilots.findAll({
+      where: {
+        pilotCertification: contract[0].pilotCertification
+      },
       include: [
         {
           model: Ships,
-          required: true,
         },
       ],
-      raw: true,
-    });
-    console.log(pilot);
-    // await Contracts.update(
-    //   {
-    //     contractStatus,
-    //   },
-    //   {
-    //     where: {
-    //       id,
-    //     },
-    //   }
-    // );
+      raw:true,
+      nest: true
+    })
+    .catch(console.error);
+    
+    let { credits , locationPlanet, Ship} = pilot[0];
+    let {fuelCapacity} = Ship;
+    fuelCapacity -= travelFuelCost(locationPlanet, contract[0].destinationPlanet)
+    credits += contract[0].value
+    
+    await Pilots.update(
+      {
+        credits,
+        locationPlanet: contract[0].destinationPlanet,
+      },
+      {
+        where: {
+          pilotCertification: contract[0].pilotCertification
+        },
+      }
+    );
+
+    await Ships.update(
+      {
+        fuelCapacity
+      },
+      {
+        where: {
+          pilotCertification: contract[0].pilotCertification
+        },
+      }
+    );
+    
+    await Contracts.update(
+      {
+        contractStatus,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
     reply.send("Contract was fullfilled!");
   } else
     return reply.status(404).send({
