@@ -102,7 +102,7 @@ body:
 
 6-) Fulfilling contracts
 
-You can use this route for fulfill a contracts:
+* [ ] You can use this route for fulfill a contracts:
 
 ```
 /api/contracts/fulfill/:idContract
@@ -112,4 +112,13 @@ body:
 {
     "pilotCertification": 1235867
 }
+
+```
+
+7-) Register a refill of the fuel
+
+* [ ] You can use this route for refill a ship:
+
+```
+/api/ships/refill/:pilotCertification
 ```

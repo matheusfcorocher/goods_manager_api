@@ -4,6 +4,7 @@ const {
   postShipSchema,
   updateShipSchema,
   deleteShipSchema,
+  refillShipSchema
 } = require("../controllers/schemas/ships.js");
 
 const {
@@ -12,6 +13,7 @@ const {
   postShipHandler,
   updateShipHandler,
   deleteShipHandler,
+  refillShipHandler
 } = require("../controllers/handlers/ships.js");
 
 const getAllShipsOpts = {
@@ -34,6 +36,11 @@ const updateShipOpts = {
   handler: updateShipHandler,
 };
 
+const refillShipOpts = {
+  schema: refillShipSchema,
+  handler: refillShipHandler,
+};
+
 const deleteShipOpts = {
   schema: deleteShipSchema,
   handler: deleteShipHandler,
@@ -44,6 +51,7 @@ const shipsRoutes = (fastify, options, done) => {
   fastify.get("/api/ships/:pilotCertification", getShipOpts);
   fastify.post("/api/ships/new", postShipOpts);
   fastify.put("/api/ships/edit/:pilotCertification", updateShipOpts);
+  fastify.put("/api/ships/refill/:pilotCertification", refillShipOpts);
   fastify.delete("/api/ships/:pilotCertification", deleteShipOpts);
   done();
 };

@@ -68,6 +68,15 @@ const updateShipSchema = {
   },
 };
 
+const refillShipSchema = {
+  params: {
+    pilotCertification: typeNumber, // convert pilotC... to number
+  },
+  response: {
+    200: typeString,
+  },
+};
+
 const deleteShipSchema = {
   params: {
     pilotCertification: typeNumber, // converts the id param to number
@@ -82,5 +91,6 @@ module.exports = {
   getShipSchema,
   postShipSchema,
   updateShipSchema,
+  refillShipSchema,
   deleteShipSchema,
 };

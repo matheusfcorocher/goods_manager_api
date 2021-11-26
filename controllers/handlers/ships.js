@@ -83,6 +83,57 @@ const updateShipHandler = async (req, reply) => {
   reply.send('Ship updated!');
 };
 
+const refillShipHandler = async (req, reply) => {
+  const { pilotCertification } = req.params;
+
+  const ship = await Ships.findAll({
+    where: {
+        pilotCertification
+    },
+    raw:true,
+  });
+
+  const pilot = await Pilots.findAll({
+    where: {
+        pilotCertification
+    },
+    raw: true,
+  });
+
+  if(Object.keys(ship).length === 0 && Object.keys(pilot).length === 0) {
+    return reply.status(404).send({
+      errorMsg: 'Ship not found!',
+    });
+  }
+
+  let { credits } = pilot[0];
+
+  credits -= 7;
+
+  await Pilots.update(
+    { 
+        credits 
+    }, {
+    where: {
+        pilotCertification
+    }
+  });
+
+  let {fuelCapacity, fuelLevel} = ship[0];
+  fuelLevel = fuelCapacity;
+   
+  await Ships.update(
+    { 
+        fuelLevel
+    }, {
+    where: {
+        pilotCertification
+    }
+  });
+
+  reply.send('The fuel of the ship was refilled!');
+};
+
 const deleteShipHandler = async (req, reply) => {
   const { pilotCertification } = req.params;
 
@@ -105,4 +156,4 @@ const deleteShipHandler = async (req, reply) => {
   return reply.send('Ship deleted!');
 };
 
-module.exports = { getAllShipsHandler, getShipHandler, postShipHandler, updateShipHandler, deleteShipHandler };
+module.exports = { getAllShipsHandler, getShipHandler, postShipHandler, updateShipHandler, refillShipHandler, deleteShipHandler };
