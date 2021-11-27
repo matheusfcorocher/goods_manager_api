@@ -1,5 +1,5 @@
 const models = require("../../models/index.js");
-const {Ships, Pilots} = models;
+const {Ships, Pilots, Transactions} = models;
 
 const getAllShipsHandler = async (req, reply) => {
     const ships = await Ships.findAll(); 
@@ -107,31 +107,46 @@ const refillShipHandler = async (req, reply) => {
   }
 
   let { credits } = pilot[0];
-
-  credits -= 7;
-
-  await Pilots.update(
-    { 
-        credits 
-    }, {
-    where: {
-        pilotCertification
-    }
-  });
-
   let {fuelCapacity, fuelLevel} = ship[0];
-  fuelLevel = fuelCapacity;
-   
-  await Ships.update(
-    { 
-        fuelLevel
-    }, {
-    where: {
-        pilotCertification
+  let fuelRefilled = fuelCapacity - fuelLevel;
+  if(fuelRefilled != 0) {
+    let payment = fuelRefilled*7;
+    let creditsLeft = credits - payment; 
+    if(creditsLeft < 0) {
+      fuelRefilled = fuelRefilled - Math.round((credits*-1)/7);
+      creditsLeft = 0
+      payment = credits
     }
-  });
 
-  reply.send('The fuel of the ship was refilled!');
+    fuelLevel += fuelRefilled;
+
+    await Pilots.update(
+      { 
+          credits: creditsLeft
+      }, {
+      where: {
+          pilotCertification
+      }
+    });
+
+    await Ships.update(
+      { 
+          fuelLevel
+      }, {
+      where: {
+          pilotCertification
+      }
+    });
+  
+    const about = `${pilot[0].name} bought fuel: +₭${payment}`
+    await Transactions.create({ about});
+  
+    reply.send('The fuel of the ship was refilled!');
+  }
+  else
+    return reply.status(500).send({
+      errorMsg: 'The fuel capacity of the ship is full!',
+    });
 };
 
 const deleteShipHandler = async (req, reply) => {

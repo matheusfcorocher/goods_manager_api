@@ -12,6 +12,7 @@ fastify.register(require("./routes/pilots.js"));
 fastify.register(require("./routes/resources.js"));
 fastify.register(require("./routes/ships.js"));
 fastify.register(require("./routes/transactions.js"));
+fastify.register(require("./routes/reports.js"));
 
 const startServer = async () => {
   try {

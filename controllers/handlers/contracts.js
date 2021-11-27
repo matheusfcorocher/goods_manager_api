@@ -1,7 +1,9 @@
 const { travelFuelCost } = require("../../core_rules/travel/rules.js");
+const { WeightContract } = require("../../core_rules/resources/rules.js");
+const { WeightPilotIsCarrying, isPossibleToShipCarry} = require("../../core_rules/ship/rules.js");
 const { Sequelize } = require("../../models/index.js");
 const models = require("../../models/index.js");
-const { Contracts, Pilots, Ships } = models;
+const { Contracts, Pilots, Ships, Transactions } = models;
 
 const getAllContractsHandler = async (req, reply) => {
   const { contractStatus } = req.query;
@@ -23,9 +25,6 @@ const getContractHandler = async (req, reply) => {
       id,
     },
   });
-  // const contract = contracts.filter((contract) => {
-  //   return contract.contract_certification === contract_certification;
-  // })[0];
 
   if (Object.keys(contract).length === 0) {
     return reply.status(404).send({
@@ -142,30 +141,69 @@ const acceptContractHandler = async (req, reply) => {
     },
   });
 
+  const pilot = await Pilots.findAll({
+    where: {
+      pilotCertification
+    },
+    include: [
+      {
+        model: Ships,
+      },
+    ],
+    raw: true,
+    nest: true,
+  }).catch(console.error);
+
   if (Object.keys(contract).length === 0) {
     return reply.status(404).send({
       errorMsg: "Contract not found!",
     });
   }
 
-  //must be in the planet
+  if (Object.keys(pilot).length === 0) {
+    return reply.status(404).send({
+      errorMsg: "Pilot not found!",
+    });
+  }
 
-  //verify weight of ship
-  
   if (contract[0].contractStatus === "CREATED") {
-    const contractStatus = "IN PROGRESS";
-    await Contracts.update(
-      {
-        pilotCertification,
-        contractStatus,
-      },
-      {
-        where: {
-          id,
-        },
+    //must be in the planet
+    if (pilot[0].locationPlanet == contract[0].originPlanet) {
+      
+      //bring actual ship's weight
+      const actualShipWeight = await WeightPilotIsCarrying(pilot[0].id);
+      //bring contract's weight
+      const contractWeight = await WeightContract(contract[0].id);
+        
+      console.log(pilot[0].Ship.weightCapacity)
+      console.log(actualShipWeight)
+      console.log(contractWeight)
+      if(isPossibleToShipCarry(pilot[0].Ship.weightCapacity, actualShipWeight, contractWeight)) {
+        const contractStatus = "IN PROGRESS";
+        await Contracts.update(
+          {
+            pilotCertification,
+            contractStatus,
+          },
+          {
+            where: {
+              id,
+            },
+          }
+        );
+        reply.send("Contract was accepted!");
       }
-    );
-    reply.send("Contract was accepted!");
+      else {
+        return reply.status(404).send({
+          errorMsg: "Weight capacity isnt enough for this contract!",
+        });
+      }
+    }
+    else {
+      return reply.status(404).send({
+        errorMsg: "Pilot need to be in the origin planet to accept this contract!",
+      });
+    }
   } else
     return reply.status(404).send({
       errorMsg: "Contract was finished or is in progress with another pilot!",
@@ -182,6 +220,18 @@ const fulfillContractHandler = async (req, reply) => {
     },
   });
 
+  const pilot = await Pilots.findAll({
+    where: {
+      pilotCertification: contract[0].pilotCertification,
+    },
+    include: [
+      {
+        model: Ships,
+      },
+    ],
+    raw: true,
+    nest: true,
+  }).catch(console.error);
 
   if (Object.keys(contract).length === 0) {
     return reply.status(404).send({
@@ -189,27 +239,29 @@ const fulfillContractHandler = async (req, reply) => {
     });
   }
 
-  if (contract[0].contractStatus == "IN PROGRESS") {
+  if (Object.keys(pilot).length === 0) {
+    return reply.status(404).send({
+      errorMsg: "Pilot not found!",
+    });
+  }
+
+  if (
+    contract[0].contractStatus == "IN PROGRESS" &&
+    pilot[0].pilotCertification == contract[0].pilotCertification
+  ) {
     const contractStatus = "FINISHED";
-    const pilot = await Pilots.findAll({
-      where: {
-        pilotCertification: contract[0].pilotCertification
-      },
-      include: [
-        {
-          model: Ships,
-        },
-      ],
-      raw:true,
-      nest: true
-    })
-    .catch(console.error);
-    
-    let { credits , locationPlanet, Ship} = pilot[0];
-    let {fuelCapacity} = Ship;
-    fuelCapacity -= travelFuelCost(locationPlanet, contract[0].destinationPlanet)
-    credits += contract[0].value
-    
+
+    let { credits, locationPlanet, Ship } = pilot[0];
+    let { fuelLevel } = Ship;
+    fuelLevel -= travelFuelCost(locationPlanet, contract[0].destinationPlanet);
+    if (fuelLevel < 0)
+      return reply.status(404).send({
+        errorMsg:
+          "The fuel level of ship isnt enough to arrive in the destination planet.",
+      });
+
+    credits += contract[0].value;
+
     await Pilots.update(
       {
         credits,
@@ -217,22 +269,22 @@ const fulfillContractHandler = async (req, reply) => {
       },
       {
         where: {
-          pilotCertification: contract[0].pilotCertification
+          pilotCertification: contract[0].pilotCertification,
         },
       }
     );
 
     await Ships.update(
       {
-        fuelCapacity
+        fuelLevel,
       },
       {
         where: {
-          pilotCertification: contract[0].pilotCertification
+          pilotCertification: contract[0].pilotCertification,
         },
       }
     );
-    
+
     await Contracts.update(
       {
         contractStatus,
@@ -243,10 +295,14 @@ const fulfillContractHandler = async (req, reply) => {
         },
       }
     );
+
+    const about = `Contract ${contract[0].id} Description paid: -₭${contract[0].value}`;
+    await Transactions.create({ about });
+
     reply.send("Contract was fullfilled!");
   } else
     return reply.status(404).send({
-      errorMsg: "Contract is not in progress!",
+      errorMsg: "Contract is not in progress or doesn't belong to right pilot!",
     });
 };
 

@@ -16,15 +16,29 @@ Tools sugestions to use this api:
 
 2-) Open a bash terminal and run this command:
 
+```
 yarn
+```
 
 3-) Verify the .env file in root folder and modify for your case
 
-4-) Run the command yarn db:create for creating database in your postgres.
+4-) Run this command below for creating database in your postgres.
 
-5-) Run the command yarn db:migrate for run migrations in your database and create the necessary tables.
+```
+yarn db:create
+```
 
-6-) Run the command yarn db:seeds for run the seed's files to populate the tables.
+5-) Run this command below for run migrations in your database and create the necessary tables.
+
+```
+yarn db:migrate
+```
+
+6-) Run this command below for run the seed's files to populate the tables.
+
+```
+yarn db:seeds
+```
 
 7-)Requirements of project:
 
@@ -121,4 +135,27 @@ body:
 
 ```
 /api/ships/refill/:pilotCertification
+```
+
+
+8-) To see all reports:
+
+* [ ] You can use this route for see planets reports:
+
+```
+/api/reports/planets
+```
+
+
+* [ ] You can use this route for see pilots reports:
+
+```
+/api/reports/pilots
+```
+
+
+* [ ] You can use this route for see transactions reports:
+
+```
+/api/reports/transactions
 ```
