@@ -14,6 +14,8 @@ Tools sugestions to use this api:
 
 1-)Clone this repository
 
+1.1-) In postman_files folder has json with all queries of this api. Just import in postman app.
+
 2-) Open a bash terminal and run this command:
 
 ```
@@ -137,7 +139,6 @@ body:
 /api/ships/refill/:pilotCertification
 ```
 
-
 8-) To see all reports:
 
 * [ ] You can use this route for see planets reports:
@@ -146,13 +147,11 @@ body:
 /api/reports/planets
 ```
 
-
 * [ ] You can use this route for see pilots reports:
 
 ```
 /api/reports/pilots
 ```
-
 
 * [ ] You can use this route for see transactions reports:
 

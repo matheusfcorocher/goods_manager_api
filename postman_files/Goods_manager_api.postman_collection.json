@@ -1,0 +1,1264 @@
+{
+	"info": {
+		"_postman_id": "077d7f35-5ea2-4895-96a0-89ff0f6106ae",
+		"name": "Goods_manager_api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CargosController",
+			"item": [
+				{
+					"name": "getCargos",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/cargos",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"cargos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCargo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/cargos/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"cargos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "postCargo",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTEzMDYwMywianRpIjoiOGIwZjQ5OTktMDA0MS00YTdkLWE3Y2EtYjE1NDNmYzM1ZTk2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI5MTMwNjAzLCJleHAiOjE2MjkxMzE1MDN9.fggBHizk9fdrS46xzQDrROaKKThbQ4NGLprfvbB1J74",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cargoId\": 5,\r\n    \"resourceId\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/cargos/new",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"cargos",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateCargo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyODg3MzMyNiwianRpIjoiNTk4NGM3YzQtZGVmMi00YmJmLWFmMzktMTk3MWVhZjlkOTBiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI4ODczMzI2LCJleHAiOjE2Mjg4NzQyMjZ9.FArNyQKUoXq0zdWEik0YS9yD0S9ZcsKdGl_dStsRqnM",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"resourceId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/cargos/edit/5",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"cargos",
+								"edit",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCargo",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTEzMDYwMywianRpIjoiOGIwZjQ5OTktMDA0MS00YTdkLWE3Y2EtYjE1NDNmYzM1ZTk2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI5MTMwNjAzLCJleHAiOjE2MjkxMzE1MDN9.fggBHizk9fdrS46xzQDrROaKKThbQ4NGLprfvbB1J74",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/cargos/5",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"cargos",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ContractsController",
+			"item": [
+				{
+					"name": "getContracts",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/contracts",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"contracts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOpenContracts",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/contracts?contractStatus=CREATED",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"contracts"
+							],
+							"query": [
+								{
+									"key": "contractStatus",
+									"value": "CREATED"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getContract",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/contracts/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"contracts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "postContract",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTEzMDYwMywianRpIjoiOGIwZjQ5OTktMDA0MS00YTdkLWE3Y2EtYjE1NDNmYzM1ZTk2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI5MTMwNjAzLCJleHAiOjE2MjkxMzE1MDN9.fggBHizk9fdrS46xzQDrROaKKThbQ4NGLprfvbB1J74",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cargoId\": 4,\r\n    \"description\": \"food to Calas\",\r\n    \"originPlanet\": \"Andvari\",\r\n    \"destinationPlanet\": \"Calas\",\r\n    \"value\": 700\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/contracts/new",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"contracts",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateContract",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyODg3MzMyNiwianRpIjoiNTk4NGM3YzQtZGVmMi00YmJmLWFmMzktMTk3MWVhZjlkOTBiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI4ODczMzI2LCJleHAiOjE2Mjg4NzQyMjZ9.FArNyQKUoXq0zdWEik0YS9yD0S9ZcsKdGl_dStsRqnM",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cargoId\": 4,\r\n    \"description\": \"food to Andvari\",\r\n    \"originPlanet\": \"Calas\",\r\n    \"destinationPlanet\": \"Andvari\",\r\n    \"value\": 1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/contracts/edit/5",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"contracts",
+								"edit",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "acceptContract",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyODg3MzMyNiwianRpIjoiNTk4NGM3YzQtZGVmMi00YmJmLWFmMzktMTk3MWVhZjlkOTBiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI4ODczMzI2LCJleHAiOjE2Mjg4NzQyMjZ9.FArNyQKUoXq0zdWEik0YS9yD0S9ZcsKdGl_dStsRqnM",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pilotCertification\": 1234567\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/contracts/accept/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"contracts",
+								"accept",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fulfillContract",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyODg3MzMyNiwianRpIjoiNTk4NGM3YzQtZGVmMi00YmJmLWFmMzktMTk3MWVhZjlkOTBiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI4ODczMzI2LCJleHAiOjE2Mjg4NzQyMjZ9.FArNyQKUoXq0zdWEik0YS9yD0S9ZcsKdGl_dStsRqnM",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/contracts/fulfill/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"contracts",
+								"fulfill",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteContract",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTEzMDYwMywianRpIjoiOGIwZjQ5OTktMDA0MS00YTdkLWE3Y2EtYjE1NDNmYzM1ZTk2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI5MTMwNjAzLCJleHAiOjE2MjkxMzE1MDN9.fggBHizk9fdrS46xzQDrROaKKThbQ4NGLprfvbB1J74",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/contracts/5",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"contracts",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PilotsController",
+			"item": [
+				{
+					"name": "getPilots",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/pilots",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"pilots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPilot",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/pilots/1235565",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"pilots",
+								"1235565"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "postPilot",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTEzMDYwMywianRpIjoiOGIwZjQ5OTktMDA0MS00YTdkLWE3Y2EtYjE1NDNmYzM1ZTk2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI5MTMwNjAzLCJleHAiOjE2MjkxMzE1MDN9.fggBHizk9fdrS46xzQDrROaKKThbQ4NGLprfvbB1J74",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pilotCertification\": 1235565,\r\n    \"name\": \"Pilot5\",\r\n    \"age\": 24,\r\n    \"credits\": 1800,\r\n    \"locationPlanet\": \"Andvari\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/pilots/new",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"pilots",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePilot",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyODg3MzMyNiwianRpIjoiNTk4NGM3YzQtZGVmMi00YmJmLWFmMzktMTk3MWVhZjlkOTBiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI4ODczMzI2LCJleHAiOjE2Mjg4NzQyMjZ9.FArNyQKUoXq0zdWEik0YS9yD0S9ZcsKdGl_dStsRqnM",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"age\": 30,\r\n    \"credits\": 1200,\r\n    \"location_planet\": \"Andvari\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/pilots/edit/1235565",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"pilots",
+								"edit",
+								"1235565"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteHotel",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTEzMDYwMywianRpIjoiOGIwZjQ5OTktMDA0MS00YTdkLWE3Y2EtYjE1NDNmYzM1ZTk2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI5MTMwNjAzLCJleHAiOjE2MjkxMzE1MDN9.fggBHizk9fdrS46xzQDrROaKKThbQ4NGLprfvbB1J74",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/pilots/1235565",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"pilots",
+								"1235565"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ShipsController",
+			"item": [
+				{
+					"name": "getShips",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/ships",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"ships"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getShip",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/ships/1234567",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"ships",
+								"1234567"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "postShip",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTEzMDYwMywianRpIjoiOGIwZjQ5OTktMDA0MS00YTdkLWE3Y2EtYjE1NDNmYzM1ZTk2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI5MTMwNjAzLCJleHAiOjE2MjkxMzE1MDN9.fggBHizk9fdrS46xzQDrROaKKThbQ4NGLprfvbB1J74",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pilotCertification\": 1235565,\r\n    \"fuelCapacity\": 1000,\r\n    \"fuelLevel\": 21,\r\n    \"weightCapacity\": 700\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/ships/new",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"ships",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateShip",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyODg3MzMyNiwianRpIjoiNTk4NGM3YzQtZGVmMi00YmJmLWFmMzktMTk3MWVhZjlkOTBiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI4ODczMzI2LCJleHAiOjE2Mjg4NzQyMjZ9.FArNyQKUoXq0zdWEik0YS9yD0S9ZcsKdGl_dStsRqnM",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/ships/refill/1234567",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"ships",
+								"refill",
+								"1234567"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refillShip",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyODg3MzMyNiwianRpIjoiNTk4NGM3YzQtZGVmMi00YmJmLWFmMzktMTk3MWVhZjlkOTBiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI4ODczMzI2LCJleHAiOjE2Mjg4NzQyMjZ9.FArNyQKUoXq0zdWEik0YS9yD0S9ZcsKdGl_dStsRqnM",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fuelCapacity\": 1500,\r\n    \"fuelLevel\": 25,\r\n    \"weightCapacity\": 1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/ships/refill/1235867",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"ships",
+								"refill",
+								"1235867"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteShip",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTEzMDYwMywianRpIjoiOGIwZjQ5OTktMDA0MS00YTdkLWE3Y2EtYjE1NDNmYzM1ZTk2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI5MTMwNjAzLCJleHAiOjE2MjkxMzE1MDN9.fggBHizk9fdrS46xzQDrROaKKThbQ4NGLprfvbB1J74",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/ships/1235565",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"ships",
+								"1235565"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ResourcesController",
+			"item": [
+				{
+					"name": "getResources",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/resources",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"resources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getResource",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/resources/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"resources",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "postResource",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTEzMDYwMywianRpIjoiOGIwZjQ5OTktMDA0MS00YTdkLWE3Y2EtYjE1NDNmYzM1ZTk2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI5MTMwNjAzLCJleHAiOjE2MjkxMzE1MDN9.fggBHizk9fdrS46xzQDrROaKKThbQ4NGLprfvbB1J74",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"minerals\",\r\n    \"weight\": 150\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/resources/new",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"resources",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateResource",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyODg3MzMyNiwianRpIjoiNTk4NGM3YzQtZGVmMi00YmJmLWFmMzktMTk3MWVhZjlkOTBiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI4ODczMzI2LCJleHAiOjE2Mjg4NzQyMjZ9.FArNyQKUoXq0zdWEik0YS9yD0S9ZcsKdGl_dStsRqnM",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"water\",\r\n    \"weight\": 200\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/resources/edit/5",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"resources",
+								"edit",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteResource",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTEzMDYwMywianRpIjoiOGIwZjQ5OTktMDA0MS00YTdkLWE3Y2EtYjE1NDNmYzM1ZTk2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI5MTMwNjAzLCJleHAiOjE2MjkxMzE1MDN9.fggBHizk9fdrS46xzQDrROaKKThbQ4NGLprfvbB1J74",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/resources/5",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"resources",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TransactionsController",
+			"item": [
+				{
+					"name": "getTransactions",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/transactions",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTransaction",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/transactions/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"transactions",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "postTransaction",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTEzMDYwMywianRpIjoiOGIwZjQ5OTktMDA0MS00YTdkLWE3Y2EtYjE1NDNmYzM1ZTk2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI5MTMwNjAzLCJleHAiOjE2MjkxMzE1MDN9.fggBHizk9fdrS46xzQDrROaKKThbQ4NGLprfvbB1J74",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"about\": \"Han solo bought fuel\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/transactions/new",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"transactions",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateTransaction",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyODg3MzMyNiwianRpIjoiNTk4NGM3YzQtZGVmMi00YmJmLWFmMzktMTk3MWVhZjlkOTBiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI4ODczMzI2LCJleHAiOjE2Mjg4NzQyMjZ9.FArNyQKUoXq0zdWEik0YS9yD0S9ZcsKdGl_dStsRqnM",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"about\": \"Contract payed Han solo a bike!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/transactions/edit/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"transactions",
+								"edit",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTransaction",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTEzMDYwMywianRpIjoiOGIwZjQ5OTktMDA0MS00YTdkLWE3Y2EtYjE1NDNmYzM1ZTk2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjI5MTMwNjAzLCJleHAiOjE2MjkxMzE1MDN9.fggBHizk9fdrS46xzQDrROaKKThbQ4NGLprfvbB1J74",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/transactions/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"transactions",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ReportsController",
+			"item": [
+				{
+					"name": "getPlanetsReport",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/reports/planets",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"reports",
+								"planets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPilotsReport",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/reports/pilots",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"reports",
+								"pilots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTransactionsReports",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3333/api/reports/transactions",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"reports",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
