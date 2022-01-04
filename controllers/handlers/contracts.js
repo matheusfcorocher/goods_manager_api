@@ -3,6 +3,7 @@ const { WeightContract } = require("../../core_rules/resources/rules.js");
 const { WeightPilotIsCarrying, isPossibleToShipCarry} = require("../../core_rules/ship/rules.js");
 const { Sequelize } = require("../../models/index.js");
 const models = require("../../models/index.js");
+const { findNestedPilots } = require("../../models/actions/index.js");
 const { Contracts, Pilots, Ships, Transactions } = models;
 
 const getAllContractsHandler = async (req, reply) => {
@@ -170,8 +171,10 @@ const acceptContractHandler = async (req, reply) => {
     //must be in the planet
     if (pilot[0].locationPlanet == contract[0].originPlanet) {
       
+      const pilots = await findNestedPilots();
+      console.log(pilots)
       //bring actual ship's weight
-      const actualShipWeight = await WeightPilotIsCarrying(pilot[0].id);
+      const actualShipWeight = await WeightPilotIsCarrying(pilot[0].id, pilots);
       //bring contract's weight
       const contractWeight = await WeightContract(contract[0].id);
         

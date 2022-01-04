@@ -3,13 +3,11 @@ const models = require("../../models/index.js");
 const { Contracts, Pilots, Cargos, Resources, Transactions } = models;
 
 const verifyResourceName = (resourceName) => {
-  if (
-    resourceName === "water" &&
-    resourceName === "food" &&
+  return (
+    resourceName === "water" ||
+    resourceName === "food" ||
     resourceName === "minerals"
-  )
-    return true;
-  return false;
+  );
 };
 
 const WeightContract = async (id) => {
@@ -47,17 +45,17 @@ const WeightContract = async (id) => {
           ? contract.Cargo.Resource.weight
           : 0,
     };
-    
+
     const isIdPresent = contractReport.findIndex((o) => o.id === report.id);
     if (isIdPresent >= 0) {
-        contractReport[isIdPresent] = {
+      contractReport[isIdPresent] = {
         id: contract.id,
         food: contractReport[isIdPresent].food + report.food,
         water: contractReport[isIdPresent].water + report.water,
         minerals: contractReport[isIdPresent].minerals + report.minerals,
       };
     } else {
-        contractReport.push(report);
+      contractReport.push(report);
     }
   });
   delete contractReport[0].id;

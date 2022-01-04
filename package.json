@@ -6,20 +6,23 @@
   "author": "Matheus <matheuscorocher@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "jest": "^27.4.5",
     "nodemon": "^2.0.15",
-    "sequelize-cli": "^6.3.0"
+    "sequelize-cli": "^6.3.0",
+    "tap": "^15.1.5"
   },
   "dependencies": {
     "config": "^3.3.6",
     "dotenv": "^10.0.0",
     "fastify": "^3.24.0",
+    "mysql2": "^2.3.3",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.12.0-alpha.1"
   },
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js",
+    "start": "node app.js",
+    "server": "nodemon app.js",
     "dev": "nodemon -r dotenv/config app.js",
     "db:create": "sequelize-cli db:create",
     "db:c:model": "sequelize-cli model:generate --name",
@@ -29,6 +32,7 @@
     "db:g:migration": "sequelize-cli migration:generate --name",
     "db:g:seed": "sequelize-cli seed:generate --name",
     "db:seeds": "sequelize-cli db:seed:all",
-    "db:seeds:undo:all": "sequelize-cli db:seed:undo:all"
+    "db:seeds:undo:all": "sequelize-cli db:seed:undo:all",
+    "test": "jest"
   }
 }

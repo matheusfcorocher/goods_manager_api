@@ -1,40 +1,14 @@
 const { compareValues } = require("../../helpers/index.js");
-const models = require("../../models/index.js");
-const { Contracts, Pilots, Cargos, Resources, Transactions } = models;
 
 const isPossibleToShipCarry = (
   shipCapacity,
   actualShipWeight,
   totalContractWeight
 ) => {
-  if (totalContractWeight + actualShipWeight <= shipCapacity) return true;
-  return false;
+  return totalContractWeight + actualShipWeight <= shipCapacity;
 };
 
-const WeightPilotIsCarrying = async (id) => {
-  const pilots = await Pilots.findAll({
-    include: [
-      {
-        model: Contracts,
-        where: {
-          contractStatus: "IN PROGRESS",
-        },
-        include: [
-          {
-            model: Cargos,
-            include: [
-              {
-                model: Resources,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-    raw: true,
-    nest: true,
-  });
-
+const WeightPilotIsCarrying = async (id, pilots) => {
   let pilotReport = [];
   pilots.forEach((pilot) => {
     let report = {
@@ -79,8 +53,6 @@ const WeightPilotIsCarrying = async (id) => {
         actualShipWeight += pilotWeight[0][weight];
       }
   }
-
-  console.log(actualShipWeight);
   
   return actualShipWeight;
 };
