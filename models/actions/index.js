@@ -26,4 +26,24 @@ const findNestedPilots = async () => {
   });
 };
 
-module.exports = { findNestedPilots };
+const findNestedContract = async (id) => {
+  return await Contracts.findAll({
+    where: {
+      id: id,
+    },
+    include: [
+      {
+        model: Cargos,
+        include: [
+          {
+            model: Resources,
+          },
+        ],
+      },
+    ],
+    raw: true,
+    nest: true,
+  });
+};
+
+module.exports = { findNestedPilots, findNestedContract };

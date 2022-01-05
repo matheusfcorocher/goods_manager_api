@@ -1,7 +1,3 @@
-const { compareValues } = require("../../helpers/index.js");
-const models = require("../../models/index.js");
-const { Contracts, Pilots, Cargos, Resources, Transactions } = models;
-
 const verifyResourceName = (resourceName) => {
   return (
     resourceName === "water" ||
@@ -10,24 +6,8 @@ const verifyResourceName = (resourceName) => {
   );
 };
 
-const WeightContract = async (id) => {
-  const contracts = await Contracts.findAll({
-    where: {
-      id: id,
-    },
-    include: [
-      {
-        model: Cargos,
-        include: [
-          {
-            model: Resources,
-          },
-        ],
-      },
-    ],
-    raw: true,
-    nest: true,
-  });
+const WeightContract = async (contracts) => {
+  
   let contractReport = [];
   contracts.forEach((contract) => {
     let report = {
@@ -58,12 +38,16 @@ const WeightContract = async (id) => {
       contractReport.push(report);
     }
   });
-  delete contractReport[0].id;
-
-  let totalContractWeight = 0;
-
-  for (const weight in contractReport[0]) {
-    totalContractWeight += contractReport[0][weight];
+  
+  let totalContractWeight = -1;
+  
+  if(contractReport.length > 0) {
+    totalContractWeight += 1;
+    delete contractReport[0].id;
+  
+    for (const weight in contractReport[0]) {
+      totalContractWeight += contractReport[0][weight];
+    }
   }
 
   return totalContractWeight;
