@@ -6,7 +6,7 @@ const verifyResourceName = (resourceName) => {
   );
 };
 
-const WeightContract = async (contracts) => {
+const WeightContract =  (contracts) => {
   
   let contractReport = [];
   contracts.forEach((contract) => {

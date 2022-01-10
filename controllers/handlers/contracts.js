@@ -1,9 +1,9 @@
 const { travelFuelCost } = require("../../core_rules/travel/rules.js");
 const { WeightContract } = require("../../core_rules/resources/rules.js");
 const { WeightPilotIsCarrying, isPossibleToShipCarry} = require("../../core_rules/ship/rules.js");
-const { Sequelize } = require("../../models/index.js");
-const models = require("../../models/index.js");
-const { findNestedPilots, findNestedContract } = require("../../models/actions/index.js");
+const { Sequelize } = require("../../src/infra/database/models/index.js");
+const models = require("../../src/infra/database/models/index.js");
+const { findNestedPilots, findNestedContract } = require("../../src/infra/database/models/actions/index.js");
 const { Contracts, Pilots, Ships, Transactions } = models;
 
 const getAllContractsHandler = async (req, reply) => {

@@ -1,4 +1,4 @@
-const models = require("../../models/index.js");
+const models = require("../../src/infra/database/models/index.js");
 const {Ships, Pilots, Transactions} = models;
 
 const getAllShipsHandler = async (req, reply) => {

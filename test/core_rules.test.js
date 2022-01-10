@@ -1,79 +1,141 @@
-const { verifyResourceName, WeightContract } = require("../core_rules/resources/rules");
+const { WeightContract } = require("../core_rules/resources/rules");
 const {
   isPossibleToShipCarry,
   WeightPilotIsCarrying,
 } = require("../core_rules/ship/rules");
 const { travelFuelCost } = require("../core_rules/travel/rules");
+const {
+  getCargoWeightContract,
+  makeGetCargoWeight,
+  makeGetCargoWeightContract,
+  makeGetCargoWeightPilot,
+} = require("../src/app/cargo");
+const Cargo = require("../src/domain/entities/Cargo");
+const Contract = require("../src/domain/entities/Contract");
+const Resource = require("../src/domain/entities/Resource");
+const {
+  fakeCargoRepository,
+  fakeResourceRepository,
+  fakeContractRepository,
+} = require("./support/factories/cargo");
 
 describe("Resources Tests ", () => {
-  describe("verifyResourceName", () => {
+  describe("verifyName", () => {
+    let resource = new Resource({ id: 1, name: "water", weight: 100 });
     describe("if resource name is water", () => {
       it("returns true", () => {
-        expect(verifyResourceName("water")).toEqual(true);
+        expect(resource.verifyName()).toEqual(true);
       });
     });
-
     describe("if resource name is food", () => {
       it("returns true", () => {
-        expect(verifyResourceName("food")).toEqual(true);
+        resource.setName("food");
+        expect(resource.verifyName()).toEqual(true);
       });
     });
 
     describe("if resource name is minerals", () => {
       it("returns true", () => {
-        expect(verifyResourceName("minerals")).toEqual(true);
+        resource.setName("minerals");
+        expect(resource.verifyName()).toEqual(true);
       });
     });
 
     describe(`if resource name isnt 'minerals' or 'food' or 'water'`, () => {
       it("returns false", () => {
-        expect(verifyResourceName("soda")).toEqual(false);
+        resource.setName("salmon");
+        expect(resource.verifyName()).toEqual(false);
+      });
+    });
+  });
+});
+
+describe("Cargos Tests ", () => {
+  let cargos = [
+    new Cargo({ id: 1, resourceIds: [1, 2, 3] }),
+    new Cargo({ id: 2, resourceIds: [2] }),
+    new Cargo({ id: 3, resourceIds: [3] }),
+  ];
+
+  let resources = [
+    new Resource({ id: 1, name: "water", weight: 100 }),
+    new Resource({ id: 2, name: "food", weight: 300 }),
+    new Resource({ id: 3, name: "minerals", weight: 1000 }),
+  ];
+
+  let contracts = [
+    new Contract({
+      id: 1,
+      pilotCertification: 1234567,
+      cargoId: 1,
+      description: "water, food and minerals to Demeter.",
+      originPlanet: "Aqua",
+      destinationPlanet: "Demeter",
+      value: 4000,
+      contractStatus: "IN PROGRESS",
+    }),
+    new Contract({
+      id: 2,
+      pilotCertification: 1234567,
+      cargoId: 2,
+      description: "food to Demeter.",
+      originPlanet: "Aqua",
+      destinationPlanet: "Demeter",
+      value: 1500,
+      contractStatus: "IN PROGRESS",
+    }),
+    new Contract({
+      id: 3,
+      pilotCertification: 1234557,
+      cargoId: 3,
+      description: "minerals to Aqua.",
+      originPlanet: "Calas",
+      destinationPlanet: "Aqua",
+      value: 1000,
+      contractStatus: "IN PROGRESS",
+    }),
+  ];
+
+  let fakeCargoRepo = new fakeCargoRepository(cargos);
+  let fakeResourceRepo = new fakeResourceRepository(resources);
+  let fakeContractRepo = new fakeContractRepository(contracts);
+
+  describe("getCargoWeight", () => {
+    describe("when calculating the weight", () => {
+      it("returns the correct weight", async () => {
+        const getCargoWeight = makeGetCargoWeight(
+          fakeCargoRepo,
+          fakeResourceRepo
+        );
+        expect(await getCargoWeight(1)).toEqual(1400);
       });
     });
   });
 
-  describe("WeightContract", () => {
-    let contracts = [
-      {
-        id: 2,
-        description: 'food to Demeter.',
-        pilotCertification: null,
-        cargoId: 2,
-        originPlanet: 'Aqua',
-        destinationPlanet: 'Demeter',
-        value: 1500,
-        contractStatus: 'CREATED',
-        createdAt: new Date().toJSON(),
-        updatedAt: new Date().toJSON(),
-        Cargo: {
-          id: 4,
-          cargoId: 2,
-          resourceId: 2,
-          createdAt: new Date().toJSON(),
-          updatedAt: new Date().toJSON(),
-          Resource: {
-            id: 4,
-            name: "food",
-            weight: 1000,
-            createdAt: new Date().toJSON(),
-            updatedAt: new Date().toJSON(),
-          },
-        }
-      }
-    ];
-
-    describe("If it has a contract", () => {
-      it("returns true", async () => {
-        expect(await WeightContract(contracts)).toEqual(1000);
+  describe("getCargoWeightContract", () => {
+    describe("when calculating the weight", () => {
+      it("returns the correct weight", async () => {
+        const getCargoWeightContract = await makeGetCargoWeightContract(
+          fakeCargoRepo,
+          fakeContractRepo,
+          fakeResourceRepo
+        );
+        expect(await getCargoWeightContract(2)).toEqual(300);
       });
     });
+  });
 
-    describe("If it doesn't have any contract", () => {
-      it("returns -1", async () => {
-        expect(await WeightContract([])).toEqual(-1);
+  describe("getCargoWeightPilot", () => {
+    describe("when calculating the weight", () => {
+      it("returns the correct weight", async () => {
+        const getCargoWeightPilot = await makeGetCargoWeightPilot(
+          fakeCargoRepo,
+          fakeContractRepo,
+          fakeResourceRepo
+        );
+        expect(await getCargoWeightPilot(contracts[2].pilotCertification)).toEqual(1000);
       });
     });
-
   });
 });
 

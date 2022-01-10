@@ -1,0 +1,55 @@
+<mxfile host="65bd71144e">
+    <diagram id="m6ol1Og02WRNKJNyyi0C" name="Page-1">
+        <mxGraphModel dx="2834" dy="2271" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="6" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="-120" y="-80" width="1000" height="650" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="Domain&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="-90" y="-50" width="390" height="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="Application" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="-90" y="300" width="390" height="250" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="Infrastructure" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="340" y="-50" width="510" height="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="Input interfaces" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="340" y="300" width="510" height="250" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="core_rules" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+                    <mxGeometry x="-60" y="170" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="helpers" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+                    <mxGeometry x="50" y="170" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="entities" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+                    <mxGeometry x="150" y="170" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="controllers" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+                    <mxGeometry x="7.5" y="460" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="routes" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+                    <mxGeometry x="122.5" y="460" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="config" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+                    <mxGeometry x="395" y="170" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="models" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+                    <mxGeometry x="510" y="170" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="migrations" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+                    <mxGeometry x="615" y="170" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="seeders" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+                    <mxGeometry x="715" y="170" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="postman_files" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+                    <mxGeometry x="555" y="460" width="80" height="80" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

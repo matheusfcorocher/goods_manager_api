@@ -1,4 +1,4 @@
-const models = require("../../models/index.js");
+const models = require("../../src/infra/database/models/index.js");
 const { Op } = require("sequelize");
 const { compareValues } = require("../../helpers/index");
 const { Contracts, Pilots, Cargos, Resources, Transactions } = models;
