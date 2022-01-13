@@ -1,57 +1,47 @@
 // const { isPossibleToShipCarry } = require("../../../../core_rules/ship/rules");
 // const { makeGetCargoWeightPilot, makeGetCargoWeightContract } = require("../../cargo");
 const Transaction = require("../../../domain/entities/Transaction");
-const Operation = require("../../Operation");
-
-class FulfillContract extends Operation {
-  constructor(
-    contractsRepository,
-    pilotsRepository,
-    transactionsRepository
-  ) {
-    super();
+class FulfillContract {
+  constructor(contractsRepository, pilotsRepository, transactionsRepository) {
     this.contractsRepository = contractsRepository;
     this.pilotsRepository = pilotsRepository;
     this.transactionsRepository = transactionsRepository;
   }
 
-  async execute(contractId) {
-    const { SUCCESS, NOT_FOUND, VALIDATION_ERROR, ERROR } = this.outputs;
+  async _emitTransaction(contractId, value) {
+    const about = `Contract ${contractId} Description paid: -₭${value}`;
+    const transaction = new Transaction({ about: about });
+    await this.transactionsRepository.add(transaction);
+  }
 
+  async execute(contractId) {
     try {
       const contract = await this.contractsRepository.getById(contractId);
-      const pilot = await this.pilotsRepository.getByPilotCertification(contract.pilotCertification);
-      if (contract.isInProgress() && pilot.locationPlanet === contract.destinationPlanet) {
-        await this.contractsRepository.update(contractId, { 
-          contractStatus: "FINISHED"
+      const pilot = await this.pilotsRepository.getByPilotCertification(
+        contract.pilotCertification
+      );
+      if (
+        contract.isInProgress() &&
+        pilot.locationPlanet === contract.destinationPlanet
+      ) {
+        await this.contractsRepository.update(contractId, {
+          contractStatus: "FINISHED",
         });
-        await this.pilotsRepository.update(contract.pilotCertification, { 
-          credits: pilot.credits + contract.value
+        await this.pilotsRepository.update(contract.pilotCertification, {
+          credits: pilot.credits + contract.value,
         });
-        const about = `Contract ${contractId} Description paid: -₭${contract.value}`;
-        const transaction = new Transaction({about: about});
-        await this.transactionsRepository.add(transaction);
-        this.emit(SUCCESS, "Contract was fullfilled!");
+        await this._emitTransaction(contractId, contract.value);
+        return "Contract was fullfilled!";
       }
-      this.emit(ERROR, `Contract ${contractId} is not in progress or the location of pilot isn't the same as the destination planet of contract.`);
+
+      const validationError = new Error("Validation Error");
+      validationError.CODE = "VALIDATION_ERROR";
+      validationError.errors = `Contract ${contractId} is not in progress or the location of pilot isn't the same as the destination planet of contract.`;
+      throw validationError;
     } catch (error) {
-      switch (error.message) {
-        case "ValidationError":
-          return this.emit(VALIDATION_ERROR, error);
-        case "NotFoundError":
-          return this.emit(NOT_FOUND, error);
-        default:
-          this.emit(ERROR, error);
-      }
+      throw error;
     }
   }
 }
-
-FulfillContract.setOutputs([
-  "SUCCESS",
-  "NOT_FOUND",
-  "VALIDATION_ERROR",
-  "ERROR",
-]);
 
 module.exports = FulfillContract;

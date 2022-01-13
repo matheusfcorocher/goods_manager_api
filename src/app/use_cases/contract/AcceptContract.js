@@ -1,8 +1,8 @@
-const { isPossibleToShipCarry } = require("../../../../core_rules/ship/rules");
-const { makeGetCargoWeightPilot, makeGetCargoWeightContract } = require("../../cargo");
-const Operation = require("../../Operation");
-
-class AcceptContract extends Operation {
+const {
+  makeGetCargoWeightPilot,
+  makeGetCargoWeightContract,
+} = require("../../cargo");
+class AcceptContract {
   constructor(
     cargosRepository,
     contractsRepository,
@@ -10,7 +10,6 @@ class AcceptContract extends Operation {
     shipsRepository,
     resourcesRepository
   ) {
-    super();
     this.cargosRepository = cargosRepository;
     this.contractsRepository = contractsRepository;
     this.pilotsRepository = pilotsRepository;
@@ -18,21 +17,20 @@ class AcceptContract extends Operation {
     this.resourcesRepository = resourcesRepository;
   }
 
-  _isPossibleToShipCarry = (
-    shipCapacity,
-    actualShipWeight,
-    totalContractWeight
-  ) => {
+  _isPossibleToShipCarry(shipCapacity, actualShipWeight, totalContractWeight) {
     return totalContractWeight + actualShipWeight <= shipCapacity;
-  };
+  }
 
-  async execute(contractId, {pilotCertification}) {
-    const { SUCCESS, NOT_FOUND, VALIDATION_ERROR, ERROR } = this.outputs;
-
+  async execute(contractId, { pilotCertification }) {
     try {
       let contract = await this.contractsRepository.getById(contractId);
-      const pilot = await this.pilotsRepository.getByPilotCertification(pilotCertification);
-      if (contract.isCreated() && pilot.locationPlanet === contract.originPlanet) {
+      const pilot = await this.pilotsRepository.getByPilotCertification(
+        pilotCertification
+      );
+      if (
+        contract.isCreated() &&
+        pilot.locationPlanet === contract.originPlanet
+      ) {
         const ship = await this.shipsRepository.getByPilotCertification(
           pilotCertification
         );
@@ -46,41 +44,35 @@ class AcceptContract extends Operation {
           this.contractsRepository,
           this.resourcesRepository
         );
-        
-        const cargoWeightPilot = await getCargoWeightPilot(pilotCertification)
-        const cargoWeightContract = await getCargoWeightContract(contractId)
+
+        const cargoWeightPilot = await getCargoWeightPilot(pilotCertification);
+        const cargoWeightContract = await getCargoWeightContract(contractId);
         if (
           this._isPossibleToShipCarry(
             ship.weightCapacity,
             cargoWeightPilot,
             cargoWeightContract
           )
-        )
-        contract = await this.contractsRepository.update(contractId, {
+        ) {
+          contract = await this.contractsRepository.update(contractId, {
             pilotCertification: pilotCertification,
-            contractStatus: "IN PROGRESS"
+            contractStatus: "IN PROGRESS",
           });
-          this.emit(SUCCESS, contract);
+          return contract;
+        }
+        const validationError = new Error("Validation Error");
+        validationError.CODE = "VALIDATION_ERROR";
+        validationError.errors = `The ship can't carry the required weight of contract`;
+        throw validationError;
       }
-      this.emit(ERROR, `Contract ${contractId} is already in progress or finished.`);
+      const validationError = new Error("Validation Error");
+      validationError.CODE = "VALIDATION_ERROR";
+      validationError.errors = `Contract ${contractId} isn't available or pilot isn't in the origin planet of contract.`;
+      throw validationError;
     } catch (error) {
-      switch (error.message) {
-        case "ValidationError":
-          return this.emit(VALIDATION_ERROR, error);
-        case "NotFoundError":
-          return this.emit(NOT_FOUND, error);
-        default:
-          this.emit(ERROR, error);
-      }
+      throw error;
     }
   }
 }
-
-AcceptContract.setOutputs([
-  "SUCCESS",
-  "NOT_FOUND",
-  "VALIDATION_ERROR",
-  "ERROR",
-]);
 
 module.exports = AcceptContract;

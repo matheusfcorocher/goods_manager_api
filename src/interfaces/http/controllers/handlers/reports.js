@@ -37,7 +37,7 @@ const getPlanetsReportHandler = async (req, reply) => {
   } catch (error) {
     switch (error.CODE) {
       default:
-        return reply.status(404).send({
+        return reply.status(500).send({
           message: "Internal Error",
         });
     }
@@ -57,7 +57,7 @@ const getPilotsReportHandler = async (req, reply) => {
   } catch (error) {
     switch (error.CODE) {
       default:
-        return reply.status(404).send({
+        return reply.status(500).send({
           message: "Internal Error",
         });
     }
@@ -71,12 +71,8 @@ const getTransactionsReportHandler = async (req, reply) => {
     reply.send(result);
   } catch (error) {
     switch (error.CODE) {
-      case "NOT_FOUND":
-        return reply.status(404).send({
-          message: "Wasn't found any transactions",
-        });
       default:
-        return reply.status(404).send({
+        return reply.status(500).send({
           message: "Internal Error",
         });
     }

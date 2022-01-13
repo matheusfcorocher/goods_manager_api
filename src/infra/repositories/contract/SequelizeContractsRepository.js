@@ -15,9 +15,9 @@ class SequelizeContractsRepository {
       });
     } catch (error) {
       if (error.name === "SequelizeEmptyResultError") {
-        const notFoundError = new Error("NotFoundError");
-        notFoundError.details = `Contract with id ${id} can't be found.`;
-
+        const notFoundError = new Error('Not Found Error');
+        notFoundError.CODE = "NOTFOUND_ERROR";
+        notFoundError.message = `Contract with id ${id} can't be found.`;
         throw notFoundError;
       }
 
@@ -48,7 +48,18 @@ class SequelizeContractsRepository {
   }
 
   //Public
- 
+  async add(contract) {
+    const { valid, errors } = contract.validate();
+    if(!valid) {
+      const validationError = new Error('Validation error');
+      validationError.CODE = "VALIDATION_ERROR";
+      validationError.errors = errors;
+      throw validationError;
+    }
+    
+    await this.ContractModel.create(ContractMapper.toDatabase(contract));
+  }
+
   async getById(id) {
     const contract = await this._getById(id);
     return ContractMapper.toEntity(contract);
@@ -77,7 +88,7 @@ class SequelizeContractsRepository {
 
       if(!valid) {
         const error = new Error('ValidationError');
-        error.details = errors;
+        error.errors = errors;
         throw error;
       }
 

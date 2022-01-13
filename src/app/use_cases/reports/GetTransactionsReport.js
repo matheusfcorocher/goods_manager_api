@@ -7,9 +7,7 @@ class GetTransactionsReport {
     try {
       return (await this.transactionsRepository.getAll()).map(t => t.about);
     } catch(error) {
-      const internalError = new Error('Internal error')
-      internalError.CODE = 'INTERNAL_ERROR'
-      throw internalError
+      throw error
     }
   }
 }

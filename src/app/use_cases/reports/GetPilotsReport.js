@@ -58,9 +58,7 @@ class GetPilotsReport {
       }
       return pilots.sort(compareValues("id", "asc"));
     } catch (error) {
-      const internalError = new Error("Internal error");
-      internalError.CODE = "INTERNAL_ERROR";
-      throw internalError;
+      throw error;
     }
   }
 }

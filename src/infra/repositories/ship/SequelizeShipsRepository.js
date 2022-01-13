@@ -16,9 +16,9 @@ class SequelizeShipsRepository {
       });
     } catch (error) {
       if (error.name === "SequelizeEmptyResultError") {
-        const notFoundError = new Error("NotFoundError");
-        notFoundError.details = `Ship with shipCertification ${certification} can't be found.`;
-
+        const notFoundError = new Error('Not Found Error');
+        notFoundError.CODE = "NOTFOUND_ERROR";
+        notFoundError.message = `Ship with shipCertification ${certification} can't be found.`;
         throw notFoundError;
       }
 

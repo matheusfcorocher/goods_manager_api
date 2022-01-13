@@ -1,22 +1,14 @@
 const {
-  getAllContractsSchema,
-  getContractSchema,
-  postContractSchema,
-  postContractsSchema,
-  updateContractSchema,
-  deleteContractSchema,
   acceptContractSchema,
   fulfillContractSchema,
+  getAllContractsSchema,
+  publishContractSchema,
 } = require("../controllers/schemas/contracts.js");
 const {
-  getAllContractsHandler,
-  getContractHandler,
-  postContractHandler,
-  postContractsHandler,
-  updateContractHandler,
-  deleteContractHandler,
   acceptContractHandler,
-  fulfillContractHandler
+  fulfillContractHandler,
+  getAllContractsHandler,
+  publishContractHandler,
 } = require("../controllers/handlers/contracts.js");
 
 const getAllContractsOpts = {
@@ -24,14 +16,9 @@ const getAllContractsOpts = {
   handler: getAllContractsHandler,
 };
 
-const getContractOpts = {
-  schema: getContractSchema,
-  handler: getContractHandler,
-};
-
-const postContractOpts = {
-  schema: postContractSchema,
-  handler: postContractHandler,
+const publishContractOpts = {
+  schema: publishContractSchema,
+  handler: publishContractHandler,
 };
 
 const acceptContractOpts = {
@@ -44,31 +31,11 @@ const fulfillContractOpts = {
   handler: fulfillContractHandler,
 };
 
-const postContractsOpts = {
-  schema: postContractsSchema,
-  handler: postContractsHandler,
-};
-
-const updateContractOpts = {
-  schema: updateContractSchema,
-  handler: updateContractHandler,
-};
-
-const deleteContractOpts = {
-  schema: deleteContractSchema,
-  handler: deleteContractHandler,
-};
-
 const contractsRoutes = (fastify, options, done) => {
-  fastify.get("/api/contracts", getAllContractsOpts);
-  fastify.get("/api/contracts/:id", getContractOpts);
-  fastify.post("/api/contracts/new", postContractOpts);
-  fastify.post("/api/contracts/news", postContractsOpts);
   fastify.put("/api/contracts/accept/:id", acceptContractOpts);
   fastify.put("/api/contracts/fulfill/:id", fulfillContractOpts);
-  fastify.put('/api/contracts/edit/:id', updateContractOpts);
-  fastify.delete('/api/contracts/:id', deleteContractOpts);
-
+  fastify.get("/api/contracts", getAllContractsOpts);
+  fastify.post("/api/contracts/publish", publishContractOpts);
   done();
 };
 

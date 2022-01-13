@@ -17,9 +17,9 @@ class SequelizePilotsRepository {
       });
     } catch (error) {
       if (error.name === "SequelizeEmptyResultError") {
-        const notFoundError = new Error("NotFoundError");
-        notFoundError.details = `Pilot with pilotCertification ${certification} can't be found.`;
-
+        const notFoundError = new Error('Not Found Error');
+        notFoundError.CODE = "NOTFOUND_ERROR";
+        notFoundError.message = `Pilot with pilotCertification ${certification} can't be found.`;
         throw notFoundError;
       }
 

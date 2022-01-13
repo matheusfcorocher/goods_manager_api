@@ -69,9 +69,7 @@ class GetPlanetsReport {
       }
       return planetsReport;
     } catch (error) {
-      const internalError = new Error("Internal error");
-      internalError.CODE = "INTERNAL_ERROR";
-      throw internalError;
+      throw error;
     }
   }
 }

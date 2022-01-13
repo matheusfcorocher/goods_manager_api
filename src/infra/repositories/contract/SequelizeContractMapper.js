@@ -24,6 +24,24 @@ const SequelizeContractMapper = {
       contractStatus,
     });
   },
+  toDatabase(contract) {
+    const {
+      cargoId,
+      description,
+      originPlanet,
+      destinationPlanet,
+      value,
+      contractStatus
+    } = contract;
+    return {
+      cargoId,
+      description,
+      originPlanet,
+      destinationPlanet,
+      value,
+      contractStatus,
+    };
+  },
 };
 
 module.exports = SequelizeContractMapper;

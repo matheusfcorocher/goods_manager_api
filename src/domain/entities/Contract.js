@@ -30,8 +30,7 @@ const Contract = attributes({
         required: true
     },
     contractStatus: {
-        type: String,
-        required: true
+        type: String
     },
 })(class Contract {
     //methods
@@ -43,6 +42,10 @@ const Contract = attributes({
     }
     isFinished() {
         return this.contractStatus === status.FINISHED;
+    }
+
+    setStatusToCreated() {
+        this.contractStatus = status.CREATED;
     }
 });
 

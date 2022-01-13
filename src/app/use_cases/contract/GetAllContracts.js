@@ -1,23 +1,41 @@
-const Operation = require("../../Operation");
+const { compareValues } = require("../../../../helpers");
 
-class GetAllContracts extends Operation {
+class GetAllContracts {
   constructor(contractsRepository) {
-    super();
     this.contractsRepository = contractsRepository;
   }
 
-  async execute(contractStatus) {
-    const { SUCCESS, ERROR } = this.outputs;
+  _serializer({
+    id,
+    pilotCertification,
+    cargoId,
+    description,
+    originPlanet,
+    destinationPlanet,
+    value,
+    contractStatus,
+  }) {
+    return {
+      id,
+      pilotCertification,
+      cargoId,
+      description,
+      originPlanet,
+      destinationPlanet,
+      value,
+      contractStatus,
+    };
+  }
 
+  async execute(contractStatus) {
     try {
-      const contracts = await this.contractsRepository.getAll(contractStatus);
-      this.emit(SUCCESS, contracts);
-    } catch(error) {
-      this.emit(ERROR, error);
+      return (await this.contractsRepository.getAll(contractStatus))
+        .map((c) => this._serializer(c))
+        .sort(compareValues("id", "asc"));
+    } catch (error) {
+      throw error;
     }
   }
 }
-
-GetAllContracts.setOutputs(["SUCCESS", "ERROR"]);
 
 module.exports = GetAllContracts;
