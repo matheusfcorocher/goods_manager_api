@@ -2,7 +2,11 @@ const models = require("../../../../infra/database/models/index.js");
 const { Op } = require("sequelize");
 const { compareValues } = require("../../../../../helpers/index");
 const TransactionSerializer = require("../serializers/TransactionSerializer.js");
-const { GetTransactionsReport, GetPlanetsReport, GetPilotsReport } = require("../../../../app/use_cases/reports/index.js");
+const {
+  GetTransactionsReport,
+  GetPlanetsReport,
+  GetPilotsReport,
+} = require("../../../../app/use_cases/reports/index.js");
 const SequelizeTransactionsRepository = require("../../../../infra/repositories/transaction/SequelizeTransactionsRepository.js");
 const SequelizeResourcesRepository = require("../../../../infra/repositories/resource/SequelizeResourcesRepository.js");
 const SequelizeContractsRepository = require("../../../../infra/repositories/contract/SequelizeContractsRepository.js");
@@ -22,51 +26,65 @@ const resourceRepo = new SequelizeResourcesRepository(resourceModel);
 const transactionRepo = new SequelizeTransactionsRepository(transactionModel);
 
 const getPlanetsReportHandler = async (req, reply) => {
-  const getPlanetsReport = new GetPlanetsReport(cargoRepo, contractRepo, resourceRepo);
-  const { SUCCESS, ERROR } = getPlanetsReport.outputs;
-  getPlanetsReport
-    .on(SUCCESS, (planetsReport) => {
-      reply.send(planetsReport);
-    })
-    .on(ERROR, (error) => {
-      reply.status(500).send({
-        errorMsg: error,
-      });
-    });
-
-    getPlanetsReport.execute();
+  try {
+    const getPlanetsReport = new GetPlanetsReport(
+      cargoRepo,
+      contractRepo,
+      resourceRepo
+    );
+    const result = await getPlanetsReport.execute();
+    reply.send(result);
+  } catch (error) {
+    switch (error.CODE) {
+      default:
+        return reply.status(404).send({
+          message: "Internal Error",
+        });
+    }
+  }
 };
 
 const getPilotsReportHandler = async (req, reply) => {
-  const getPilotsReport = new GetPilotsReport(cargoRepo, contractRepo, pilotRepo, resourceRepo);
-  const { SUCCESS, ERROR } = getPilotsReport.outputs;
-  getPilotsReport
-    .on(SUCCESS, (pilotsReport) => {
-      reply.send(pilotsReport);
-    })
-    .on(ERROR, (error) => {
-      reply.status(500).send({
-        errorMsg: error,
-      });
-    });
-
-    getPilotsReport.execute();
+  try {
+    const getPilotsReport = new GetPilotsReport(
+      cargoRepo,
+      contractRepo,
+      pilotRepo,
+      resourceRepo
+    );
+    const result = await getPilotsReport.execute();
+    reply.send(result);
+  } catch (error) {
+    switch (error.CODE) {
+      case "NOT_FOUND":
+        return reply.status(404).send({
+          message: "Wasn't found any transactions",
+        });
+      default:
+        return reply.status(404).send({
+          message: "Internal Error",
+        });
+    }
+  }
 };
 
 const getTransactionsReportHandler = async (req, reply) => {
-  const getTransactionsReport = new GetTransactionsReport(transactionRepo);
-  const { SUCCESS, ERROR } = getTransactionsReport.outputs;
-  getTransactionsReport
-    .on(SUCCESS, (transactions) => {
-      reply.send(transactions);
-    })
-    .on(ERROR, (error) => {
-      reply.status(500).send({
-        errorMsg: error.errors[0].message,
-      });
-    });
-
-  getTransactionsReport.execute();
+  try {
+    const getTransactionsReport = new GetTransactionsReport(transactionRepo);
+    const result = await getTransactionsReport.execute();
+    reply.send(result);
+  } catch (error) {
+    switch (error.CODE) {
+      case "NOT_FOUND":
+        return reply.status(404).send({
+          message: "Wasn't found any transactions",
+        });
+      default:
+        return reply.status(404).send({
+          message: "Internal Error",
+        });
+    }
+  }
 };
 
 module.exports = {

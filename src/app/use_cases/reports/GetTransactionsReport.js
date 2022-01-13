@@ -1,23 +1,17 @@
-const Operation = require("../../Operation");
-
-class GetTransactionsReport extends Operation {
+class GetTransactionsReport {
   constructor(transactionsRepository) {
-    super();
     this.transactionsRepository = transactionsRepository;
   }
 
   async execute() {
-    const { SUCCESS, ERROR } = this.outputs;
-
     try {
-      const transactions = (await this.transactionsRepository.getAll()).map(t => t.about);
-      this.emit(SUCCESS, transactions);
+      return (await this.transactionsRepository.getAll()).map(t => t.about);
     } catch(error) {
-      this.emit(ERROR, error);
+      const internalError = new Error('Internal error')
+      internalError.CODE = 'INTERNAL_ERROR'
+      throw internalError
     }
   }
 }
-
-GetTransactionsReport.setOutputs(["SUCCESS", "ERROR"]);
 
 module.exports = GetTransactionsReport;

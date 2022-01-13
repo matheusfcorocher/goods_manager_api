@@ -1,3 +1,11 @@
+const isPossibleToShipCarry = (
+    shipCapacity,
+    actualShipWeight,
+    totalContractWeight
+  ) => {
+    return totalContractWeight + actualShipWeight <= shipCapacity;
+};
+
 const getRefillShip = ({credits}, { fuelCapacity, fuelLevel }) => {
     let fuelRemaining = fuelCapacity - fuelLevel;
     if (fuelRemaining > 0) {
@@ -14,7 +22,8 @@ const getRefillShip = ({credits}, { fuelCapacity, fuelLevel }) => {
     }
     return {credits, fuelLevel};
 };
-
+  
 module.exports = {
+    isPossibleToShipCarry,
     getRefillShip,
 };

@@ -1,85 +1,79 @@
+const Planets = require("../../../domain/entities/Planet");
 const { makeGetAllResourcesContract } = require("../../cargo");
-const Operation = require("../../Operation");
 
-class GetPlanetsReport extends Operation {
+class GetPlanetsReport {
   constructor(cargosRepository, contractsRepository, resourcesRepository) {
-    super();
     this.cargosRepository = cargosRepository;
     this.contractsRepository = contractsRepository;
     this.resourcesRepository = resourcesRepository;
   }
 
-  async execute() {
-    const { SUCCESS, ERROR } = this.outputs;
+  _reportFormat() {
+    let planets = Object.keys(Planets).map((key) => Planets[key]);
+    let planetsReport = {};
 
+    planets.map((p) => {
+      planetsReport[p] = {
+        sent: {
+          water: 0,
+          food: 0,
+          minerals: 0,
+        },
+        received: {
+          water: 0,
+          food: 0,
+          minerals: 0,
+        },
+      };
+    });
+
+    return planetsReport;
+  }
+
+  async execute() {
     try {
       const contracts = (await this.contractsRepository.getAll()).filter(
         (c) => !c.isCreated()
       );
-      
+
       const getAllResourcesContract = makeGetAllResourcesContract(
         this.cargosRepository,
         this.contractsRepository,
         this.resourcesRepository
       );
 
-      let planets = ["Andvaria", "Aqua", "Calas", "Demeter"];
-      let planetsReport = {};
-
-      planets.map((p) => {
-        planetsReport[p] = {
-          sent: {
-            water: 0,
-            food: 0,
-            minerals: 0,
-          },
-          received: {
-            water: 0,
-            food: 0,
-            minerals: 0,
-          },
-        };
-      });
+      let planetsReport = this._reportFormat();
 
       for (let contract of contracts) {
-        const resources = await getAllResourcesContract(contract.cargoId);
+        const { food, minerals, water } = await getAllResourcesContract(contract.cargoId);
+        const { destinationPlanet, originPlanet } = contract;
         if (contract.isFinished()) {
-          planetsReport[contract.destinationPlanet] = {
-            ...planetsReport[contract.destinationPlanet],
+          planetsReport[destinationPlanet] = {
+            ...planetsReport[destinationPlanet],
             received: {
-              food:
-                resources.food +
-                planetsReport[contract.destinationPlanet].received.food,
-              water:
-                resources.water +
-                planetsReport[contract.destinationPlanet].received.water,
+              food: food + planetsReport[destinationPlanet].received.food,
+              water: water + planetsReport[destinationPlanet].received.water,
               minerals:
-                resources.minerals +
-                planetsReport[contract.destinationPlanet].received.minerals,
+                minerals + planetsReport[destinationPlanet].received.minerals,
             },
           };
         }
-        planetsReport[contract.originPlanet] = {
-          ...planetsReport[contract.originPlanet],
+        planetsReport[originPlanet] = {
+          ...planetsReport[originPlanet],
           sent: {
-            food:
-              resources.food + planetsReport[contract.originPlanet].sent.food,
-            water:
-              resources.water + planetsReport[contract.originPlanet].sent.water,
-            minerals:
-              resources.minerals +
-              planetsReport[contract.originPlanet].sent.minerals,
+            food: food + planetsReport[originPlanet].sent.food,
+            water: water + planetsReport[originPlanet].sent.water,
+            minerals: minerals + planetsReport[originPlanet].sent.minerals,
           },
         };
       }
-      
-      this.emit(SUCCESS, planetsReport);
+      return planetsReport;
     } catch (error) {
-      this.emit(ERROR, error);
+      const internalError = new Error("Internal error");
+      internalError.CODE = "INTERNAL_ERROR";
+      throw internalError;
     }
   }
 }
-
-GetPlanetsReport.setOutputs(["SUCCESS", "ERROR"]);
 
 module.exports = GetPlanetsReport;

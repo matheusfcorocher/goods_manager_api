@@ -1,27 +1,39 @@
-const { compareValues, getPercentage } = require("../../../../helpers");
+const { compareValues } = require("../../../../helpers");
 const {
-  makeGetAllResourcesContract,
   makeGetAllResourcesPilot,
 } = require("../../cargo");
-const Operation = require("../../Operation");
 
-class GetPilotsReport extends Operation {
+class GetPilotsReport {
   constructor(
     cargosRepository,
     contractsRepository,
     pilotsRepository,
     resourcesRepository
   ) {
-    super();
     this.cargosRepository = cargosRepository;
     this.contractsRepository = contractsRepository;
     this.pilotsRepository = pilotsRepository;
     this.resourcesRepository = resourcesRepository;
   }
 
-  async execute() {
-    const { SUCCESS, ERROR } = this.outputs;
+  _getPercentage(numerator, denominator) {
+    return parseFloat(((numerator / denominator)*100).toFixed(2))
+  }
 
+  _reportFormat(pilot) {
+    return {
+      id: pilot.id,
+      pilotCertification: pilot.pilotCertification,
+      transporting: {
+        water: 0,
+        food: 0,
+        minerals: 0,
+      },
+    };
+  }
+
+
+  async execute() {
     try {
       const getAllResourcesPilot = makeGetAllResourcesPilot(
         this.cargosRepository,
@@ -29,35 +41,28 @@ class GetPilotsReport extends Operation {
         this.resourcesRepository
       );
 
-      let pilots = (await this.pilotsRepository.getAll()).map((p) => {
-        return {
-          id: p.id,
-          pilotCertification: p.pilotCertification,
-          transporting: {
-            water: 0,
-            food: 0,
-            minerals: 0,
-          },
-        };
-      });
+      let pilots = (await this.pilotsRepository.getAll()).map((p) =>
+        this._reportFormat(p)
+      );
+
       for (let pilot of pilots) {
         const { food, minerals, water } = await getAllResourcesPilot(
           pilot.pilotCertification
         );
         let total = food + minerals + water;
-        if(total != 0) {
-            pilot.transporting.water = getPercentage(water, total);
-            pilot.transporting.food = getPercentage(food, total);
-            pilot.transporting.minerals = getPercentage(minerals, total);
+        if (total != 0) {
+          pilot.transporting.water = this._getPercentage(water, total);
+          pilot.transporting.food = this._getPercentage(food, total);
+          pilot.transporting.minerals = this._getPercentage(minerals, total);
         }
       }
-      this.emit(SUCCESS, pilots.sort(compareValues("id", "asc")));
+      return pilots.sort(compareValues("id", "asc"));
     } catch (error) {
-      this.emit(ERROR, error);
+      const internalError = new Error("Internal error");
+      internalError.CODE = "INTERNAL_ERROR";
+      throw internalError;
     }
   }
 }
-
-GetPilotsReport.setOutputs(["SUCCESS", "ERROR"]);
 
 module.exports = GetPilotsReport;

@@ -10,6 +10,23 @@ class RefillShip extends Operation {
     this.transactionsRepository = transactionsRepository;
   }
 
+  _refillShip = ({credits}, { fuelCapacity, fuelLevel }) => {
+    let fuelRemaining = fuelCapacity - fuelLevel;
+    if (fuelRemaining > 0) {
+        let creditsInFuel = Math.round((credits) / 7);
+        credits = 0;
+        fuelRefilled = fuelRemaining - creditsInFuel;
+        if (fuelRefilled < 0) {
+            //when it left credits
+            fuelLevel = fuelCapacity;
+            credits = Math.round((fuelRefilled*-1*7));
+            return {credits, fuelLevel};
+        }
+        fuelLevel += creditsInFuel;
+    }
+    return {credits, fuelLevel};
+  };
+
   async execute(certification) {
     const { SUCCESS, NOT_FOUND, VALIDATION_ERROR, ERROR } = this.outputs;
 
@@ -20,7 +37,7 @@ class RefillShip extends Operation {
       const ship = await this.shipsRepository.getByPilotCertification(
         certification
       );
-      const {credits, fuelLevel} = getRefillShip(pilot, ship)
+      const {credits, fuelLevel} = this._refillShip(pilot, ship)
       if(ship.fuelLevel != fuelLevel) {
         await this.pilotsRepository.update(
           certification,

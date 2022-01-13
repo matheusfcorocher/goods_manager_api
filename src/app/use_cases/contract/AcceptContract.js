@@ -18,6 +18,14 @@ class AcceptContract extends Operation {
     this.resourcesRepository = resourcesRepository;
   }
 
+  _isPossibleToShipCarry = (
+    shipCapacity,
+    actualShipWeight,
+    totalContractWeight
+  ) => {
+    return totalContractWeight + actualShipWeight <= shipCapacity;
+  };
+
   async execute(contractId, {pilotCertification}) {
     const { SUCCESS, NOT_FOUND, VALIDATION_ERROR, ERROR } = this.outputs;
 
@@ -42,7 +50,7 @@ class AcceptContract extends Operation {
         const cargoWeightPilot = await getCargoWeightPilot(pilotCertification)
         const cargoWeightContract = await getCargoWeightContract(contractId)
         if (
-          isPossibleToShipCarry(
+          this._isPossibleToShipCarry(
             ship.weightCapacity,
             cargoWeightPilot,
             cargoWeightContract

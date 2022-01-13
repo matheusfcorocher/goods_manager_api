@@ -1,5 +1,9 @@
+const Planets = require("../../../../domain/entities/Planet");
+
 const typeNumber = { type: "number" };
 const typeString = { type: "string" };
+
+
 
 const infoPlanet = {
   sent: {
@@ -14,14 +18,12 @@ const infoPlanet = {
   },
 };
 
+let ps = {}
+Object.keys(Planets).map(key => ps[Planets[key]] = infoPlanet)
+
 const planets = {
   type: "object",
-  properties: {
-    Andvari: infoPlanet,
-    Aqua: infoPlanet,
-    Demeter: infoPlanet,
-    Calas: infoPlanet,
-  }
+  properties: ps,
 };
 
 const pilot = {
