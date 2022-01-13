@@ -56,10 +56,6 @@ const getPilotsReportHandler = async (req, reply) => {
     reply.send(result);
   } catch (error) {
     switch (error.CODE) {
-      case "NOT_FOUND":
-        return reply.status(404).send({
-          message: "Wasn't found any transactions",
-        });
       default:
         return reply.status(404).send({
           message: "Internal Error",
