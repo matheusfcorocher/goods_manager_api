@@ -11,7 +11,6 @@ class SequelizeContractsRepository {
     try {
       return await this.ContractModel.findOne({
         where: { id: id },
-        raw: true,
         rejectOnEmpty: true,
       });
     } catch (error) {
@@ -37,16 +36,19 @@ class SequelizeContractsRepository {
       });
     } catch (error) {
       if (error.name === "SequelizeEmptyResultError") {
-        const notFoundError = new Error("NotFoundError");
-        notFoundError.details = `Contract with pilotCertification ${certification} can't be found.`;
+        return [];
+        // const notFoundError = new Error("NotFoundError");
+        // notFoundError.details = `Contract with pilotCertification ${certification} can't be found.`;
 
-        throw notFoundError;
+        // throw notFoundError;
       }
 
       throw error;
     }
   }
 
+  //Public
+ 
   async getById(id) {
     const contract = await this._getById(id);
     return ContractMapper.toEntity(contract);
@@ -59,6 +61,40 @@ class SequelizeContractsRepository {
       contractsEntities.push(ContractMapper.toEntity(contract));
     }
     return contractsEntities;
+  }
+
+  async update(id, newData) {
+    const contract = await this._getById(id);
+    
+    const transaction = await this.ContractModel.sequelize.transaction();
+
+    try {
+      const updatedContract = await contract.update(newData, { transaction: transaction });
+      
+      const contractEntity = ContractMapper.toEntity(updatedContract);
+
+      const { valid, errors } = contractEntity.validate();
+
+      if(!valid) {
+        const error = new Error('ValidationError');
+        error.details = errors;
+        throw error;
+      }
+
+      await transaction.commit();
+      return contractEntity;
+    } catch(error) {
+      await transaction.rollback();
+
+      throw error;
+    }
+  }
+
+  async getAll(contractStatus) {
+    const contracts = await this.ContractModel.findAll();
+    if(contractStatus)
+      return contracts.map(ContractMapper.toEntity).filter((c) => c.contractStatus === contractStatus);
+    return contracts.map(ContractMapper.toEntity);
   }
 }
 

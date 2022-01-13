@@ -18,4 +18,8 @@ function compareValues(key, order = "asc") {
   };
 }
 
-module.exports = { compareValues };
+function getPercentage(numerator, denominator) {
+  return ((numerator / denominator)*100).toFixed(2)
+}
+
+module.exports = { compareValues, getPercentage};
