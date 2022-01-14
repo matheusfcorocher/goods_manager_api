@@ -2,7 +2,7 @@ const Cargo = require("../../../../src/domain/entities/Cargo");
 const Contract = require("../../../../src/domain/entities/Contract");
 const Resource = require("../../../../src/domain/entities/Resource");
 const CargoWeightDomainService = require("../../../../src/domain/services/CargoWeightDomainService");
-const { fakeCargoRepository, fakeResourceRepository, fakeContractRepository } = require("../../../support/factories/cargo");
+const { fakeCargoRepository, fakeResourceRepository, fakeContractRepository } = require("../../../support/factories");
 
 describe("CargoWeightDomainService tests", () => {
   let cargos = [
