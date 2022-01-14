@@ -16,7 +16,7 @@ class SequelizeShipsRepository {
       });
     } catch (error) {
       if (error.name === "SequelizeEmptyResultError") {
-        const notFoundError = new Error('Not Found Error');
+        const notFoundError = new Error("Not Found Error");
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Ship with shipCertification ${certification} can't be found.`;
         throw notFoundError;
@@ -33,9 +33,9 @@ class SequelizeShipsRepository {
         // raw: true,
         rejectOnEmpty: true,
       });
-      return true 
+      return true;
     } catch (error) {
-      return false
+      return false;
     }
   }
 
@@ -44,11 +44,11 @@ class SequelizeShipsRepository {
   async add(ship) {
     const { valid, errors } = ship.validate();
 
-    if(!valid) {
-      const error = new Error('ValidationError');
-      error.details = errors;
-
-      throw error;
+    if (!valid) {
+      const validationError = new Error("Validation error");
+      validationError.CODE = "VALIDATION_ERROR";
+      validationError.errors = errors;
+      throw validationError;
     }
 
     const newShip = await this.ShipModel.create(ShipMapper.toDatabase(ship));
@@ -73,38 +73,40 @@ class SequelizeShipsRepository {
 
   async remove(certification) {
     const ship = await this._getByPilotCertification(certification);
-    
+
     await ship.destroy();
     return;
   }
-  
+
   async update(certification, newData) {
     const ship = await this._getByPilotCertification(certification);
-    
+
     const transaction = await this.ShipModel.sequelize.transaction();
 
     try {
-      const updatedShip = await ship.update(newData, { transaction: transaction });
+      const updatedShip = await ship.update(newData, {
+        transaction: transaction,
+      });
       const shipEntity = ShipMapper.toEntity(updatedShip);
 
       const { valid, errors } = shipEntity.validate();
 
-      if(!valid) {
-        const error = new Error('ValidationError');
-        error.details = errors;
-        throw error;
+      if (!valid) {
+        const validationError = new Error("Validation error");
+        validationError.CODE = "VALIDATION_ERROR";
+        validationError.errors = errors;
+        throw validationError;
       }
 
       await transaction.commit();
 
       return shipEntity;
-    } catch(error) {
+    } catch (error) {
       await transaction.rollback();
 
       throw error;
     }
   }
-
 }
 
 module.exports = SequelizeShipsRepository;

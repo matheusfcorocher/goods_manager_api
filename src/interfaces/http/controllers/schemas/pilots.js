@@ -12,25 +12,7 @@ const pilot = {
   },
 };
 
-const getAllPilotsSchema = {
-  response: {
-    200: {
-      type: "array",
-      items: pilot,
-    },
-  },
-};
-
-const getPilotSchema = {
-  params: {
-    pilotCertification: typeNumber,
-  },
-  response: {
-    200: pilot
-  },
-};
-
-const postPilotSchema = {
+const createPilotSchema = {
   body: {
     type: 'object',
     required: ['pilotCertification', 'name', 'age', 'credits', 'locationPlanet'],
@@ -44,24 +26,6 @@ const postPilotSchema = {
   },
   response: {
     200: typeString, 
-  }
-}
-
-const updatePilotSchema = {
-  body: {
-    type: 'object',
-    properties: {
-      name: typeString,
-      age: typeNumber,
-      credits: typeNumber,
-      locationPlanet: typeString,
-    },
-  },
-  params: {
-    pilotCertification: typeNumber, // convert pilotC... to number
-  },
-  response: {
-    200: pilot, 
   }
 }
 
@@ -80,15 +44,4 @@ const travelPilotSchema = {
   }
 }
 
-const deletePilotSchema = {
-  params: {
-    pilotCertification: typeNumber, // converts the id param to number
-  },
-  response: {
-    200: typeString,
-  },
-};
-
-
-
-module.exports = { getAllPilotsSchema, getPilotSchema, postPilotSchema, updatePilotSchema, travelPilotSchema, deletePilotSchema };
+module.exports = { createPilotSchema, travelPilotSchema };

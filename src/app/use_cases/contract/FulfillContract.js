@@ -1,5 +1,3 @@
-// const { isPossibleToShipCarry } = require("../../../../core_rules/ship/rules");
-// const { makeGetCargoWeightPilot, makeGetCargoWeightContract } = require("../../cargo");
 const Transaction = require("../../../domain/entities/Transaction");
 class FulfillContract {
   constructor(contractsRepository, pilotsRepository, transactionsRepository) {

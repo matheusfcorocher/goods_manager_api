@@ -1,5 +1,5 @@
-const Planets = require("../../../domain/entities/Planet");
-const { makeGetAllResourcesContract } = require("../../cargo");
+const {Planets} = require("../../../domain/entities/Planet");
+const CargoAllResourcesDomainService = require("../../../domain/services/CargoAllResourcesDomainService");
 
 class GetPlanetsReport {
   constructor(cargosRepository, contractsRepository, resourcesRepository) {
@@ -8,7 +8,7 @@ class GetPlanetsReport {
     this.resourcesRepository = resourcesRepository;
   }
 
-  _reportFormat() {
+  _reportFormat(Planets) {
     let planets = Object.keys(Planets).map((key) => Planets[key]);
     let planetsReport = {};
 
@@ -35,17 +35,16 @@ class GetPlanetsReport {
       const contracts = (await this.contractsRepository.getAll()).filter(
         (c) => !c.isCreated()
       );
+      const cargoService = new CargoAllResourcesDomainService({
+        cargoRepository: this.cargosRepository,
+        contractRepository: this.contractsRepository,
+        resourceRepository: this.resourcesRepository,
+      });
 
-      const getAllResourcesContract = makeGetAllResourcesContract(
-        this.cargosRepository,
-        this.contractsRepository,
-        this.resourcesRepository
-      );
-
-      let planetsReport = this._reportFormat();
+      let planetsReport = this._reportFormat(Planets);
 
       for (let contract of contracts) {
-        const { food, minerals, water } = await getAllResourcesContract(contract.cargoId);
+        const { food, minerals, water } = await cargoService.getAllResourcesContract(contract.cargoId);
         const { destinationPlanet, originPlanet } = contract;
         if (contract.isFinished()) {
           planetsReport[destinationPlanet] = {

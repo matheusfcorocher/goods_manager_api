@@ -1,35 +1,77 @@
-const Operation = require("../../Operation");
+const { isValidPlanet } = require("../../../domain/entities/Planet");
 
-class TravelPilot extends Operation {
+class TravelPilot {
   constructor(pilotsRepository, shipsRepository) {
-    super();
     this.pilotsRepository = pilotsRepository;
     this.shipsRepository = shipsRepository;
   }
 
-  async execute(certification, newData) {
-    const { SUCCESS, NOT_FOUND, VALIDATION_ERROR, ERROR } = this.outputs;
+  _travelFuelCost(originPlanet, planetDestination) {
+    const standardRoutes = {
+      Andvari: {
+        Andvari: 0,
+        Demeter: null,
+        Aqua: 13,
+        Calas: 23,
+      },
+      Demeter: {
+        Andvari: null,
+        Demeter: 0,
+        Aqua: 22,
+        Calas: 25,
+      },
+      Aqua: {
+        Andvari: null,
+        Demeter: 30,
+        Aqua: 0,
+        Calas: 12,
+      },
+      Calas: {
+        Andvari: 20,
+        Demeter: 25,
+        Aqua: 15,
+        Calas: 0,
+      },
+    };
+  
+    if (standardRoutes[originPlanet][planetDestination] === null) {
+      const alternativesRoutes = {
+        Andvari: {
+          Demeter: 43,//Andvari->Aqua->Demeter
+        },
+        Demeter: {
+          Andvari: 45,//Demeter->Calas->Andvari
+        },
+        Aqua: {
+          Andvari: 32,//Aqua->Calas->Andvari
+        },
+      };
+  
+      return alternativesRoutes[originPlanet][planetDestination];
+    }
+  
+    return standardRoutes[originPlanet][planetDestination];
+  }
 
+  async execute(certification, {destinationPlanet}) {
     try {
+      if(!isValidPlanet(destinationPlanet)) {
+        const validationError = new Error("Validation error");
+        validationError.CODE = "VALIDATION_ERROR";
+        validationError.errors = `Destination planet is unknown.`;
+        throw validationError;
+      }
       const ship = await this.shipsRepository._getByPilotCertification(certification);
       const pilot = await this.pilotsRepository.travel(
         ship,
-        newData
+        destinationPlanet,
+        this._travelFuelCost
       );
-      this.emit(SUCCESS, pilot);
+      return pilot
     } catch (error) {
-      switch (error.message) {
-        case "ValidationError":
-          return this.emit(VALIDATION_ERROR, error);
-        case "NotFoundError":
-          return this.emit(NOT_FOUND, error);
-        default:
-          this.emit(ERROR, error);
-      }
+      throw error;
     }
   }
 }
-
-TravelPilot.setOutputs(["SUCCESS", "NOT_FOUND", "VALIDATION_ERROR", "ERROR"]);
 
 module.exports = TravelPilot;

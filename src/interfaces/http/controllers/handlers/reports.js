@@ -1,7 +1,4 @@
 const models = require("../../../../infra/database/models/index.js");
-const { Op } = require("sequelize");
-const { compareValues } = require("../../../../../helpers/index");
-const TransactionSerializer = require("../serializers/TransactionSerializer.js");
 const {
   GetTransactionsReport,
   GetPlanetsReport,
@@ -11,7 +8,6 @@ const SequelizeTransactionsRepository = require("../../../../infra/repositories/
 const SequelizeResourcesRepository = require("../../../../infra/repositories/resource/SequelizeResourcesRepository.js");
 const SequelizeContractsRepository = require("../../../../infra/repositories/contract/SequelizeContractsRepository.js");
 const SequelizeCargosRepository = require("../../../../infra/repositories/cargo/SequelizeCargosRepository.js");
-const { Contracts, Pilots, Cargos, Resources, Transactions } = models;
 
 const cargoModel = models.Cargos;
 const contractModel = models.Contracts;

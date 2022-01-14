@@ -1,6 +1,6 @@
 # goods_manager_api
 
-This API was developed to attend a space's problem
+This API was developed to attend a space problem
 
 How to run this api:
 
@@ -50,7 +50,7 @@ You can add pilots and ships in the system with these routes:
 
 ```
 
-This route only add one pilot => /api/pilots/new
+This route only add one pilot => /api/pilots/create
 body for the route:
 
 body:
@@ -76,7 +76,7 @@ body:
 2-) Publish transport contracts
 
 ```
-This route only add one pilot => /api/contracts/new
+This route only add one pilot => /api/contracts/publish
 body for the route:
 
 body:
@@ -91,7 +91,15 @@ body:
 
 3-) Travel between planets
 
-In the project root, has folder named core_rules has a folder named travel. There show how pilots travels to each planet
+```
+This route travel one pilot => /api/pilots/travel/:pilotCertification
+body for the route:
+
+body:
+{
+    "destinationPlanet": "Calas",
+}
+```
 
 4-) List of open contracts
 

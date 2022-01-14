@@ -15,7 +15,7 @@ class SequelizeContractsRepository {
       });
     } catch (error) {
       if (error.name === "SequelizeEmptyResultError") {
-        const notFoundError = new Error('Not Found Error');
+        const notFoundError = new Error("Not Found Error");
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Contract with id ${id} can't be found.`;
         throw notFoundError;
@@ -24,7 +24,7 @@ class SequelizeContractsRepository {
       throw error;
     }
   }
-  
+
   async _getByPilotCertification(certification) {
     try {
       return await this.ContractModel.findAll({
@@ -50,13 +50,13 @@ class SequelizeContractsRepository {
   //Public
   async add(contract) {
     const { valid, errors } = contract.validate();
-    if(!valid) {
-      const validationError = new Error('Validation error');
+    if (!valid) {
+      const validationError = new Error("Validation error");
       validationError.CODE = "VALIDATION_ERROR";
       validationError.errors = errors;
       throw validationError;
     }
-    
+
     await this.ContractModel.create(ContractMapper.toDatabase(contract));
   }
 
@@ -76,25 +76,28 @@ class SequelizeContractsRepository {
 
   async update(id, newData) {
     const contract = await this._getById(id);
-    
+
     const transaction = await this.ContractModel.sequelize.transaction();
 
     try {
-      const updatedContract = await contract.update(newData, { transaction: transaction });
-      
+      const updatedContract = await contract.update(newData, {
+        transaction: transaction,
+      });
+
       const contractEntity = ContractMapper.toEntity(updatedContract);
 
       const { valid, errors } = contractEntity.validate();
 
-      if(!valid) {
-        const error = new Error('ValidationError');
-        error.errors = errors;
-        throw error;
+      if (!valid) {
+        const validationError = new Error("Validation error");
+        validationError.CODE = "VALIDATION_ERROR";
+        validationError.errors = errors;
+        throw validationError;
       }
 
       await transaction.commit();
       return contractEntity;
-    } catch(error) {
+    } catch (error) {
       await transaction.rollback();
 
       throw error;
@@ -103,11 +106,12 @@ class SequelizeContractsRepository {
 
   async getAll(contractStatus) {
     const contracts = await this.ContractModel.findAll();
-    if(contractStatus)
-      return contracts.map(ContractMapper.toEntity).filter((c) => c.contractStatus === contractStatus);
+    if (contractStatus)
+      return contracts
+        .map(ContractMapper.toEntity)
+        .filter((c) => c.contractStatus === contractStatus);
     return contracts.map(ContractMapper.toEntity);
   }
 }
-
 
 module.exports = SequelizeContractsRepository;

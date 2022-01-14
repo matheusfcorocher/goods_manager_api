@@ -11,16 +11,6 @@ const {
   publishContractHandler,
 } = require("../controllers/handlers/contracts.js");
 
-const getAllContractsOpts = {
-  schema: getAllContractsSchema,
-  handler: getAllContractsHandler,
-};
-
-const publishContractOpts = {
-  schema: publishContractSchema,
-  handler: publishContractHandler,
-};
-
 const acceptContractOpts = {
   schema: acceptContractSchema,
   handler: acceptContractHandler,
@@ -29,6 +19,16 @@ const acceptContractOpts = {
 const fulfillContractOpts = {
   schema: fulfillContractSchema,
   handler: fulfillContractHandler,
+};
+
+const getAllContractsOpts = {
+  schema: getAllContractsSchema,
+  handler: getAllContractsHandler,
+};
+
+const publishContractOpts = {
+  schema: publishContractSchema,
+  handler: publishContractHandler,
 };
 
 const contractsRoutes = (fastify, options, done) => {

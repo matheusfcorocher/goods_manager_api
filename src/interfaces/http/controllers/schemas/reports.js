@@ -1,4 +1,4 @@
-const Planets = require("../../../../domain/entities/Planet");
+const {Planets} = require("../../../../domain/entities/Planet");
 
 const typeNumber = { type: "number" };
 const typeString = { type: "string" };

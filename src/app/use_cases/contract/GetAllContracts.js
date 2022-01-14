@@ -1,4 +1,4 @@
-const { compareValues } = require("../../../../helpers");
+const { compareValues } = require("../../../lib/compareValues");
 
 class GetAllContracts {
   constructor(contractsRepository) {

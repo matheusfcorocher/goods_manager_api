@@ -9,4 +9,4 @@ const isValidPlanet = (name) => {
     return Planets[name.toUpperCase()] !== undefined
 }
 
-module.exports = Planets;
+module.exports = {Planets, isValidPlanet};

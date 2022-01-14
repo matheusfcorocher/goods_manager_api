@@ -37,7 +37,7 @@ class CargoAllResourcesDomainService {
     };
     for (let contract of contracts) {
       if (contract.isInProgress()) {
-        cargo = await this.getAllResourcesContract(contract.id);
+        let cargo = await this.getAllResourcesContract(contract.id);
         totalCargo.water += cargo.water;
         totalCargo.food += cargo.food;
         totalCargo.minerals += cargo.minerals;

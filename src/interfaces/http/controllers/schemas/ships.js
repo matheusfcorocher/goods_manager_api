@@ -11,25 +11,7 @@ const ship = {
   },
 };
 
-const getAllShipsSchema = {
-  response: {
-    200: {
-      type: "array",
-      items: ship,
-    },
-  },
-};
-
-const getShipSchema = {
-  params: {
-    pilotCertification: typeNumber,
-  },
-  response: {
-    200: ship,
-  },
-};
-
-const postShipSchema = {
+const createShipSchema = {
   body: {
     type: "object",
     required: [
@@ -50,24 +32,6 @@ const postShipSchema = {
   },
 };
 
-const updateShipSchema = {
-  body: {
-    type: "object",
-    properties: {
-      pilotCertification: typeNumber,
-      fuelCapacity: typeNumber,
-      fuelLevel: typeNumber,
-      weightCapacity: typeNumber,
-    },
-  },
-  params: {
-    pilotCertification: typeNumber, // convert pilotC... to number
-  },
-  response: {
-    200: ship,
-  },
-};
-
 const refillShipSchema = {
   params: {
     pilotCertification: typeNumber, // convert pilotC... to number
@@ -77,20 +41,7 @@ const refillShipSchema = {
   },
 };
 
-const deleteShipSchema = {
-  params: {
-    pilotCertification: typeNumber, // converts the id param to number
-  },
-  response: {
-    200: typeString,
-  },
-};
-
 module.exports = {
-  getAllShipsSchema,
-  getShipSchema,
-  postShipSchema,
-  updateShipSchema,
+  createShipSchema,
   refillShipSchema,
-  deleteShipSchema,
 };

@@ -1,8 +1,5 @@
-const { compareValues } = require("../../../../helpers");
-const {
-  makeGetAllResourcesPilot,
-} = require("../../cargo");
-
+const CargoAllResourcesDomainService = require("../../../domain/services/CargoAllResourcesDomainService");
+const { compareValues } = require("../../../lib/compareValues");
 class GetPilotsReport {
   constructor(
     cargosRepository,
@@ -17,7 +14,7 @@ class GetPilotsReport {
   }
 
   _getPercentage(numerator, denominator) {
-    return parseFloat(((numerator / denominator)*100).toFixed(2))
+    return parseFloat(((numerator / denominator) * 100).toFixed(2));
   }
 
   _reportFormat(pilot) {
@@ -32,21 +29,20 @@ class GetPilotsReport {
     };
   }
 
-
   async execute() {
     try {
-      const getAllResourcesPilot = makeGetAllResourcesPilot(
-        this.cargosRepository,
-        this.contractsRepository,
-        this.resourcesRepository
-      );
+      const cargoService = new CargoAllResourcesDomainService({
+        cargoRepository: this.cargosRepository,
+        contractRepository: this.contractsRepository,
+        resourceRepository: this.resourcesRepository,
+      });
 
       let pilots = (await this.pilotsRepository.getAll()).map((p) =>
         this._reportFormat(p)
       );
 
       for (let pilot of pilots) {
-        const { food, minerals, water } = await getAllResourcesPilot(
+        const { food, minerals, water } = await cargoService.getAllResourcesPilot(
           pilot.pilotCertification
         );
         let total = food + minerals + water;

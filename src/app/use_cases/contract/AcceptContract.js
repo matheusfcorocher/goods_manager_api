@@ -1,7 +1,4 @@
-const {
-  makeGetCargoWeightPilot,
-  makeGetCargoWeightContract,
-} = require("../../cargo");
+const CargoWeightDomainService = require("../../../domain/services/CargoWeightDomainService");
 class AcceptContract {
   constructor(
     cargosRepository,
@@ -34,19 +31,18 @@ class AcceptContract {
         const ship = await this.shipsRepository.getByPilotCertification(
           pilotCertification
         );
-        const getCargoWeightContract = makeGetCargoWeightContract(
-          this.cargosRepository,
-          this.contractsRepository,
-          this.resourcesRepository
-        );
-        const getCargoWeightPilot = makeGetCargoWeightPilot(
-          this.cargosRepository,
-          this.contractsRepository,
-          this.resourcesRepository
-        );
 
-        const cargoWeightPilot = await getCargoWeightPilot(pilotCertification);
-        const cargoWeightContract = await getCargoWeightContract(contractId);
+        const cargoService = new CargoWeightDomainService({
+          cargoRepository: this.cargosRepository,
+          contractRepository: this.contractsRepository,
+          resourceRepository: this.resourcesRepository,
+        });
+        const cargoWeightPilot = await cargoService.getCargoWeightPilot(
+          pilotCertification
+        );
+        const cargoWeightContract = await cargoService.getCargoWeightContract(
+          contractId
+        );
         if (
           this._isPossibleToShipCarry(
             ship.weightCapacity,

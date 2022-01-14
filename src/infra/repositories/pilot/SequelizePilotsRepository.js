@@ -1,6 +1,4 @@
-const { travelFuelCost } = require("../../../../core_rules/travel/rules");
 const PilotMapper = require("./SequelizePilotMapper");
-
 class SequelizePilotsRepository {
   constructor(PilotModel) {
     this.PilotModel = PilotModel;
@@ -17,7 +15,7 @@ class SequelizePilotsRepository {
       });
     } catch (error) {
       if (error.name === "SequelizeEmptyResultError") {
-        const notFoundError = new Error('Not Found Error');
+        const notFoundError = new Error("Not Found Error");
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Pilot with pilotCertification ${certification} can't be found.`;
         throw notFoundError;
@@ -32,14 +30,16 @@ class SequelizePilotsRepository {
   async add(pilot) {
     const { valid, errors } = pilot.validate();
 
-    if(!valid) {
-      const error = new Error('ValidationError');
-      error.details = errors;
-
-      throw error;
+    if (!valid) {
+      const validationError = new Error("Validation error");
+      validationError.CODE = "VALIDATION_ERROR";
+      validationError.errors = errors;
+      throw validationError;
     }
 
-    const newPilot = await this.PilotModel.create(PilotMapper.toDatabase(pilot));
+    const newPilot = await this.PilotModel.create(
+      PilotMapper.toDatabase(pilot)
+    );
     return PilotMapper.toEntity(newPilot);
   }
 
@@ -56,73 +56,83 @@ class SequelizePilotsRepository {
 
   async remove(certification) {
     const pilot = await this._getByPilotCertification(certification);
-    
+
     await pilot.destroy();
     return;
   }
 
   async update(certification, newData) {
     const pilot = await this._getByPilotCertification(certification);
-    
+
     const transaction = await this.PilotModel.sequelize.transaction();
 
     try {
-      const updatedPilot = await pilot.update(newData, { transaction: transaction });
+      const updatedPilot = await pilot.update(newData, {
+        transaction: transaction,
+      });
       const pilotEntity = PilotMapper.toEntity(updatedPilot);
 
       const { valid, errors } = pilotEntity.validate();
 
-      if(!valid) {
-        const error = new Error('ValidationError');
-        error.details = errors;
-        throw error;
+      if (!valid) {
+        const validationError = new Error("Validation error");
+        validationError.CODE = "VALIDATION_ERROR";
+        validationError.errors = errors;
+        throw validationError;
       }
 
       await transaction.commit();
 
       return pilotEntity;
-    } catch(error) {
-      console.log(error)
+    } catch (error) {
       await transaction.rollback();
 
       throw error;
     }
   }
 
-  async travel(ship, newData) {
-    const {pilotCertification, fuelLevel} = ship;
+  async travel(ship, destinationPlanet, travelFuelCost) {
+    const { pilotCertification, fuelLevel } = ship;
     const pilot = await this._getByPilotCertification(pilotCertification);
     const transaction = await this.PilotModel.sequelize.transaction();
-    
+
     try {
-      const fuelCost = travelFuelCost(pilot.locationPlanet, newData.destinationPlanet);      
-      if(fuelLevel >= fuelCost) {
-        const updatedPilot = await pilot.update({locationPlanet: newData.destinationPlanet}, { transaction: transaction });
-        await ship.update({fuelLevel: fuelLevel-fuelCost}, { transaction: transaction });
+      const fuelCost = travelFuelCost(
+        pilot.locationPlanet,
+        destinationPlanet
+      );
+      if (fuelLevel >= fuelCost) {
+        const updatedPilot = await pilot.update(
+          { locationPlanet: destinationPlanet },
+          { transaction: transaction }
+        );
+        await ship.update(
+          { fuelLevel: fuelLevel - fuelCost },
+          { transaction: transaction }
+        );
         const pilotEntity = PilotMapper.toEntity(updatedPilot);
         const { valid, errors } = pilotEntity.validate();
-  
-        if(!valid) {
-          const error = new Error('ValidationError');
-          error.details = errors;
-          throw error;
+
+        if (!valid) {
+          const validationError = new Error("Validation error");
+          validationError.CODE = "VALIDATION_ERROR";
+          validationError.errors = errors;
+          throw validationError;
         }
         await transaction.commit();
-  
         return pilotEntity;
       }
 
-      const error = new Error('ValidationError');
-      error.details = `Ship doesn't have enough fuel to travel to destination planet.`;
-      throw error;
-
-    } catch(error) {
+      const validationError = new Error("Validation error");
+      validationError.CODE = "VALIDATION_ERROR";
+      validationError.errors = `Ship doesn't have enough fuel to travel to destination planet.`;
+      throw validationError;
+    } catch (error) {
       await transaction.rollback();
 
       throw error;
     }
   }
-
 }
 
 module.exports = SequelizePilotsRepository;

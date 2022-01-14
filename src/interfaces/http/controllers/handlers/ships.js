@@ -1,10 +1,6 @@
 const {
   CreateShip,
-  DeleteShip,
-  GetAllShips,
-  GetShip,
   RefillShip,
-  UpdateShip
 } = require("../../../../app/use_cases/ship/index.js");
 const models = require("../../../../infra/database/models/index.js");
 const SequelizePilotsRepository = require("../../../../infra/repositories/pilot/SequelizePilotsRepository.js");
@@ -12,7 +8,7 @@ const SequelizeShipsRepository = require("../../../../infra/repositories/ship/Se
 const SequelizeTransactionsRepository = require("../../../../infra/repositories/transaction/SequelizeTransactionsRepository.js");
 const ShipSerializer = require("../serializers/ShipSerializer.js");
 
-const {Ships, Pilots, Transactions} = models;
+const { Ships, Pilots, Transactions } = models;
 
 const shipModel = models.Ships;
 const pilotModel = models.Pilots;
@@ -21,140 +17,43 @@ const shipRepo = new SequelizeShipsRepository(shipModel);
 const pilotRepo = new SequelizePilotsRepository(pilotModel);
 const transactionRepo = new SequelizeTransactionsRepository(transactionModel);
 
-const getAllShipsHandler = async (req, reply) => {
-  const getAllShips = new GetAllShips(shipRepo);
-  const { SUCCESS, ERROR } = getAllShips.outputs;
-  getAllShips
-    .on(SUCCESS, (ships) => {
-      reply.send(ships);
-    })
-    .on(ERROR, (error) => {
-      reply.status(500).send({
-        errorMsg: error.errors[0].message,
-      });
-    });
-
-    getAllShips.execute();
-}
-
-const getShipHandler = async (req, reply) => {
-  const { pilotCertification } = req.params;
-  const getShip = new GetShip(shipRepo);
-  const { SUCCESS, NOT_FOUND} = getShip.outputs;
-  getShip
-    .on(SUCCESS, (ship) => {
-      reply.send(ship);
-    })
-    .on(NOT_FOUND, (error) => {
-      reply.status(404).send({
-        errorMsg: error,
-      });
-    })
-
-  getShip.execute(pilotCertification);
-}
-
-const postShipHandler = async (req, reply) => {
-  const createShip = new CreateShip(shipRepo, pilotRepo);
-  const { SUCCESS, ERROR, VALIDATION_ERROR } = createShip.outputs;
-  createShip
-    .on(SUCCESS, (ship) => {
-      reply.send(`Ship ${ship.id} added!`);
-    })
-    .on(VALIDATION_ERROR, (error) => {
-      reply.status(500).send({
-        errorMsg: error,
-      });
-    })
-    .on(ERROR, (error) => {
-      reply.status(500).send({
-        errorMsg: error,
-      });
-    });
-
-  createShip.execute(req.body);
-};
-
-const updateShipHandler = async (req, reply) => {
-  const { pilotCertification } = req.params;
-
-  const updateShip = new UpdateShip(shipRepo);
-  const { ERROR, NOT_FOUND, SUCCESS, VALIDATION_ERROR } = updateShip.outputs;
-
-  updateShip
-    .on(SUCCESS, (ship) => {
-      reply.send(ShipSerializer.serialize(ship));
-    })
-    .on(VALIDATION_ERROR, (error) => {
-      reply.status(500).send({
-        errorMsg: error,
-      });
-    })
-    .on(NOT_FOUND, (error) => {
-      reply.status(500).send({
-        errorMsg: error,
-      });
-    })
-    .on(ERROR, (error) => {
-      reply.status(500).send({
-        errorMsg: error,
-      });
-    });
-
-    updateShip.execute(pilotCertification, req.body);
+const createShipHandler = async (req, reply) => {
+  try {
+    const createShip = new CreateShip(shipRepo, pilotRepo);
+    const result = await createShip.execute(req.body);
+    reply.send(`Ship ${result.id} added!`);
+  } catch (error) {
+    switch (error.CODE) {
+      case "VALIDATION_ERROR":
+        return reply.status(400).send(error.errors);
+      case "NOTFOUND_ERROR":
+        return reply.status(404).send(error.message);
+      default:
+        return reply.status(500).send({
+          message: "Internal Error",
+        });
+    }
+  }
 };
 
 const refillShipHandler = async (req, reply) => {
-  const { pilotCertification } = req.params;
-
-  const refillShip = new RefillShip(shipRepo, pilotRepo, transactionRepo);
-  const { ERROR, NOT_FOUND, SUCCESS, VALIDATION_ERROR } = refillShip.outputs;
-
-  refillShip
-    .on(SUCCESS, (message) => {
-      reply.send(message);
-    })
-    .on(VALIDATION_ERROR, (error) => {
-      reply.status(500).send({
-        errorMsg: error,
-      });
-    })
-    .on(NOT_FOUND, (error) => {
-      reply.status(500).send({
-        errorMsg: error,
-      });
-    })
-    .on(ERROR, (error) => {
-      reply.status(500).send({
-        errorMsg: error,
-      });
-    });
-
-  refillShip.execute(pilotCertification);
+  try {
+    const { pilotCertification } = req.params;
+    const refillShip = new RefillShip(shipRepo, pilotRepo, transactionRepo);
+    const result = await refillShip.execute(pilotCertification);
+    reply.send(result);
+  } catch (error) {
+    switch (error.CODE) {
+      case "VALIDATION_ERROR":
+        return reply.status(400).send(error.errors);
+      case "NOTFOUND_ERROR":
+        return reply.status(404).send(error.message);
+      default:
+        return reply.status(500).send({
+          message: "Internal Error",
+        });
+    }
+  }
 };
 
-const deleteShipHandler = async (req, reply) => {
-  const { pilotCertification } = req.params;
-
-  const deleteShip = new DeleteShip(shipRepo);
-  const { SUCCESS, NOT_FOUND, ERROR} = deleteShip.outputs;
-
-  deleteShip
-    .on(SUCCESS, () => {
-      reply.send("Ship deleted!");
-    })
-    .on(NOT_FOUND, (error) => {
-      reply.status(500).send({
-        errorMsg: error,
-      });
-    })
-    .on(ERROR, (error) => {
-      reply.status(500).send({
-        errorMsg: error,
-      });
-    });
-
-  deleteShip.execute(pilotCertification);
-};
-
-module.exports = { getAllShipsHandler, getShipHandler, postShipHandler, updateShipHandler, refillShipHandler, deleteShipHandler };
+module.exports = { createShipHandler, refillShipHandler };
