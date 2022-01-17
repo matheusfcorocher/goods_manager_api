@@ -20,6 +20,9 @@ const Ship = attributes({
     }
 })(class Ship {
     //methods
+    canCarry(weight) {
+        return weight <= this.weightCapacity;
+    }
 });
 
 module.exports = Ship;

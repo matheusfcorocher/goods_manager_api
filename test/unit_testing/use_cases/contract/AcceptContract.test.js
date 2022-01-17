@@ -127,38 +127,6 @@ describe("AcceptContract Tests", () => {
   let fakeShipRepo = factory.create("Ships", ships);
   let fakeResourceRepo = factory.create("Resources", resources);
 
-  describe("_isPossibleToShipCarry", () => {
-    describe("If actual ship weight and total contract weight is smaller than ship weight capacity", () => {
-      it("returns true", () => {
-        const args = {};
-        const acceptContract = new AcceptContract(args);
-        expect(acceptContract._isPossibleToShipCarry(400, 200, 100)).toEqual(
-          true
-        );
-      });
-    });
-
-    describe("If actual ship weight and total contract weight is equal than ship weight capacity", () => {
-      it("returns true", () => {
-        const args = {};
-        const acceptContract = new AcceptContract(args);
-        expect(acceptContract._isPossibleToShipCarry(400, 200, 200)).toEqual(
-          true
-        );
-      });
-    });
-
-    describe("If actual ship weight and total contract weight is greater than ship weight capacity", () => {
-      it("returns false", () => {
-        const args = {};
-        const acceptContract = new AcceptContract(args);
-        expect(acceptContract._isPossibleToShipCarry(400, 300, 200)).toEqual(
-          false
-        );
-      });
-    });
-  });
-
   describe("execute", () => {
     describe("When it doesnt find the contract with a given id", () => {
       it("returns not found error exception", async () => {
@@ -168,8 +136,8 @@ describe("AcceptContract Tests", () => {
         const notFoundError = new Error("Not Found Error");
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Contract with id 4 can't be found.`;
-        expect(
-          async () => await acceptContract.execute(4, pilots[0])
+        await expect(
+          () => acceptContract.execute(4, pilots[0])
         ).rejects.toThrow(notFoundError);
       });
     });
@@ -192,8 +160,8 @@ describe("AcceptContract Tests", () => {
         const notFoundError = new Error("Not Found Error");
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Pilot with pilotCertification ${fakePilot.pilotCertification} can't be found.`;
-        expect(
-          async () => await acceptContract.execute(3, fakePilot)
+        await expect(
+          () => acceptContract.execute(3, fakePilot)
         ).rejects.toThrow(notFoundError);
       });
     });
@@ -212,8 +180,8 @@ describe("AcceptContract Tests", () => {
         const validationError = new Error("Validation Error");
         validationError.CODE = "VALIDATION_ERROR";
         validationError.errors = `Contract 3 isn't available or pilot isn't in the origin planet of contract.`;
-        expect(
-          async () => await acceptContract.execute(3, pilots[0])
+        await expect(
+          () =>  acceptContract.execute(3, pilots[0])
         ).rejects.toThrow(validationError);
       });
     });
@@ -231,8 +199,8 @@ describe("AcceptContract Tests", () => {
         const validationError = new Error("Validation Error");
         validationError.CODE = "VALIDATION_ERROR";
         validationError.errors = `Contract 3 isn't available or pilot isn't in the origin planet of contract.`;
-        expect(
-          async () => await acceptContract.execute(2, pilots[0])
+        await expect(
+          () => acceptContract.execute(2, pilots[0])
         ).rejects.toThrow(validationError);
       });
     });
@@ -249,8 +217,8 @@ describe("AcceptContract Tests", () => {
         const notFoundError = new Error("Not Found Error");
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Ship with shipCertification 1234577 can't be found.`;
-        expect(
-          async () => await acceptContract.execute(3, pilots[2])
+        await expect(
+           () => acceptContract.execute(3, pilots[2])
         ).rejects.toThrow(notFoundError);
       });
     });
@@ -269,14 +237,14 @@ describe("AcceptContract Tests", () => {
         const validationError = new Error("Validation Error");
         validationError.CODE = "VALIDATION_ERROR";
         validationError.errors = `The ship can't carry the required weight of contract`;
-        expect(
-          async () => await acceptContract.execute(5, pilots[3])
+        await expect(
+          () => acceptContract.execute(5, pilots[3])
         ).rejects.toThrow(validationError);
       });
     });
 
     describe("When a pilot accept a new contract", () => {
-      it("returns validation error exception", async () => {
+      it("returns the correct result", async () => {
         const args = {
           cargosRepository: fakeCargoRepo,
           contractsRepository: fakeContractRepo,

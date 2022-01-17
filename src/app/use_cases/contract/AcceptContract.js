@@ -14,10 +14,6 @@ class AcceptContract {
     this.resourcesRepository = resourcesRepository;
   }
 
-  _isPossibleToShipCarry(shipCapacity, actualShipWeight, totalContractWeight) {
-    return totalContractWeight + actualShipWeight <= shipCapacity;
-  }
-
   async execute(contractId, { pilotCertification }) {
     try {
       let contract = await this.contractsRepository.getById(contractId);
@@ -44,11 +40,7 @@ class AcceptContract {
           contractId
         );
         if (
-          this._isPossibleToShipCarry(
-            ship.weightCapacity,
-            cargoWeightPilot,
-            cargoWeightContract
-          )
+          ship.canCarry(cargoWeightContract+cargoWeightPilot)
         ) {
           contract = await this.contractsRepository.update(contractId, {
             pilotCertification: pilotCertification,

@@ -5,34 +5,30 @@ class fakeContractRepository {
     this.contracts = Contracts;
   }
 
-  async getById(id) {
-    const result = await Promise.resolve(
-      this.contracts.filter((contract) => contract.id === id)[0]
-    );
+  getById(id) {
+    const result = this.contracts.filter((contract) => contract.id === id)[0];
     if (result === undefined) {
       const notFoundError = new Error("Not Found Error");
       notFoundError.CODE = "NOTFOUND_ERROR";
       notFoundError.message = `Contract with id ${id} can't be found.`;
-      throw notFoundError;
+      return Promise.reject(notFoundError);
     }
-    return result;
+    return Promise.resolve(result);
   }
 
-  async getByPilotCertification(certification) {
-    return await Promise.resolve(
+  getByPilotCertification(certification) {
+    return Promise.resolve(
       this.contracts.filter(
         (contract) => contract.pilotCertification === certification
       )
     );
   }
 
-  async update(id, data) {
-    let result = await Promise.resolve(
-      this.contracts.filter((contract) => contract.id === id)[0]
-    );
+  update(id, data) {
+    let result = this.contracts.filter((contract) => contract.id === id)[0];
     result = ContractSerializer.serialize(result);
     result = { ...result, ...data };
-    return result;
+    return Promise.resolve(result);
   }
 }
 

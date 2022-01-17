@@ -3,8 +3,8 @@ class fakeCargoRepository {
     this.cargos = Cargos;
   }
 
-  async getById(cargoId) {
-    return await Promise.resolve(
+  getById(cargoId) {
+    return Promise.resolve(
       this.cargos.filter((cargo) => cargo.id === cargoId)[0]
     );
   }
