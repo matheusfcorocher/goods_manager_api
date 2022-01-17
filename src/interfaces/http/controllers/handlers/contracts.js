@@ -46,9 +46,7 @@ const acceptContractHandler = async (req, reply) => {
       case "NOT_FOUND":
         return reply.status(404).send(error.message);
       default:
-        return reply.status(500).send({
-          message: "Internal Error",
-        });
+        return reply.status(500).send(error.message);
     }
   }
 };

@@ -2,7 +2,7 @@ const Cargo = require("../../../../src/domain/entities/Cargo");
 const Contract = require("../../../../src/domain/entities/Contract");
 const Resource = require("../../../../src/domain/entities/Resource");
 const CargoAllResourcesDomainService = require("../../../../src/domain/services/CargoAllResourcesDomainService");
-const { fakeCargoRepository, fakeResourceRepository, fakeContractRepository } = require("../../../support/factories");
+const { FakeRepositoriesFactory } = require("../../../support/factories");
 
 describe("CargoAllResourcesDomainService tests", () => {
   let cargos = [
@@ -50,9 +50,10 @@ describe("CargoAllResourcesDomainService tests", () => {
     }),
   ];
 
-  let fakeCargoRepo = new fakeCargoRepository(cargos);
-  let fakeResourceRepo = new fakeResourceRepository(resources);
-  let fakeContractRepo = new fakeContractRepository(contracts);
+  const factory = new FakeRepositoriesFactory();
+  let fakeCargoRepo = factory.create('Cargos', cargos);
+  let fakeResourceRepo = factory.create('Resources', resources);
+  let fakeContractRepo = factory.create('Contracts', contracts);
   const args = { cargoRepository: fakeCargoRepo, contractRepository: fakeContractRepo, resourceRepository: fakeResourceRepo };
   const service = new CargoAllResourcesDomainService(args);
   describe("getCargoAllResources", () => {

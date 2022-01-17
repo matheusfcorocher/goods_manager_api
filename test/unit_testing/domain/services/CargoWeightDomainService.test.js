@@ -2,7 +2,7 @@ const Cargo = require("../../../../src/domain/entities/Cargo");
 const Contract = require("../../../../src/domain/entities/Contract");
 const Resource = require("../../../../src/domain/entities/Resource");
 const CargoWeightDomainService = require("../../../../src/domain/services/CargoWeightDomainService");
-const { fakeCargoRepository, fakeResourceRepository, fakeContractRepository } = require("../../../support/factories");
+const { FakeRepositoriesFactory } = require("../../../support/factories");
 
 describe("CargoWeightDomainService tests", () => {
   let cargos = [
@@ -50,9 +50,10 @@ describe("CargoWeightDomainService tests", () => {
     }),
   ];
 
-  let fakeCargoRepo = new fakeCargoRepository(cargos);
-  let fakeResourceRepo = new fakeResourceRepository(resources);
-  let fakeContractRepo = new fakeContractRepository(contracts);
+  const factory = new FakeRepositoriesFactory();
+  let fakeCargoRepo = factory.create('Cargos', cargos);
+  let fakeContractRepo = factory.create('Contracts', contracts);
+  let fakeResourceRepo = factory.create('Resources', resources);
   const args = { cargoRepository: fakeCargoRepo, contractRepository: fakeContractRepo, resourceRepository: fakeResourceRepo };
   const service = new CargoWeightDomainService(args);
   describe("getCargoWeight", () => {

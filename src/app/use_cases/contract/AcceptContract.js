@@ -1,11 +1,11 @@
 const CargoWeightDomainService = require("../../../domain/services/CargoWeightDomainService");
 class AcceptContract {
-  constructor(
-    cargosRepository,
-    contractsRepository,
-    pilotsRepository,
-    shipsRepository,
-    resourcesRepository
+  constructor({
+    cargosRepository = null,
+    contractsRepository = null,
+    pilotsRepository = null,
+    shipsRepository = null,
+    resourcesRepository = null}
   ) {
     this.cargosRepository = cargosRepository;
     this.contractsRepository = contractsRepository;
@@ -66,6 +66,11 @@ class AcceptContract {
       validationError.errors = `Contract ${contractId} isn't available or pilot isn't in the origin planet of contract.`;
       throw validationError;
     } catch (error) {
+      if(!error.CODE) {
+        error = new Error("Internal Error");
+        error.CODE = "INTERNAL_ERROR";
+        error.message = "Internal Error";
+      }
       throw error;
     }
   }
