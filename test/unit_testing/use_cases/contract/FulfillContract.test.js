@@ -1,8 +1,6 @@
 const FulfillContract = require("../../../../src/app/use_cases/contract/FulfillContract");
 const { FakeRepositoriesFactory } = require("../../../support/factories");
-const Cargo = require("../../../../src/domain/entities/Cargo");
 const Contract = require("../../../../src/domain/entities/Contract");
-const Resource = require("../../../../src/domain/entities/Resource");
 const Pilot = require("../../../../src/domain/entities/Pilot");
 
 describe("FulfillContract Tests", () => {

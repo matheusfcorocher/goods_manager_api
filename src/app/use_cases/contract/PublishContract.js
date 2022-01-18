@@ -11,6 +11,11 @@ class PublishContract {
       contract.setStatusToCreated();
       await this.contractRepository.add(contract);
     } catch (error) {
+      if(!error.CODE) {
+        error = new Error("Internal Error");
+        error.CODE = "INTERNAL_ERROR";
+        error.message = "Internal Error";
+      }
       throw error
     }
   }

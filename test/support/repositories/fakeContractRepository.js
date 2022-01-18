@@ -5,6 +5,13 @@ class fakeContractRepository {
     this.contracts = Contracts;
   }
 
+  getAll(contractStatus) {
+    let contracts = this.contracts;
+    if (contractStatus)
+      contracts = contracts.filter((c) => c.contractStatus === contractStatus);
+    return Promise.resolve(contracts);
+  }
+
   getById(id) {
     const result = this.contracts.filter((contract) => contract.id === id)[0];
     if (result === undefined) {
