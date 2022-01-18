@@ -1,6 +1,6 @@
 const Transaction = require("../../../domain/entities/Transaction");
 class FulfillContract {
-  constructor(contractsRepository, pilotsRepository, transactionsRepository) {
+  constructor({contractsRepository, pilotsRepository, transactionsRepository}) {
     this.contractsRepository = contractsRepository;
     this.pilotsRepository = pilotsRepository;
     this.transactionsRepository = transactionsRepository;
@@ -37,6 +37,11 @@ class FulfillContract {
       validationError.errors = `Contract ${contractId} is not in progress or the location of pilot isn't the same as the destination planet of contract.`;
       throw validationError;
     } catch (error) {
+      if(!error.CODE) {
+        error = new Error("Internal Error");
+        error.CODE = "INTERNAL_ERROR";
+        error.message = "Internal Error";
+      }
       throw error;
     }
   }

@@ -3,8 +3,8 @@ class fakeResourceRepository {
     this.resources = Resources;
   }
 
-  async getById(id) {
-    return await Promise.resolve(
+  getById(id) {
+    return Promise.resolve(
       this.resources.filter((resource) => resource.id === id)[0]
     );
   }

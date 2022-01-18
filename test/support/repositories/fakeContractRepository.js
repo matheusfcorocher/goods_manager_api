@@ -28,6 +28,8 @@ class fakeContractRepository {
     let result = this.contracts.filter((contract) => contract.id === id)[0];
     result = ContractSerializer.serialize(result);
     result = { ...result, ...data };
+    let index = this.contracts.findIndex((i) => i.id === id)
+    this.contracts.splice(index, 1, result)
     return Promise.resolve(result);
   }
 }
