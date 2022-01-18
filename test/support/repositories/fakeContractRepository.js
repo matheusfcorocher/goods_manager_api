@@ -5,6 +5,17 @@ class fakeContractRepository {
     this.contracts = Contracts;
   }
 
+  add(contract) {
+    contract.id = this.contracts.length + 1;
+    if (contract.isValidContractPlanets())
+      return Promise.resolve(this.contracts.push(contract));
+
+    const validationError = new Error("Validation Error");
+    validationError.CODE = "VALIDATION_ERROR";
+    validationError.errors = "The origin planet or destination planet is invalid.";
+    return Promise.reject(validationError);
+  }
+
   getAll(contractStatus) {
     let contracts = this.contracts;
     if (contractStatus)
@@ -35,8 +46,8 @@ class fakeContractRepository {
     let result = this.contracts.filter((contract) => contract.id === id)[0];
     result = ContractSerializer.serialize(result);
     result = { ...result, ...data };
-    let index = this.contracts.findIndex((i) => i.id === id)
-    this.contracts.splice(index, 1, result)
+    let index = this.contracts.findIndex((i) => i.id === id);
+    this.contracts.splice(index, 1, result);
     return Promise.resolve(result);
   }
 }

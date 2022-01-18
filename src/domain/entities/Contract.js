@@ -1,4 +1,5 @@
 const { attributes } = require('structure');
+const { isValidPlanet } = require('./Planet');
 
 const status = {
     CREATED: "CREATED",
@@ -42,6 +43,10 @@ const Contract = attributes({
     }
     isFinished() {
         return this.contractStatus === status.FINISHED;
+    }
+
+    isValidContractPlanets() {
+        return isValidPlanet(this.originPlanet) && isValidPlanet(this.destinationPlanet)
     }
 
     setStatusToCreated() {
