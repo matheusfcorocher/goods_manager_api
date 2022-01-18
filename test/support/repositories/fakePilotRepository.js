@@ -5,6 +5,12 @@ class fakePilotRepository {
     this.pilots = Pilots;
   }
 
+  add(pilot) {
+    pilot.id = this.pilots.length + 1;
+    this.pilots.push(pilot);
+    return Promise.resolve(pilot);
+  }
+
   getById(id) {
     return Promise.resolve(this.pilots.filter((pilot) => pilot.id === id)[0]);
   }
