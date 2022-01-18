@@ -1,6 +1,7 @@
 const ShipSerializer = {
-    serialize({pilotCertification, fuelCapacity, fuelLevel, weightCapacity}) {
+    serialize({id, pilotCertification, fuelCapacity, fuelLevel, weightCapacity}) {
         return {
+            id: id,
             pilotCertification: pilotCertification, 
             fuelCapacity: fuelCapacity, 
             fuelLevel: fuelLevel, 

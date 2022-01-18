@@ -216,7 +216,7 @@ describe("AcceptContract Tests", () => {
 
         const notFoundError = new Error("Not Found Error");
         notFoundError.CODE = "NOTFOUND_ERROR";
-        notFoundError.message = `Ship with shipCertification 1234577 can't be found.`;
+        notFoundError.message = `Ship with pilotCertification 1234577 can't be found.`;
         await expect(
            () => acceptContract.execute(3, pilots[2])
         ).rejects.toThrow(notFoundError);

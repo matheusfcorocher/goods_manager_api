@@ -10,7 +10,7 @@ describe("PublishContract Tests", () => {
 
   describe("execute", () => {
     describe("When add a contract with correct values", () => {
-      it("returns the correct contract", async () => {
+      it("returns success message", async () => {
         const publishContract = new PublishContract(fakeContractRepo);
         const data = {
           cargoId: 4,
@@ -19,7 +19,9 @@ describe("PublishContract Tests", () => {
           destinationPlanet: "Calas",
           value: 700,
         };
-        await publishContract.execute(data);
+        expect(await publishContract.execute(data)).toEqual("Contract was added successfully!");
+      });
+      it("returns the correct contract", async () => {
         expect(await fakeContractRepo.getById(1)).toEqual(
           new Contract({
             id: 1,

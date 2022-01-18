@@ -18,7 +18,7 @@ class SequelizeShipsRepository {
       if (error.name === "SequelizeEmptyResultError") {
         const notFoundError = new Error("Not Found Error");
         notFoundError.CODE = "NOTFOUND_ERROR";
-        notFoundError.message = `Ship with shipCertification ${certification} can't be found.`;
+        notFoundError.message = `Ship with pilotCertification ${certification} can't be found.`;
         throw notFoundError;
       }
 

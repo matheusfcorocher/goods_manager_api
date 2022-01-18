@@ -90,49 +90,6 @@ class SequelizePilotsRepository {
       throw error;
     }
   }
-
-  async travel(ship, destinationPlanet, travelFuelCost) {
-    const { pilotCertification, fuelLevel } = ship;
-    const pilot = await this._getByPilotCertification(pilotCertification);
-    const transaction = await this.PilotModel.sequelize.transaction();
-
-    try {
-      const fuelCost = travelFuelCost(
-        pilot.locationPlanet,
-        destinationPlanet
-      );
-      if (fuelLevel >= fuelCost) {
-        const updatedPilot = await pilot.update(
-          { locationPlanet: destinationPlanet },
-          { transaction: transaction }
-        );
-        await ship.update(
-          { fuelLevel: fuelLevel - fuelCost },
-          { transaction: transaction }
-        );
-        const pilotEntity = PilotMapper.toEntity(updatedPilot);
-        const { valid, errors } = pilotEntity.validate();
-
-        if (!valid) {
-          const validationError = new Error("Validation error");
-          validationError.CODE = "VALIDATION_ERROR";
-          validationError.errors = errors;
-          throw validationError;
-        }
-        await transaction.commit();
-        return pilotEntity;
-      }
-
-      const validationError = new Error("Validation error");
-      validationError.CODE = "VALIDATION_ERROR";
-      validationError.errors = `Ship doesn't have enough fuel to travel to destination planet.`;
-      throw validationError;
-    } catch (error) {
-      await transaction.rollback();
-
-      throw error;
-    }
-  }
 }
 
 module.exports = SequelizePilotsRepository;

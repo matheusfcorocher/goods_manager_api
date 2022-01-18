@@ -157,8 +157,14 @@ describe("FulfillContract Tests", () => {
         await expect(fulfillContract.execute(4)).resolves.toEqual(
           "Contract was fullfilled!"
         );
+      });
+      it("create transaction", async () => {
         expect((await fakeTransactionRepo.getById(1)).about).toEqual("Contract 4 Description paid: -₭5000");
+      });
+      it("update credits of pilot", async () => {
         expect((await fakePilotRepo.getById(1)).credits).toEqual(5000);
+      });
+      it('contractStatus equals "FINISHED"', async () => {
         expect((await fakeContractRepo.getById(3)).contractStatus).toEqual("FINISHED");
       });
     });

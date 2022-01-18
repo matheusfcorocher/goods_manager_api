@@ -6,7 +6,6 @@ const models = require("../../../../infra/database/models/index.js");
 const SequelizePilotsRepository = require("../../../../infra/repositories/pilot/SequelizePilotsRepository.js");
 const SequelizeShipsRepository = require("../../../../infra/repositories/ship/SequelizeShipsRepository.js");
 const SequelizeTransactionsRepository = require("../../../../infra/repositories/transaction/SequelizeTransactionsRepository.js");
-const ShipSerializer = require("../serializers/ShipSerializer.js");
 
 const { Ships, Pilots, Transactions } = models;
 

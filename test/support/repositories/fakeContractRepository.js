@@ -7,13 +7,7 @@ class fakeContractRepository {
 
   add(contract) {
     contract.id = this.contracts.length + 1;
-    if (contract.isValidContractPlanets())
-      return Promise.resolve(this.contracts.push(contract));
-
-    const validationError = new Error("Validation Error");
-    validationError.CODE = "VALIDATION_ERROR";
-    validationError.errors = "The origin planet or destination planet is invalid.";
-    return Promise.reject(validationError);
+    return Promise.resolve(this.contracts.push(contract));
   }
 
   getAll(contractStatus) {

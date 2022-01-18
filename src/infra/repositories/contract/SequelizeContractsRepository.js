@@ -57,14 +57,7 @@ class SequelizeContractsRepository {
       throw validationError;
     }
 
-    if (contract.isValidContractPlanets())
-      await this.ContractModel.create(ContractMapper.toDatabase(contract));
-
-    const validationError = new Error("Validation error");
-    validationError.CODE = "VALIDATION_ERROR";
-    validationError.errors =
-      "The origin planet or destination planet is invalid.";
-    throw validationError;
+    await this.ContractModel.create(ContractMapper.toDatabase(contract));
   }
 
   async getById(id) {

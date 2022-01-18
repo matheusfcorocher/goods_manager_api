@@ -1,12 +1,14 @@
+const Ship = require("../../../src/domain/entities/Ship");
+const ShipSerializer = require("../../../src/interfaces/http/controllers/serializers/ShipSerializer");
+
 class fakeShipRepository {
   constructor(Ships) {
     this.ships = Ships;
   }
 
   getById(id) {
-    return Promise.resolve(
-      this.ships.filter((ship) => ship.id === id)[0]
-    );
+    let result = this.ships.filter((ship) => ship.id === id)[0]
+    return Promise.resolve(result);
   }
 
   getByPilotCertification(certification) {
@@ -14,9 +16,18 @@ class fakeShipRepository {
     if (result === undefined) {
       const notFoundError = new Error("Not Found Error");
       notFoundError.CODE = "NOTFOUND_ERROR";
-      notFoundError.message = `Ship with shipCertification ${certification} can't be found.`;
+      notFoundError.message = `Ship with pilotCertification ${certification} can't be found.`;
       return Promise.reject(notFoundError);
     }
+    return Promise.resolve(result);
+  }
+
+  update(certification, data) {
+    let result = this.ships.filter((ship) => ship.pilotCertification === certification)[0];
+    result = ShipSerializer.serialize(result);
+    result = new Ship({ ...result, ...data });
+    let index = this.ships.findIndex((i) => i.pilotCertification === certification)
+    this.ships.splice(index, 1, result)
     return Promise.resolve(result);
   }
 }
