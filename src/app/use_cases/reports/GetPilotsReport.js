@@ -54,6 +54,11 @@ class GetPilotsReport {
       }
       return pilots.sort(compareValues("id", "asc"));
     } catch (error) {
+      if(!error.CODE) {
+        error = new Error("Internal Error");
+        error.CODE = "INTERNAL_ERROR";
+        error.message = "Internal Error";
+      }
       throw error;
     }
   }

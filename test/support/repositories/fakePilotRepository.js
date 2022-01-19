@@ -11,6 +11,10 @@ class fakePilotRepository {
     return Promise.resolve(pilot);
   }
 
+  getAll() {
+    return Promise.resolve(this.pilots);
+  }
+
   getById(id) {
     return Promise.resolve(this.pilots.filter((pilot) => pilot.id === id)[0]);
   }
