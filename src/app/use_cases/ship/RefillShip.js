@@ -1,4 +1,5 @@
 const Transaction = require("../../../domain/entities/Transaction");
+const RefillShipDomainService = require("../../../domain/services/RefillShipDomainService");
 
 class RefillShip {
   constructor(shipsRepository, pilotsRepository, transactionsRepository) {
@@ -7,28 +8,11 @@ class RefillShip {
     this.transactionsRepository = transactionsRepository;
   }
 
-  async _emitTransaction({name, credits}, actualCredits) {
+  async _emitTransaction({ name, credits }, actualCredits) {
     const about = `${name} bought fuel: +₭${credits - actualCredits}`;
     const transaction = new Transaction({ about: about });
     await this.transactionsRepository.add(transaction);
   }
-
-  _refillShip({ credits }, { fuelCapacity, fuelLevel }) {
-    let fuelRemaining = fuelCapacity - fuelLevel;
-    if (fuelRemaining > 0) {
-      let creditsInFuel = Math.round(credits / 7);
-      credits = 0;
-      let fuelRefilled = fuelRemaining - creditsInFuel;
-      if (fuelRefilled < 0) {
-        //when it left credits
-        fuelLevel = fuelCapacity;
-        credits = Math.round(fuelRefilled * -1 * 7);
-        return { credits, fuelLevel };
-      }
-      fuelLevel += creditsInFuel;
-    }
-    return { credits, fuelLevel };
-  };
 
   async execute(certification) {
     try {
@@ -38,7 +22,7 @@ class RefillShip {
       const ship = await this.shipsRepository.getByPilotCertification(
         certification
       );
-      const { credits, fuelLevel } = this._refillShip(pilot, ship);
+      const { credits, fuelLevel } = RefillShipDomainService(pilot, ship);
       if (ship.fuelLevel != fuelLevel) {
         await this.pilotsRepository.update(certification, { credits: credits });
         await this.shipsRepository.update(certification, {
@@ -52,6 +36,11 @@ class RefillShip {
       validationError.errors = "The fuel capacity of the ship is full!";
       throw validationError;
     } catch (error) {
+      if (!error.CODE) {
+        error = new Error("Internal Error");
+        error.CODE = "INTERNAL_ERROR";
+        error.message = "Internal Error";
+      }
       throw error;
     }
   }

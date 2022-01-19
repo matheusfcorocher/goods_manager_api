@@ -23,6 +23,11 @@ class CreateShip {
       validationError.errors = `There's a ship with pilotCertification ${shipData.pilotCertification}!`;
       throw validationError;
     } catch (error) {
+      if (!error.CODE) {
+        error = new Error("Internal Error");
+        error.CODE = "INTERNAL_ERROR";
+        error.message = "Internal Error";
+      }
       throw error;
     }
   }
