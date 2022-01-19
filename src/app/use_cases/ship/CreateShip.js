@@ -9,19 +9,22 @@ class CreateShip {
   async execute(shipData) {
     const ship = new Ship(shipData);
     try {
-      const hasPilot = await this.pilotsRepository.getByPilotCertification(
+      await this.pilotsRepository.getByPilotCertification(
         shipData.pilotCertification
       );
       const hasShip = await this.shipsRepository.hasShip(
         shipData.pilotCertification
       );
-      if (hasPilot && !hasShip) {
-        return await this.shipsRepository.add(ship);
+
+      if(hasShip) {
+        const validationError = new Error("Validation Error");
+        validationError.CODE = "VALIDATION_ERROR";
+        validationError.errors = `There's a ship with pilotCertification ${shipData.pilotCertification}!`;
+        throw validationError;
       }
-      const validationError = new Error("Validation Error");
-      validationError.CODE = "VALIDATION_ERROR";
-      validationError.errors = `There's a ship with pilotCertification ${shipData.pilotCertification}!`;
-      throw validationError;
+
+      return await this.shipsRepository.add(ship);
+      
     } catch (error) {
       if (!error.CODE) {
         error = new Error("Internal Error");

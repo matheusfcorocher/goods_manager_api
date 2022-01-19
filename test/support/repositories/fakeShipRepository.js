@@ -6,6 +6,12 @@ class fakeShipRepository {
     this.ships = Ships;
   }
 
+  add(ship) {
+    ship.id = this.ships.length + 1;
+    this.ships.push(ship);
+    return Promise.resolve(ship);
+  }
+
   getById(id) {
     let result = this.ships.filter((ship) => ship.id === id)[0]
     return Promise.resolve(result);
@@ -20,6 +26,14 @@ class fakeShipRepository {
       return Promise.reject(notFoundError);
     }
     return Promise.resolve(result);
+  }
+  
+  hasShip(certification) {
+    const result = this.ships.filter((ship) => ship.pilotCertification === certification)[0];
+    if (result === undefined) {
+      return Promise.resolve(false);
+    }
+    return Promise.resolve(true);
   }
 
   update(certification, data) {
