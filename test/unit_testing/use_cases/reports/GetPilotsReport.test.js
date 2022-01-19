@@ -1,26 +1,24 @@
 const GetPilotsReport = require("../../../../src/app/use_cases/reports/GetPilotsReport");
-const Cargo = require("../../../../src/domain/entities/Cargo");
-const Contract = require("../../../../src/domain/entities/Contract");
-const Pilot = require("../../../../src/domain/entities/Pilot");
-const Resource = require("../../../../src/domain/entities/Resource");
-const { FakeRepositoriesFactory } = require("../../../support/factories");
+const { FakeRepositoriesFactory } = require("../../../support/factories/repository");
+const { DataFactory } = require("../../../support/factories/data");
 
+const dataFactory = new DataFactory();
 let cargos = [
-  new Cargo({ id: 1, resourceIds: [1, 2, 3] }),
-  new Cargo({ id: 2, resourceIds: [2] }),
-  new Cargo({ id: 3, resourceIds: [3] }),
-  new Cargo({ id: 4, resourceIds: [4] }),
+  dataFactory.create("Cargo", { id: 1, resourceIds: [1, 2, 3] }),
+  dataFactory.create("Cargo", { id: 2, resourceIds: [2] }),
+  dataFactory.create("Cargo", { id: 3, resourceIds: [3] }),
+  dataFactory.create("Cargo", { id: 4, resourceIds: [4] }),
 ];
 
 let resources = [
-  new Resource({ id: 1, name: "water", weight: 100 }),
-  new Resource({ id: 2, name: "food", weight: 300 }),
-  new Resource({ id: 3, name: "minerals", weight: 1000 }),
-  new Resource({ id: 4, name: "food", weight: 2000 }),
+  dataFactory.create("Resource", { id: 1, name: "water", weight: 100 }),
+  dataFactory.create("Resource", { id: 2, name: "food", weight: 300 }),
+  dataFactory.create("Resource", { id: 3, name: "minerals", weight: 1000 }),
+  dataFactory.create("Resource", { id: 4, name: "food", weight: 2000 }),
 ];
 
 let contracts = [
-  new Contract({
+  dataFactory.create("Contract", {
     id: 1,
     pilotCertification: null,
     cargoId: 1,
@@ -30,7 +28,7 @@ let contracts = [
     value: 4000,
     contractStatus: "CREATED",
   }),
-  new Contract({
+  dataFactory.create("Contract", {
     id: 2,
     pilotCertification: 1234567,
     cargoId: 2,
@@ -40,7 +38,7 @@ let contracts = [
     value: 1500,
     contractStatus: "IN PROGRESS",
   }),
-  new Contract({
+  dataFactory.create("Contract", {
     id: 3,
     pilotCertification: 1234557,
     cargoId: 3,
@@ -50,7 +48,7 @@ let contracts = [
     value: 1000,
     contractStatus: "CREATED",
   }),
-  new Contract({
+  dataFactory.create("Contract", {
     id: 5,
     pilotCertification: null,
     cargoId: 4,
@@ -62,7 +60,7 @@ let contracts = [
   }),
 ];
 let pilots = [
-  new Pilot({
+  dataFactory.create("Pilot", {
     id: 1,
     pilotCertification: 1234567,
     name: "Matheus",
@@ -70,7 +68,7 @@ let pilots = [
     credits: 0,
     locationPlanet: "Aqua",
   }),
-  new Pilot({
+  dataFactory.create("Pilot", {
     id: 2,
     pilotCertification: 1234566,
     name: "Peter",
@@ -78,7 +76,7 @@ let pilots = [
     credits: 5000,
     locationPlanet: "Aqua",
   }),
-  new Pilot({
+  dataFactory.create("Pilot", {
     id: 3,
     pilotCertification: 1234577,
     name: "Tom",
@@ -86,7 +84,7 @@ let pilots = [
     credits: 2000,
     locationPlanet: "Calas",
   }),
-  new Pilot({
+  dataFactory.create("Pilot", {
     id: 4,
     pilotCertification: 1234588,
     name: "Jerry",

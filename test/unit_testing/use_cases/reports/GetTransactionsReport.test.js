@@ -1,11 +1,13 @@
 const GetTransactionsReport = require("../../../../src/app/use_cases/reports/GetTransactionsReport");
-const Transaction = require("../../../../src/domain/entities/Transaction");
-const { FakeRepositoriesFactory } = require("../../../support/factories");
+const { FakeRepositoriesFactory } = require("../../../support/factories/repository");
+const { DataFactory } = require("../../../support/factories/data");
+
+const dataFactory = new DataFactory();
 
 let transactions = [
-    new Transaction({id: 1, about: "Mamma mia"}),
-    new Transaction({id: 2, about: "Mario Kart!"}),
-    new Transaction({id: 3, about: "Wiiiiiiiii!"}),
+    dataFactory.create("Transaction",{id: 1, about: "Mamma mia"}),
+    dataFactory.create("Transaction",{id: 2, about: "Mario Kart!"}),
+    dataFactory.create("Transaction",{id: 3, about: "Wiiiiiiiii!"}),
 ]
 
 const factory = new FakeRepositoriesFactory();

@@ -1,10 +1,13 @@
 const GetAllContracts = require("../../../../src/app/use_cases/contract/GetAllContracts");
-const { FakeRepositoriesFactory } = require("../../../support/factories");
-const Contract = require("../../../../src/domain/entities/Contract");
+const {
+  FakeRepositoriesFactory,
+} = require("../../../support/factories/repository");
+const { DataFactory } = require("../../../support/factories/data");
 
+const dataFactory = new DataFactory();
 describe("GetAllContracts Tests", () => {
   let contracts = [
-    new Contract({
+    dataFactory.create("Contract", {
       id: 1,
       pilotCertification: 0,
       cargoId: 1,
@@ -14,7 +17,7 @@ describe("GetAllContracts Tests", () => {
       value: 4000,
       contractStatus: "CREATED",
     }),
-    new Contract({
+    dataFactory.create("Contract", {
       id: 3,
       pilotCertification: 1234577,
       cargoId: 3,
@@ -24,7 +27,7 @@ describe("GetAllContracts Tests", () => {
       value: 3000,
       contractStatus: "FINISHED",
     }),
-    new Contract({
+    dataFactory.create("Contract", {
       id: 4,
       pilotCertification: 1234567,
       cargoId: 3,
@@ -34,7 +37,7 @@ describe("GetAllContracts Tests", () => {
       value: 5000,
       contractStatus: "IN PROGRESS",
     }),
-    new Contract({
+    dataFactory.create("Contract", {
       id: 2,
       pilotCertification: 1234566,
       cargoId: 2,

@@ -1,27 +1,26 @@
 const AcceptContract = require("../../../../src/app/use_cases/contract/AcceptContract");
-const { FakeRepositoriesFactory } = require("../../../support/factories");
-const Cargo = require("../../../../src/domain/entities/Cargo");
-const Contract = require("../../../../src/domain/entities/Contract");
-const Resource = require("../../../../src/domain/entities/Resource");
-const Pilot = require("../../../../src/domain/entities/Pilot");
-const Ship = require("../../../../src/domain/entities/Ship");
+const { FakeRepositoriesFactory } = require("../../../support/factories/repository");
+const { DataFactory } = require("../../../support/factories/data");
+
+const dataFactory = new DataFactory();
+
 describe("AcceptContract Tests", () => {
   let cargos = [
-    new Cargo({ id: 1, resourceIds: [1, 2, 3] }),
-    new Cargo({ id: 2, resourceIds: [2] }),
-    new Cargo({ id: 3, resourceIds: [3] }),
-    new Cargo({ id: 4, resourceIds: [4] }),
+    dataFactory.create("Cargo", { id: 1, resourceIds: [1, 2, 3] }),
+    dataFactory.create("Cargo", { id: 2, resourceIds: [2] }),
+    dataFactory.create("Cargo", { id: 3, resourceIds: [3] }),
+    dataFactory.create("Cargo", { id: 4, resourceIds: [4] }),
   ];
 
   let resources = [
-    new Resource({ id: 1, name: "water", weight: 100 }),
-    new Resource({ id: 2, name: "food", weight: 300 }),
-    new Resource({ id: 3, name: "minerals", weight: 1000 }),
-    new Resource({ id: 4, name: "food", weight: 2000 }),
+    dataFactory.create("Resource", { id: 1, name: "water", weight: 100 }),
+    dataFactory.create("Resource", { id: 2, name: "food", weight: 300 }),
+    dataFactory.create("Resource", { id: 3, name: "minerals", weight: 1000 }),
+    dataFactory.create("Resource", { id: 4, name: "food", weight: 2000 }),
   ];
 
   let contracts = [
-    new Contract({
+    dataFactory.create("Contract", {
       id: 1,
       pilotCertification: null,
       cargoId: 1,
@@ -31,7 +30,7 @@ describe("AcceptContract Tests", () => {
       value: 4000,
       contractStatus: "CREATED",
     }),
-    new Contract({
+    dataFactory.create("Contract", {
       id: 2,
       pilotCertification: 1234567,
       cargoId: 2,
@@ -41,7 +40,7 @@ describe("AcceptContract Tests", () => {
       value: 1500,
       contractStatus: "IN PROGRESS",
     }),
-    new Contract({
+    dataFactory.create("Contract", {
       id: 3,
       pilotCertification: 1234557,
       cargoId: 3,
@@ -51,7 +50,7 @@ describe("AcceptContract Tests", () => {
       value: 1000,
       contractStatus: "CREATED",
     }),
-    new Contract({
+    dataFactory.create("Contract", {
       id: 5,
       pilotCertification: null,
       cargoId: 4,
@@ -63,7 +62,7 @@ describe("AcceptContract Tests", () => {
     }),
   ];
   let pilots = [
-    new Pilot({
+    dataFactory.create("Pilot", {
       id: 1,
       pilotCertification: 1234567,
       name: "Matheus",
@@ -71,7 +70,7 @@ describe("AcceptContract Tests", () => {
       credits: 0,
       locationPlanet: "Aqua",
     }),
-    new Pilot({
+    dataFactory.create("Pilot", {
       id: 2,
       pilotCertification: 1234566,
       name: "Peter",
@@ -79,7 +78,7 @@ describe("AcceptContract Tests", () => {
       credits: 5000,
       locationPlanet: "Aqua",
     }),
-    new Pilot({
+    dataFactory.create("Pilot", {
       id: 3,
       pilotCertification: 1234577,
       name: "Tom",
@@ -87,7 +86,7 @@ describe("AcceptContract Tests", () => {
       credits: 2000,
       locationPlanet: "Calas",
     }),
-    new Pilot({
+    dataFactory.create("Pilot", {
       id: 4,
       pilotCertification: 1234588,
       name: "Jerry",
@@ -97,21 +96,21 @@ describe("AcceptContract Tests", () => {
     }),
   ];
   let ships = [
-    new Ship({
+    dataFactory.create("Ship", {
       id: 1,
       pilotCertification: 1234567,
       fuelCapacity: 1500,
       fuelLevel: 50,
       weightCapacity: 2000,
     }),
-    new Ship({
+    dataFactory.create("Ship", {
       id: 2,
       pilotCertification: 1234566,
       fuelCapacity: 1500,
       fuelLevel: 500,
       weightCapacity: 1000,
     }),
-    new Ship({
+    dataFactory.create("Ship", {
       id: 3,
       pilotCertification: 1234588,
       fuelCapacity: 1500,
@@ -149,7 +148,7 @@ describe("AcceptContract Tests", () => {
           pilotsRepository: fakePilotRepo,
         };
         const acceptContract = new AcceptContract(args);
-        let fakePilot = new Pilot({
+        let fakePilot = dataFactory.create("Pilot", {
           id: 6,
           pilotCertification: 1234555,
           name: "Matheus",

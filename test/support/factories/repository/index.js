@@ -1,9 +1,9 @@
-const fakeCargoRepository = require("../repositories/fakeCargoRepository");
-const fakeContractRepository = require("../repositories/fakeContractRepository");
-const fakePilotRepository = require("../repositories/fakePilotRepository");
-const fakeResourceRepository = require("../repositories/fakeResourceRepository");
-const fakeShipRepository = require("../repositories/fakeShipRepository");
-const fakeTransactionRepository = require("../repositories/fakeTransactionRepository");
+const fakeCargoRepository = require("../../repositories/fakeCargoRepository");
+const fakeContractRepository = require("../../repositories/fakeContractRepository");
+const fakePilotRepository = require("../../repositories/fakePilotRepository");
+const fakeResourceRepository = require("../../repositories/fakeResourceRepository");
+const fakeShipRepository = require("../../repositories/fakeShipRepository");
+const fakeTransactionRepository = require("../../repositories/fakeTransactionRepository");
 
 class FakeRepositoriesFactory {
   constructor() {}

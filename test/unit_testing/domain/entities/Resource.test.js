@@ -1,8 +1,9 @@
-const Resource = require("../../../../src/domain/entities/Resource");
+const { DataFactory } = require("../../../support/factories/data");
+const dataFactory = new DataFactory();
 
 describe("Resource Tests ", () => {
     describe("verifyName", () => {
-      let resource = new Resource({ id: 1, name: "water", weight: 100 });
+      let resource = dataFactory.create("Resource", { id: 1, name: "water", weight: 100 });
       describe("if resource name is water", () => {
         it("returns true", () => {
           expect(resource.verifyName()).toEqual(true);

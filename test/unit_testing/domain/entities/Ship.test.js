@@ -1,7 +1,9 @@
-const Ship = require("../../../../src/domain/entities/Ship");
+const { DataFactory } = require("../../../support/factories/data");
+const dataFactory = new DataFactory();
 
-describe("_isPossibleToShipCarry", () => {
-  let ship = new Ship({
+describe("Ship Tests ", () => {
+describe("canCarry", () => {
+  let ship = dataFactory.create("Ship", {
     id: 1,
     pilotCertification: 1234567,
     fuelCapacity: 1500,
@@ -26,3 +28,4 @@ describe("_isPossibleToShipCarry", () => {
     });
   });
 });
+})

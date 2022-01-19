@@ -1,7 +1,7 @@
 const { RefillShip } = require("../../../../src/app/use_cases/ship");
 const Pilot = require("../../../../src/domain/entities/Pilot");
 const Ship = require("../../../../src/domain/entities/Ship");
-const { FakeRepositoriesFactory } = require("../../../support/factories");
+const { FakeRepositoriesFactory } = require("../../../support/factories/repository");
 
 let pilots = [
   new Pilot({

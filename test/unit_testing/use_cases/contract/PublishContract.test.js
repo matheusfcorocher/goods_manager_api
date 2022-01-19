@@ -1,7 +1,10 @@
 const PublishContract = require("../../../../src/app/use_cases/contract/PublishContract");
-const Contract = require("../../../../src/domain/entities/Contract");
-const { FakeRepositoriesFactory } = require("../../../support/factories");
+const {
+  FakeRepositoriesFactory,
+} = require("../../../support/factories/repository");
+const { DataFactory } = require("../../../support/factories/data");
 
+const dataFactory = new DataFactory();
 describe("PublishContract Tests", () => {
   let contracts = [];
 
@@ -19,11 +22,13 @@ describe("PublishContract Tests", () => {
           destinationPlanet: "Calas",
           value: 700,
         };
-        expect(await publishContract.execute(data)).toEqual("Contract was added successfully!");
+        expect(await publishContract.execute(data)).toEqual(
+          "Contract was added successfully!"
+        );
       });
       it("returns the correct contract", async () => {
         expect(await fakeContractRepo.getById(1)).toEqual(
-          new Contract({
+          dataFactory.create("Contract", {
             id: 1,
             pilotCertification: 0,
             cargoId: 4,
@@ -71,7 +76,7 @@ describe("PublishContract Tests", () => {
         const validationError = new Error("Validation Error");
         validationError.CODE = "VALIDATION_ERROR";
         validationError.errors =
-        "The origin planet or destination planet is invalid.";
+          "The origin planet or destination planet is invalid.";
         await expect(() => publishContract.execute(data)).rejects.toThrow(
           validationError
         );

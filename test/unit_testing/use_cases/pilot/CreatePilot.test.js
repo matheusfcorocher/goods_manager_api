@@ -1,9 +1,13 @@
 const CreatePilot = require("../../../../src/app/use_cases/pilot/CreatePilot");
-const Pilot = require("../../../../src/domain/entities/Pilot");
-const { FakeRepositoriesFactory } = require("../../../support/factories");
+const {
+  FakeRepositoriesFactory,
+} = require("../../../support/factories/repository");
+const { DataFactory } = require("../../../support/factories/data");
+
+const dataFactory = new DataFactory();
 
 let pilots = [
-  new Pilot({
+  dataFactory.create("Pilot", {
     id: 1,
     pilotCertification: 1234567,
     name: "Matheus",
@@ -11,7 +15,7 @@ let pilots = [
     credits: 0,
     locationPlanet: "Demeter",
   }),
-  new Pilot({
+  dataFactory.create("Pilot", {
     id: 2,
     pilotCertification: 1234566,
     name: "Peter",
@@ -19,7 +23,7 @@ let pilots = [
     credits: 5000,
     locationPlanet: "Aqua",
   }),
-  new Pilot({
+  dataFactory.create("Pilot", {
     id: 3,
     pilotCertification: 1234577,
     name: "Tom",
@@ -27,7 +31,7 @@ let pilots = [
     credits: 2000,
     locationPlanet: "Calas",
   }),
-  new Pilot({
+  dataFactory.create("Pilot", {
     id: 4,
     pilotCertification: 1234588,
     name: "Jerry",
@@ -98,7 +102,7 @@ describe("CreatePilot Tests", () => {
           locationPlanet: "Andvari",
         };
         expect(await createPilot.execute(data)).toEqual(
-          new Pilot({
+          dataFactory.create("Pilot", {
             id: pilots.length + 1,
             pilotCertification: 1234111,
             name: "Ven",

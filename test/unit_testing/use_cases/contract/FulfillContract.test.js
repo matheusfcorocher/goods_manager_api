@@ -1,11 +1,12 @@
 const FulfillContract = require("../../../../src/app/use_cases/contract/FulfillContract");
-const { FakeRepositoriesFactory } = require("../../../support/factories");
-const Contract = require("../../../../src/domain/entities/Contract");
-const Pilot = require("../../../../src/domain/entities/Pilot");
+const { FakeRepositoriesFactory } = require("../../../support/factories/repository");
+const { DataFactory } = require("../../../support/factories/data");
+
+const dataFactory = new DataFactory();
 
 describe("FulfillContract Tests", () => {
   let contracts = [
-    new Contract({
+    dataFactory.create("Contract",{
       id: 1,
       pilotCertification: null,
       cargoId: 1,
@@ -15,7 +16,7 @@ describe("FulfillContract Tests", () => {
       value: 4000,
       contractStatus: "CREATED",
     }),
-    new Contract({
+    dataFactory.create("Contract",{
       id: 2,
       pilotCertification: 1234566,
       cargoId: 2,
@@ -25,7 +26,7 @@ describe("FulfillContract Tests", () => {
       value: 3000,
       contractStatus: "IN PROGRESS",
     }),
-    new Contract({
+    dataFactory.create("Contract",{
       id: 3,
       pilotCertification: 1234577,
       cargoId: 3,
@@ -35,7 +36,7 @@ describe("FulfillContract Tests", () => {
       value: 3000,
       contractStatus: "FINISHED",
     }),
-    new Contract({
+    dataFactory.create("Contract",{
       id: 4,
       pilotCertification: 1234567,
       cargoId: 3,
@@ -47,7 +48,7 @@ describe("FulfillContract Tests", () => {
     }),
   ];
   let pilots = [
-    new Pilot({
+    dataFactory.create("Pilot",{
       id: 1,
       pilotCertification: 1234567,
       name: "Matheus",
@@ -55,7 +56,7 @@ describe("FulfillContract Tests", () => {
       credits: 0,
       locationPlanet: "Aqua",
     }),
-    new Pilot({
+    dataFactory.create("Pilot",{
       id: 2,
       pilotCertification: 1234566,
       name: "Peter",
@@ -63,7 +64,7 @@ describe("FulfillContract Tests", () => {
       credits: 5000,
       locationPlanet: "Aqua",
     }),
-    new Pilot({
+    dataFactory.create("Pilot",{
       id: 3,
       pilotCertification: 1234577,
       name: "Few",

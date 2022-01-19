@@ -2,10 +2,12 @@ const TravelPilot = require("../../../../src/app/use_cases/pilot/TravelPilot");
 const Pilot = require("../../../../src/domain/entities/Pilot");
 const Ship = require("../../../../src/domain/entities/Ship");
 const TravelFuelCostDomainService = require("../../../../src/domain/services/TravelFuelCostDomainService");
-const { FakeRepositoriesFactory } = require("../../../support/factories");
+const { FakeRepositoriesFactory } = require("../../../support/factories/repository");
+const { DataFactory } = require("../../../support/factories/data");
 
+const dataFactory = new DataFactory();
 let pilots = [
-  new Pilot({
+  dataFactory.create("Pilot", {
     id: 1,
     pilotCertification: 1234567,
     name: "Matheus",
@@ -13,7 +15,7 @@ let pilots = [
     credits: 0,
     locationPlanet: "Demeter",
   }),
-  new Pilot({
+  dataFactory.create("Pilot", {
     id: 2,
     pilotCertification: 1234566,
     name: "Peter",
@@ -21,7 +23,7 @@ let pilots = [
     credits: 5000,
     locationPlanet: "Aqua",
   }),
-  new Pilot({
+  dataFactory.create("Pilot", {
     id: 3,
     pilotCertification: 1234577,
     name: "Tom",
@@ -29,7 +31,7 @@ let pilots = [
     credits: 2000,
     locationPlanet: "Calas",
   }),
-  new Pilot({
+  dataFactory.create("Pilot", {
     id: 4,
     pilotCertification: 1234588,
     name: "Jerry",
@@ -39,21 +41,21 @@ let pilots = [
   }),
 ];
 let ships = [
-  new Ship({
+  dataFactory.create("Ship", {
     id: 1,
     pilotCertification: 1234567,
     fuelCapacity: 1500,
     fuelLevel: 10,
     weightCapacity: 2000,
   }),
-  new Ship({
+  dataFactory.create("Ship", {
     id: 2,
     pilotCertification: 1234566,
     fuelCapacity: 1500,
     fuelLevel: 500,
     weightCapacity: 1000,
   }),
-  new Ship({
+  dataFactory.create("Ship", {
     id: 3,
     pilotCertification: 1234588,
     fuelCapacity: 1500,
@@ -88,7 +90,7 @@ describe("TravelPilot Tests", () => {
       it("returns not found error", async () => {
         const travelPilot = new TravelPilot(fakePilotRepo, fakeShipRepo);
 
-        let fakeShip = new Ship({
+        let fakeShip = dataFactory.create("Ship", {
           id: 2,
           pilotCertification: 1234577,
           fuelCapacity: 1500,
@@ -110,7 +112,7 @@ describe("TravelPilot Tests", () => {
       it("returns not found error", async () => {
         const travelPilot = new TravelPilot(fakePilotRepo, fakeShipRepo);
 
-        let fakePilot = new Pilot({
+        let fakePilot = dataFactory.create("Pilot", {
           id: 6,
           pilotCertification: 1234999,
           name: "Matheus",
@@ -157,7 +159,7 @@ describe("TravelPilot Tests", () => {
       });
 
       it("update fuelLevel of Ship", async () => {
-        let oldShip = new Ship({
+        let oldShip = dataFactory.create("Ship", {
           id: 2,
           pilotCertification: 1234566,
           fuelCapacity: 1500,

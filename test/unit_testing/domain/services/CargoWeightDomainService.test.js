@@ -1,24 +1,26 @@
-const Cargo = require("../../../../src/domain/entities/Cargo");
-const Contract = require("../../../../src/domain/entities/Contract");
-const Resource = require("../../../../src/domain/entities/Resource");
 const CargoWeightDomainService = require("../../../../src/domain/services/CargoWeightDomainService");
-const { FakeRepositoriesFactory } = require("../../../support/factories");
+const {
+  FakeRepositoriesFactory,
+} = require("../../../support/factories/repository");
+const { DataFactory } = require("../../../support/factories/data");
+
+const dataFactory = new DataFactory();
 
 describe("CargoWeightDomainService tests", () => {
   let cargos = [
-    new Cargo({ id: 1, resourceIds: [1, 2, 3] }),
-    new Cargo({ id: 2, resourceIds: [2] }),
-    new Cargo({ id: 3, resourceIds: [3] }),
+    dataFactory.create("Cargo", { id: 1, resourceIds: [1, 2, 3] }),
+    dataFactory.create("Cargo", { id: 2, resourceIds: [2] }),
+    dataFactory.create("Cargo", { id: 3, resourceIds: [3] }),
   ];
 
   let resources = [
-    new Resource({ id: 1, name: "water", weight: 100 }),
-    new Resource({ id: 2, name: "food", weight: 300 }),
-    new Resource({ id: 3, name: "minerals", weight: 1000 }),
+    dataFactory.create("Resource", { id: 1, name: "water", weight: 100 }),
+    dataFactory.create("Resource", { id: 2, name: "food", weight: 300 }),
+    dataFactory.create("Resource", { id: 3, name: "minerals", weight: 1000 }),
   ];
 
   let contracts = [
-    new Contract({
+    dataFactory.create("Contract", {
       id: 1,
       pilotCertification: 1234567,
       cargoId: 1,
@@ -28,7 +30,7 @@ describe("CargoWeightDomainService tests", () => {
       value: 4000,
       contractStatus: "IN PROGRESS",
     }),
-    new Contract({
+    dataFactory.create("Contract", {
       id: 2,
       pilotCertification: 1234567,
       cargoId: 2,
@@ -38,7 +40,7 @@ describe("CargoWeightDomainService tests", () => {
       value: 1500,
       contractStatus: "IN PROGRESS",
     }),
-    new Contract({
+    dataFactory.create("Contract", {
       id: 3,
       pilotCertification: 1234557,
       cargoId: 3,
@@ -51,10 +53,14 @@ describe("CargoWeightDomainService tests", () => {
   ];
 
   const factory = new FakeRepositoriesFactory();
-  let fakeCargoRepo = factory.create('Cargos', cargos);
-  let fakeContractRepo = factory.create('Contracts', contracts);
-  let fakeResourceRepo = factory.create('Resources', resources);
-  const args = { cargoRepository: fakeCargoRepo, contractRepository: fakeContractRepo, resourceRepository: fakeResourceRepo };
+  let fakeCargoRepo = factory.create("Cargos", cargos);
+  let fakeContractRepo = factory.create("Contracts", contracts);
+  let fakeResourceRepo = factory.create("Resources", resources);
+  const args = {
+    cargoRepository: fakeCargoRepo,
+    contractRepository: fakeContractRepo,
+    resourceRepository: fakeResourceRepo,
+  };
   const service = new CargoWeightDomainService(args);
   describe("getCargoWeight", () => {
     describe("when calculating the weight", () => {
@@ -75,7 +81,9 @@ describe("CargoWeightDomainService tests", () => {
   describe("getCargoWeightPilot", () => {
     describe("when calculating the weight", () => {
       it("returns the correct weight", async () => {
-        expect(await service.getCargoWeightPilot(contracts[2].pilotCertification)).toEqual(1000);
+        expect(
+          await service.getCargoWeightPilot(contracts[2].pilotCertification)
+        ).toEqual(1000);
       });
     });
   });
