@@ -6,9 +6,11 @@
   "author": "Matheus <matheuscorocher@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "jest": "^27.4.5",
     "nodemon": "^2.0.15",
     "sequelize-cli": "^6.3.0",
+    "supertest": "^6.2.2",
     "tap": "^15.1.5"
   },
   "dependencies": {
@@ -23,9 +25,9 @@
     "structure": "^2.0.1"
   },
   "scripts": {
-    "start": "node app.js",
-    "server": "nodemon app.js",
-    "dev": "nodemon -r dotenv/config app.js",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "dev": "nodemon -r dotenv/config server.js",
     "db:create": "sequelize-cli db:create",
     "db:c:model": "sequelize-cli model:generate --name",
     "db:migrate": "sequelize-cli db:migrate",
@@ -35,6 +37,6 @@
     "db:g:seed": "sequelize-cli seed:generate --name",
     "db:seeds": "sequelize-cli db:seed:all",
     "db:seeds:undo:all": "sequelize-cli db:seed:undo:all",
-    "test": "jest"
+    "test": "NODE_ENV=test jest"
   }
 }
