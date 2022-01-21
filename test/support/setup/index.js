@@ -1,9 +1,13 @@
 const { DatabaseHandler } = require("../database");
 
-const setupIntegrationTest = () => {
+const setupIntegrationTest = (app) => {
   //Comment this line if you're not using a database
+  beforeAll(() =>  app.ready())
   beforeEach(DatabaseHandler.cleanDatabase);
-  afterAll(DatabaseHandler.closeDatabase);
+  afterAll( async () => {
+    app.close();
+    await DatabaseHandler.closeDatabase();
+  });
 };
 
 module.exports = { setupIntegrationTest };

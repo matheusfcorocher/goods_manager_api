@@ -1,7 +1,19 @@
 const app = require("fastify")({ logger: true });
 
-app.get("/", (req, reply) => {
-  reply.send("Let's go!");
+let opts = {
+  schema: {
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          message: {type: 'string'}
+        }
+      }
+    }
+  }
+}
+app.get("/", opts, (req, reply) => {
+  reply.send({message: "Let's go!"});
 });
 
 app.register(require("./src/interfaces/http/routes/contracts.js"));

@@ -68,7 +68,7 @@ describe("CreatePilot Tests", () => {
       });
     });
 
-    describe("When pilot doesnt have minimum age for be a pilot", () => {
+    describe("When pilot location planet is unknown", () => {
       it("returns validation error", async () => {
         const createPilot = new CreatePilot(fakePilotRepo);
 
