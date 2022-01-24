@@ -32,28 +32,28 @@ describe("Reports Routes Tests", () => {
     });
   });
 
-  describe("GET /api/reports/pilots", () => {
-    describe("When has transactions in db", () => {
-      it("returns a valid report", async () => {
-        await modelsFactory.createList("Transactions", [
-          { id: "1", about: "Mamma" },
-          { id: "2", about: "Mia" },
-        ]);
-        const response = await supertest(app.server)
-          .get("/api/reports/transactions")
-          .expect(200);
+  // describe("GET /api/reports/pilots", () => {
+  //   describe("When has transactions in db", () => {
+  //     it("returns a valid report", async () => {
+  //       await modelsFactory.createList("Transactions", [
+  //         { id: "1", about: "Mamma" },
+  //         { id: "2", about: "Mia" },
+  //       ]);
+  //       const response = await supertest(app.server)
+  //         .get("/api/reports/transactions")
+  //         .expect(200);
 
-        expect(response.body).toEqual(["Mamma", "Mia"]);
-      });
-    });
-    describe("When doesnt have any transactions in db", () => {
-      it("returns empty report", async () => {
-        const response = await supertest(app.server)
-          .get("/api/reports/pilots")
-          .expect(200);
+  //       expect(response.body).toEqual(["Mamma", "Mia"]);
+  //     });
+  //   });
+  //   describe("When doesnt have any transactions in db", () => {
+  //     it("returns empty report", async () => {
+  //       const response = await supertest(app.server)
+  //         .get("/api/reports/pilots")
+  //         .expect(200);
   
-        expect(response.body).toEqual([]);
-    });
-    });
-  });
+  //       expect(response.body).toEqual([]);
+  //   });
+  //   });
+  // });
 });

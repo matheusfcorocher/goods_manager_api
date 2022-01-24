@@ -29,6 +29,29 @@ class ModelsFactory {
       }
     }
   }
+
+  returnModel(type) {
+    switch (type) {
+      case "Cargos":
+        return Cargos;
+      case "Contracts":
+        return Contracts;
+      case "Pilots":
+        return Pilots;
+      case "Ships":
+        return Ships;
+      case "Resources":
+        return Resources;
+      case "Transactions":
+        return Transactions;
+      default: {
+        const validationError = new Error("Model not found Error");
+        validationError.CODE = "MODELNOTFOUND_ERROR";
+        validationError.errors = "Unknown Model type";
+        throw validationError;
+      }
+    }
+  }
 }
 
 module.exports = { ModelsFactory };

@@ -1,5 +1,5 @@
 const AcceptContract = require("../../../../src/app/use_cases/contract/AcceptContract");
-const { FakeRepositoriesFactory } = require("../../../support/factories/repository");
+const { FakeRepositoriesFactory } = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
 const { DataFactory } = require("../../../support/factories/data");
 
 const dataFactory = new DataFactory();

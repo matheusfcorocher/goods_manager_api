@@ -1,7 +1,7 @@
 const { CreateShip } = require("../../../../src/app/use_cases/ship");
 const Ship = require("../../../../src/domain/entities/Ship");
 const Pilot = require("../../../../src/domain/entities/Pilot");
-const { FakeRepositoriesFactory } = require("../../../support/factories/repository");
+const { FakeRepositoriesFactory } = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
 const { DataFactory } = require("../../../support/factories/data");
 
 const dataFactory = new DataFactory();

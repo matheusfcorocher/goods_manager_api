@@ -1,4 +1,4 @@
-const app = require("fastify")({ logger: true });
+const app = require("fastify")({ logger: false });
 
 let opts = {
   schema: {

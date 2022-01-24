@@ -2,7 +2,7 @@ const TravelPilot = require("../../../../src/app/use_cases/pilot/TravelPilot");
 const Pilot = require("../../../../src/domain/entities/Pilot");
 const Ship = require("../../../../src/domain/entities/Ship");
 const TravelFuelCostDomainService = require("../../../../src/domain/services/TravelFuelCostDomainService");
-const { FakeRepositoriesFactory } = require("../../../support/factories/repository");
+const { FakeRepositoriesFactory } = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
 const { DataFactory } = require("../../../support/factories/data");
 
 const dataFactory = new DataFactory();

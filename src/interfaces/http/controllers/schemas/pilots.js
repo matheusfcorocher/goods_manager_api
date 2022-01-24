@@ -25,7 +25,7 @@ const createPilotSchema = {
     },
   },
   response: {
-    200: typeString, 
+    200: typeString,
   }
 }
 
