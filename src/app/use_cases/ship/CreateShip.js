@@ -27,6 +27,7 @@ class CreateShip {
       
     } catch (error) {
       if (!error.CODE) {
+        console.log(error);
         error = new Error("Internal Error");
         error.CODE = "INTERNAL_ERROR";
         error.message = "Internal Error";

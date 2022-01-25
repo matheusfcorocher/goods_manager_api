@@ -11,8 +11,8 @@ describe("Reports Routes Tests", () => {
     describe("When has transactions in db", () => {
       it("returns a valid report", async () => {
         await modelsFactory.createList("Transactions", [
-          { id: "1", about: "Mamma" },
-          { id: "2", about: "Mia" },
+          { about: "Mamma" },
+          { about: "Mia" },
         ]);
         const response = await supertest(app.server)
           .get("/api/reports/transactions")

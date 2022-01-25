@@ -16,7 +16,6 @@ describe("Pilots Routes Tests", () => {
       it("returns validation error", async () => {
         await modelsFactory.createList("Pilots", [
           {
-            id: "1",
             pilotCertification: 1234567,
             name: "Matheus",
             age: 22,
@@ -24,7 +23,6 @@ describe("Pilots Routes Tests", () => {
             locationPlanet: "Aqua",
           },
           {
-            id: "2",
             pilotCertification: 1234555,
             name: "Carlos",
             age: 20,
@@ -54,7 +52,6 @@ describe("Pilots Routes Tests", () => {
       it("returns validation error", async () => {
         await modelsFactory.createList("Pilots", [
           {
-            id: "1",
             pilotCertification: 1234567,
             name: "Matheus",
             age: 22,
@@ -62,13 +59,12 @@ describe("Pilots Routes Tests", () => {
             locationPlanet: "Aqua",
           },
           {
-            id: "2",
             pilotCertification: 1234555,
             name: "Carlos",
             age: 20,
             credits: 500,
             locationPlanet: "Demeter",
-          },
+          }
         ]);
         const response = await supertest(app.server)
           .post("/api/pilots/create")
@@ -92,7 +88,6 @@ describe("Pilots Routes Tests", () => {
       it("returns the new pilot", async () => {
         await modelsFactory.createList("Pilots", [
           {
-            id: "1",
             pilotCertification: 1234567,
             name: "Matheus",
             age: 22,
@@ -100,13 +95,12 @@ describe("Pilots Routes Tests", () => {
             locationPlanet: "Aqua",
           },
           {
-            id: "2",
             pilotCertification: 1234555,
             name: "Carlos",
             age: 20,
             credits: 500,
             locationPlanet: "Demeter",
-          },
+          }
         ]);
 
         const data = {
@@ -131,7 +125,6 @@ describe("Pilots Routes Tests", () => {
       it("returns validation error", async () => {
         await modelsFactory.createList("Pilots", [
           {
-            id: "1",
             pilotCertification: 1234567,
             name: "Matheus",
             age: 22,
@@ -139,7 +132,6 @@ describe("Pilots Routes Tests", () => {
             locationPlanet: "Aqua",
           },
           {
-            id: "2",
             pilotCertification: 1234555,
             name: "Carlos",
             age: 20,
@@ -166,7 +158,6 @@ describe("Pilots Routes Tests", () => {
       it("returns validation error", async () => {
         await modelsFactory.createList("Pilots", [
           {
-            id: "1",
             pilotCertification: 1234567,
             name: "Matheus",
             age: 22,
@@ -174,7 +165,6 @@ describe("Pilots Routes Tests", () => {
             locationPlanet: "Aqua",
           },
           {
-            id: "2",
             pilotCertification: 1234555,
             name: "Carlos",
             age: 20,
@@ -201,7 +191,6 @@ describe("Pilots Routes Tests", () => {
       it("returns the new pilot", async () => {
         await modelsFactory.createList("Pilots", [
           {
-            id: "1",
             pilotCertification: 1234567,
             name: "Matheus",
             age: 22,
@@ -209,7 +198,6 @@ describe("Pilots Routes Tests", () => {
             locationPlanet: "Aqua",
           },
           {
-            id: "2",
             pilotCertification: 1234555,
             name: "Carlos",
             age: 20,
@@ -237,7 +225,6 @@ describe("Pilots Routes Tests", () => {
       it("returns validation error", async () => {
         await modelsFactory.createList("Pilots", [
           {
-            id: "1",
             pilotCertification: 1234567,
             name: "Matheus",
             age: 22,
@@ -245,7 +232,6 @@ describe("Pilots Routes Tests", () => {
             locationPlanet: "Aqua",
           },
           {
-            id: "2",
             pilotCertification: 1234555,
             name: "Carlos",
             age: 20,
@@ -256,14 +242,12 @@ describe("Pilots Routes Tests", () => {
 
         await modelsFactory.createList("Ships", [
           {
-            id: "1",
             pilotCertification: 1234567,
             fuelLevel: 1000,
             fuelCapacity: 1000,
             weightCapacity: 1000,
           },
           {
-            id: "2",
             pilotCertification: 1234555,
             fuelLevel: 10,
             fuelCapacity: 1000,
@@ -290,7 +274,6 @@ describe("Pilots Routes Tests", () => {
       it("returns pilot with new location", async () => {
         await modelsFactory.createList("Pilots", [
           {
-            id: "1",
             pilotCertification: 1234567,
             name: "Matheus",
             age: 22,
@@ -298,7 +281,6 @@ describe("Pilots Routes Tests", () => {
             locationPlanet: "Aqua",
           },
           {
-            id: "2",
             pilotCertification: 1234555,
             name: "Carlos",
             age: 20,
@@ -309,14 +291,12 @@ describe("Pilots Routes Tests", () => {
 
         await modelsFactory.createList("Ships", [
           {
-            id: "1",
             pilotCertification: 1234567,
             fuelLevel: 1000,
             fuelCapacity: 1000,
             weightCapacity: 1000,
           },
           {
-            id: "2",
             pilotCertification: 1234555,
             fuelLevel: 10,
             fuelCapacity: 1000,
@@ -354,38 +334,21 @@ describe("Pilots Routes Tests", () => {
         };
         await modelsFactory.createList("Pilots", [
           {
-            id: "1",
             pilotCertification: 1234567,
             name: "Matheus",
             age: 22,
             credits: 1000,
             locationPlanet: "Aqua",
-          },
-          {
-            id: "2",
-            pilotCertification: 1234555,
-            name: "Carlos",
-            age: 20,
-            credits: 500,
-            locationPlanet: "Demeter",
-          },
+          }
         ]);
 
         await modelsFactory.createList("Ships", [
           {
-            id: "1",
             pilotCertification: 1234567,
             fuelLevel: 1000,
             fuelCapacity: 1000,
             weightCapacity: 1000,
-          },
-          {
-            id: "2",
-            pilotCertification: 1234555,
-            fuelLevel: 10,
-            fuelCapacity: 1000,
-            weightCapacity: 1000,
-          },
+          }
         ]);
         const data = {
           destinationPlanet: "Andvari",
