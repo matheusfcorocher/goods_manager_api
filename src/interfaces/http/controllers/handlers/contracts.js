@@ -54,10 +54,11 @@ const fulfillContractHandler = async (req, reply) => {
   try {
     const { id } = req.params;
 
-    const fulfillContract = new FulfillContract(
-      contractRepo,
-      pilotRepo,
-      transactionRepo
+    const fulfillContract = new FulfillContract({
+      contractsRepository : contractRepo,
+      pilotsRepository : pilotRepo,
+      transactionsRepository : transactionRepo
+    }
     );
     const result = await fulfillContract.execute(id);
     reply.send(result);
