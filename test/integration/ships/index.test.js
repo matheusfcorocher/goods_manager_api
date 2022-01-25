@@ -1,6 +1,5 @@
 const supertest = require("supertest");
 const app = require("../../../app");
-const { DatabaseHandler } = require("../../support/database");
 const { ModelsFactory } = require("../../support/factories/models");
 const {
   RepositoriesFactory,

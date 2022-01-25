@@ -29,24 +29,23 @@ const transactionRepo = new SequelizeTransactionsRepository(transactionModel);
 const acceptContractHandler = async (req, reply) => {
   try {
     const { id } = req.params;
-
-    const acceptContract = new AcceptContract(
-      cargoRepo,
-      contractRepo,
-      pilotRepo,
-      shipRepo,
-      resourceRepo
-    );
+    const acceptContract = new AcceptContract({
+      cargosRepository : cargoRepo,
+      contractsRepository : contractRepo,
+      pilotsRepository : pilotRepo,
+      shipsRepository : shipRepo,
+      resourcesRepository : resourceRepo
+    });
     const result = await acceptContract.execute(id, req.body);
     reply.send(ContractSerializer.serialize(result));
   } catch (error) {
     switch (error.CODE) {
       case "VALIDATION_ERROR":
-        return reply.status(400).send(error.errors);
-      case "NOT_FOUND":
-        return reply.status(404).send(error.message);
+        return reply.status(400).send({ message: error.errors });
+      case "NOTFOUND_ERROR":
+        return reply.status(404).send({ message: error.message });
       default:
-        return reply.status(500).send(error.message);
+        return reply.status(500).send({ message: error.message });
     }
   }
 };
@@ -65,9 +64,9 @@ const fulfillContractHandler = async (req, reply) => {
   } catch (error) {
     switch (error.CODE) {
       case "VALIDATION_ERROR":
-        return reply.status(400).send(error.errors);
-      case "NOT_FOUND":
-        return reply.status(404).send(error.message);
+        return reply.status(400).send({ message: error.errors });
+      case "NOTFOUND_ERROR":
+        return reply.status(404).send({ message: error.message });
       default:
         return reply.status(500).send({
           message: "Internal Error",
@@ -100,7 +99,7 @@ const publishContractHandler = async (req, reply) => {
   } catch (error) {
     switch (error.CODE) {
       case "VALIDATION_ERROR":
-        return reply.status(400).send(error.errors);
+        return reply.status(400).send({ message: error.errors });
       default:
         return reply.status(500).send({
           message: "Internal Error",

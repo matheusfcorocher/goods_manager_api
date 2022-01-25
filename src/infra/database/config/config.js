@@ -17,7 +17,8 @@ module.exports = {
     "password": DB_PASSWORD,
     "database": DB_TEST_DATABASE,
     "host": DB_HOST,
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": false
   },
   "production": {
     "username": "production",
