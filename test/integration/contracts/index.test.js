@@ -1,5 +1,6 @@
 const supertest = require("supertest");
 const app = require("../../../app");
+const ContractSerializer = require("../../../src/interfaces/http/controllers/serializers/ContractSerializer");
 const { ModelsFactory } = require("../../support/factories/models");
 const {
   RepositoriesFactory,
@@ -768,7 +769,7 @@ describe("Contract Routes Tests", () => {
         ]);
 
         const response = await supertest(app.server)
-          .get("/api/contracts"+"?contractStatus=CREATED")
+          .get("/api/contracts" + "?contractStatus=CREATED")
           .expect(200);
 
         const answer = [
@@ -781,7 +782,7 @@ describe("Contract Routes Tests", () => {
             destinationPlanet: "Demeter",
             value: 4000,
             contractStatus: "CREATED",
-          }
+          },
         ];
         expect(response.body).toEqual(answer);
       });
@@ -799,6 +800,128 @@ describe("Contract Routes Tests", () => {
     });
   });
 
-  //   describe("POST /api/contracts/publish", () => {
-  //   });
+  describe("POST /api/contracts/publish", () => {
+    describe("When add a contract with correct values", () => {
+      it("returns success message", async () => {
+        await modelsFactory.createList("Resources", [
+          { name: "water", weight: 1000 },
+        ]);
+        await modelsFactory.createList("Cargos", [
+          { cargoId: 1, resourceId: 1 },
+        ]);
+
+        const data = {
+          cargoId: 1,
+          description: "food to Calas",
+          originPlanet: "Andvari",
+          destinationPlanet: "Calas",
+          value: 5000,
+        };
+
+        const response = await supertest(app.server)
+          .post("/api/contracts/publish")
+          .send(data)
+          .set("Content-type", "application/json")
+          .expect(200);
+
+        let message = "Contract was added successfully!";
+
+        expect(response.text).toEqual(message);
+      });
+      it("returns the correct contract", async () => {
+        await modelsFactory.createList("Resources", [
+          { name: "water", weight: 1000 },
+        ]);
+        await modelsFactory.createList("Cargos", [
+          { cargoId: 1, resourceId: 1 },
+        ]);
+
+        const data = {
+          cargoId: 1,
+          description: "food to Calas",
+          originPlanet: "Andvari",
+          destinationPlanet: "Calas",
+          value: 5000,
+        };
+
+        await supertest(app.server)
+          .post("/api/contracts/publish")
+          .send(data)
+          .set("Content-type", "application/json")
+          .expect(200);
+
+        const repoFactory = new RepositoriesFactory();
+        const ContractRepo = repoFactory.create("Contracts");
+
+        expect(
+          ContractSerializer.serialize(await ContractRepo.getById(1))
+        ).toEqual({
+          id: 1,
+          pilotCertification: 0,
+          cargoId: 1,
+          description: "food to Calas",
+          originPlanet: "Andvari",
+          destinationPlanet: "Calas",
+          value: 5000,
+          contractStatus: "CREATED",
+        });
+      });
+    });
+
+    describe("When add a contract with invalid origin planet name", () => {
+      it("returns validation error", async () => {
+        await modelsFactory.createList("Resources", [
+          { name: "water", weight: 1000 },
+        ]);
+        await modelsFactory.createList("Cargos", [
+          { cargoId: 1, resourceId: 1 },
+        ]);
+
+        const data = {
+          cargoId: 1,
+          description: "food to Calas",
+          originPlanet: "Fena",
+          destinationPlanet: "Calas",
+          value: 700,
+        };
+
+        const response = await supertest(app.server)
+          .post("/api/contracts/publish")
+          .send(data)
+          .set("Content-type", "application/json")
+          .expect(400);
+
+        messageError = "The origin planet or destination planet is invalid.";
+        expect(response.body).toEqual({ message: messageError });
+      });
+    });
+
+    describe("When add a contract with invalid destination planet name", () => {
+      it("returns validation error", async () => {
+        await modelsFactory.createList("Resources", [
+          { name: "water", weight: 1000 },
+        ]);
+        await modelsFactory.createList("Cargos", [
+          { cargoId: 1, resourceId: 1 },
+        ]);
+
+        const data = {
+          cargoId: 1,
+          description: "food to Xalas",
+          originPlanet: "Andvari",
+          destinationPlanet: "Xalas",
+          value: 700,
+        };
+
+        const response = await supertest(app.server)
+          .post("/api/contracts/publish")
+          .send(data)
+          .set("Content-type", "application/json")
+          .expect(400);
+
+        messageError = "The origin planet or destination planet is invalid.";
+        expect(response.body).toEqual({ message: messageError });
+      });
+    });
+  });
 });

@@ -96,7 +96,7 @@ const publishContractHandler = async (req, reply) => {
   try {
     const publishContract = new PublishContract(contractRepo);
     await publishContract.execute(req.body);
-    reply.send(`Contract was added!`);
+    reply.send("Contract was added successfully!");
   } catch (error) {
     switch (error.CODE) {
       case "VALIDATION_ERROR":
