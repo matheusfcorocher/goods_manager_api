@@ -624,8 +624,180 @@ describe("Contract Routes Tests", () => {
     });
   });
 
-  //   describe("GET /api/contracts", () => {
-  //   });
+  describe("GET /api/contracts", () => {
+    describe("When gets contracts with asc order", () => {
+      it("returns the correct array", async () => {
+        await modelsFactory.createList("Resources", [
+          { name: "water", weight: 100 },
+          { name: "food", weight: 300 },
+          { name: "minerals", weight: 1000 },
+        ]);
+        await modelsFactory.createList("Cargos", [
+          { cargoId: 1, resourceId: 1 },
+          { cargoId: 2, resourceId: 2 },
+          { cargoId: 3, resourceId: 3 },
+        ]);
+        await modelsFactory.createList("Pilots", [
+          {
+            pilotCertification: 1234567,
+            name: "Matheus",
+            age: 22,
+            credits: 1000,
+            locationPlanet: "Andvari",
+          },
+        ]);
+        await modelsFactory.createList("Contracts", [
+          {
+            pilotCertification: null,
+            cargoId: 1,
+            description: "water to Demeter.",
+            originPlanet: "Aqua",
+            destinationPlanet: "Demeter",
+            value: 4000,
+            contractStatus: "CREATED",
+          },
+          {
+            pilotCertification: 1234567,
+            cargoId: 2,
+            description: "food to Calas.",
+            originPlanet: "Aqua",
+            destinationPlanet: "Calas",
+            value: 5000,
+            contractStatus: "IN PROGRESS",
+          },
+          {
+            pilotCertification: 1234567,
+            cargoId: 3,
+            description: "minerals to Andvari.",
+            originPlanet: "Demeter",
+            destinationPlanet: "Andvari",
+            value: 7000,
+            contractStatus: "FINISHED",
+          },
+        ]);
+
+        const response = await supertest(app.server)
+          .get("/api/contracts")
+          .expect(200);
+
+        const answer = [
+          {
+            id: 1,
+            pilotCertification: 0,
+            cargoId: 1,
+            description: "water to Demeter.",
+            originPlanet: "Aqua",
+            destinationPlanet: "Demeter",
+            value: 4000,
+            contractStatus: "CREATED",
+          },
+          {
+            id: 2,
+            pilotCertification: 1234567,
+            cargoId: 2,
+            description: "food to Calas.",
+            originPlanet: "Aqua",
+            destinationPlanet: "Calas",
+            value: 5000,
+            contractStatus: "IN PROGRESS",
+          },
+          {
+            id: 3,
+            pilotCertification: 1234567,
+            cargoId: 3,
+            description: "minerals to Andvari.",
+            originPlanet: "Demeter",
+            destinationPlanet: "Andvari",
+            value: 7000,
+            contractStatus: "FINISHED",
+          },
+        ];
+        expect(response.body).toEqual(answer);
+      });
+    });
+
+    describe("When gets contracts with contractStatus equals CREATED in asc order", () => {
+      it("returns the correct array", async () => {
+        await modelsFactory.createList("Resources", [
+          { name: "water", weight: 100 },
+          { name: "food", weight: 300 },
+          { name: "minerals", weight: 1000 },
+        ]);
+        await modelsFactory.createList("Cargos", [
+          { cargoId: 1, resourceId: 1 },
+          { cargoId: 2, resourceId: 2 },
+          { cargoId: 3, resourceId: 3 },
+        ]);
+        await modelsFactory.createList("Pilots", [
+          {
+            pilotCertification: 1234567,
+            name: "Matheus",
+            age: 22,
+            credits: 1000,
+            locationPlanet: "Andvari",
+          },
+        ]);
+        await modelsFactory.createList("Contracts", [
+          {
+            pilotCertification: null,
+            cargoId: 1,
+            description: "water to Demeter.",
+            originPlanet: "Aqua",
+            destinationPlanet: "Demeter",
+            value: 4000,
+            contractStatus: "CREATED",
+          },
+          {
+            pilotCertification: 1234567,
+            cargoId: 2,
+            description: "food to Calas.",
+            originPlanet: "Aqua",
+            destinationPlanet: "Calas",
+            value: 5000,
+            contractStatus: "IN PROGRESS",
+          },
+          {
+            pilotCertification: 1234567,
+            cargoId: 3,
+            description: "minerals to Andvari.",
+            originPlanet: "Demeter",
+            destinationPlanet: "Andvari",
+            value: 7000,
+            contractStatus: "FINISHED",
+          },
+        ]);
+
+        const response = await supertest(app.server)
+          .get("/api/contracts"+"?contractStatus=CREATED")
+          .expect(200);
+
+        const answer = [
+          {
+            id: 1,
+            pilotCertification: 0,
+            cargoId: 1,
+            description: "water to Demeter.",
+            originPlanet: "Aqua",
+            destinationPlanet: "Demeter",
+            value: 4000,
+            contractStatus: "CREATED",
+          }
+        ];
+        expect(response.body).toEqual(answer);
+      });
+    });
+
+    describe("When doesn't have any contracts", () => {
+      it("returns empty array", async () => {
+        const response = await supertest(app.server)
+          .get("/api/contracts")
+          .expect(200);
+
+        const answer = [];
+        expect(response.body).toEqual(answer);
+      });
+    });
+  });
 
   //   describe("POST /api/contracts/publish", () => {
   //   });
