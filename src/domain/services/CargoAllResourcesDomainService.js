@@ -22,7 +22,7 @@ class CargoAllResourcesDomainService {
 
   getAllResourcesContract = async (id) => {
     const contract = await this.contractRepo.getById(id);
-    return await this.getAllResourcesCargo(contract.cargoId);
+    return this.getAllResourcesCargo(contract.cargoId);
   };
 
   getAllResourcesPilot = async (pilotCertification) => {
