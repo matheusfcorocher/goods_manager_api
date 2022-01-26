@@ -11,6 +11,8 @@ describe("CargoWeightDomainService tests", () => {
     dataFactory.create("Cargo", { id: 1, resourceIds: [1, 2, 3] }),
     dataFactory.create("Cargo", { id: 2, resourceIds: [2] }),
     dataFactory.create("Cargo", { id: 3, resourceIds: [3] }),
+    dataFactory.create("Cargo", { id: 4, resourceIds: [100] }),
+    dataFactory.create("Cargo", { id: 5, resourceIds: [] }),
   ];
 
   let resources = [
@@ -50,6 +52,36 @@ describe("CargoWeightDomainService tests", () => {
       value: 1000,
       contractStatus: "IN PROGRESS",
     }),
+    dataFactory.create("Contract", {
+      id: 4,
+      pilotCertification: 1234111,
+      cargoId: 100,
+      description: "minerals to Aqua.",
+      originPlanet: "Calas",
+      destinationPlanet: "Aqua",
+      value: 1000,
+      contractStatus: "IN PROGRESS",
+    }),
+    dataFactory.create("Contract", {
+      id: 5,
+      pilotCertification: 1234112,
+      cargoId: 4,
+      description: "minerals to Aqua.",
+      originPlanet: "Calas",
+      destinationPlanet: "Aqua",
+      value: 1000,
+      contractStatus: "IN PROGRESS",
+    }),
+    dataFactory.create("Contract", {
+      id: 6,
+      pilotCertification: 1234113,
+      cargoId: 5,
+      description: "minerals to Aqua.",
+      originPlanet: "Calas",
+      destinationPlanet: "Aqua",
+      value: 1000,
+      contractStatus: "IN PROGRESS",
+    }),
   ];
 
   const factory = new FakeRepositoriesFactory();
@@ -68,12 +100,86 @@ describe("CargoWeightDomainService tests", () => {
         expect(await service.getCargoWeight(1)).toEqual(1400);
       });
     });
+
+    describe("when calculating a cargo with non-existent cargo id", () => {
+      it("returns not found error", async () => {
+        const notFoundError = new Error("Not Found Error");
+        notFoundError.CODE = "NOTFOUND_ERROR";
+        notFoundError.message = `Cargo with id 100 can't be found.`;
+
+        await expect(() => service.getCargoWeight(100)).rejects.toThrow(
+          notFoundError
+        );
+      });
+    });
+
+    describe("when calculating a cargo that has a non-existent resource id", () => {
+      it("returns not found error", async () => {
+        const notFoundError = new Error("Not Found Error");
+        notFoundError.CODE = "NOTFOUND_ERROR";
+        notFoundError.message = `Resource with id 100 can't be found.`;
+
+        await expect(() => service.getCargoWeight(4)).rejects.toThrow(
+          notFoundError
+        );
+      });
+    });
+
+    describe("when calculating a cargo that doesnt have any resource id", () => {
+      it("returns 0", async () => {
+        const result = 0;
+        expect(await service.getCargoWeight(5)).toEqual(result);
+      });
+    });
   });
 
   describe("getCargoWeightContract", () => {
     describe("when calculating the weight", () => {
       it("returns the correct weight", async () => {
         expect(await service.getCargoWeightContract(2)).toEqual(300);
+      });
+    });
+
+    describe("when calculating a contract with non-existent contract id ", () => {
+      it("returns not found error", async () => {
+        const notFoundError = new Error("Not Found Error");
+        notFoundError.CODE = "NOTFOUND_ERROR";
+        notFoundError.message = `Contract with id 100 can't be found.`;
+
+        await expect(() => service.getCargoWeightContract(100)).rejects.toThrow(
+          notFoundError
+        );
+      });
+    });
+
+    describe("when calculating a contract with non-existent cargo id ", () => {
+      it("returns not found error", async () => {
+        const notFoundError = new Error("Not Found Error");
+        notFoundError.CODE = "NOTFOUND_ERROR";
+        notFoundError.message = `Cargo with id 100 can't be found.`;
+
+        await expect(() => service.getCargoWeightContract(4)).rejects.toThrow(
+          notFoundError
+        );
+      });
+    });
+
+    describe("when calculating a contract with cargo that has a non-existent resource id ", () => {
+      it("returns not found error", async () => {
+        const notFoundError = new Error("Not Found Error");
+        notFoundError.CODE = "NOTFOUND_ERROR";
+        notFoundError.message = `Resource with id 100 can't be found.`;
+
+        await expect(() => service.getCargoWeightContract(5)).rejects.toThrow(
+          notFoundError
+        );
+      });
+    });
+
+    describe("when calculating a contract with cargo that doesnt have any resource id", () => {
+      it("returns 0", async () => {
+        const result = 0;
+        expect(await service.getCargoWeightContract(6)).toEqual(result);
       });
     });
   });
@@ -86,5 +192,52 @@ describe("CargoWeightDomainService tests", () => {
         ).toEqual(1000);
       });
     });
+
+    describe("when calculating the total resources that a pilot has", () => {
+      describe("and he doesnt have any contract", () => {
+        it("returns object with all properties with 0", async () => {
+          const result = 0;
+          expect(await service.getCargoWeightPilot(1234653)).toEqual(result);
+        });
+      });
+    });
+
+    describe("when calculating the total resources that a pilot has", () => {
+      describe("and his contract has a non-existent cargo id", () => {
+        it("returns not found error", async () => {
+          const notFoundError = new Error("Not Found Error");
+          notFoundError.CODE = "NOTFOUND_ERROR";
+          notFoundError.message = `Cargo with id 100 can't be found.`;
+
+          await expect(() =>
+            service.getCargoWeightPilot(1234111)
+          ).rejects.toThrow(notFoundError);
+        });
+      });
+    });
+
+    describe("when calculating the total resources that a pilot has", () => {
+      describe("and his contract with cargo that has a non-existent resource id", () => {
+        it("returns not found error", async () => {
+          const notFoundError = new Error("Not Found Error");
+          notFoundError.CODE = "NOTFOUND_ERROR";
+          notFoundError.message = `Resource with id 100 can't be found.`;
+
+          await expect(() =>
+            service.getCargoWeightPilot(1234112)
+          ).rejects.toThrow(notFoundError);
+        });
+      });
+    });
+
+    describe("when calculating the total resources that a pilot has", () => {
+        describe("and his contract with cargo that doesnt have any resource id", () => {
+          it("returns object with all properties with 0", async () => {
+            const result = 0
+    
+            expect(await service.getCargoWeightPilot(1234113)).toEqual(result);
+          });
+        });
+      });
   });
 });
