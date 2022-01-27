@@ -147,6 +147,101 @@ describe("GetPilotsReport Tests", () => {
       });
     });
 
+    describe("when calculating the total resources that a pilot has", () => {
+      describe("and his contract has a non-existent cargo id", () => {
+        it("returns not found error", async () => {
+          let resources = [
+            dataFactory.create("Resource", { id: 1, name: "water", weight: 100 }),
+          ];
+          let cargos = [
+            dataFactory.create("Cargo", { id: 10, resourceIds: [100] }),
+          ];
+          let contracts = [
+            dataFactory.create("Contract", {
+              id: 10,
+              pilotCertification: 1234599,
+              cargoId: 100,
+              description: "food to Calas.",
+              originPlanet: "Demeter",
+              destinationPlanet: "Calas",
+              value: 4000,
+              contractStatus: "IN PROGRESS",
+            }),
+          ];
+          let pilots = [
+            dataFactory.create("Pilot", {
+              id: 10,
+              pilotCertification: 1234599,
+              name: "Jerry",
+              age: 30,
+              credits: 2000,
+              locationPlanet: "Demeter",
+            })
+          ];
+          let fakeCargoRepo2 = factory.create("Cargos", cargos);
+          let fakeContractRepo2 = factory.create("Contracts", contracts);
+          let fakePilotRepo2 = factory.create("Pilots", pilots);
+          let fakeResourceRepo2 = factory.create("Resources", resources);
+          const getPilotsReport = new GetPilotsReport(fakeCargoRepo2, fakeContractRepo2, fakePilotRepo2, fakeResourceRepo2);
+          const notFoundError = new Error("Not Found Error");
+          notFoundError.CODE = "NOTFOUND_ERROR";
+          notFoundError.message = `Cargo with id 100 can't be found.`;
+
+          await expect(() =>
+            getPilotsReport.execute()
+          ).rejects.toThrow(notFoundError);
+        });
+      });
+    });
+
+    describe("when calculating the total resources that a pilot has", () => {
+      describe("and his contract with cargo that has a non-existent resource id", () => {
+        it("returns not found error", async () => {
+          let resources = [
+            dataFactory.create("Resource", { id: 1, name: "water", weight: 100 }),
+          ];
+          let cargos = [
+            dataFactory.create("Cargo", { id: 10, resourceIds: [100] }),
+          ];
+          let contracts = [
+            dataFactory.create("Contract", {
+              id: 10,
+              pilotCertification: 1234599,
+              cargoId: 10,
+              description: "food to Calas.",
+              originPlanet: "Demeter",
+              destinationPlanet: "Calas",
+              value: 4000,
+              contractStatus: "IN PROGRESS",
+            }),
+          ];
+          let pilots = [
+            dataFactory.create("Pilot", {
+              id: 10,
+              pilotCertification: 1234599,
+              name: "Jerry",
+              age: 30,
+              credits: 2000,
+              locationPlanet: "Demeter",
+            })
+          ];
+          let fakeCargoRepo3 = factory.create("Cargos", cargos);
+          let fakeContractRepo3 = factory.create("Contracts", contracts);
+          let fakePilotRepo3 = factory.create("Pilots", pilots);
+          let fakeResourceRepo3 = factory.create("Resources", resources);
+          const getPilotsReport = new GetPilotsReport(fakeCargoRepo3, fakeContractRepo3, fakePilotRepo3, fakeResourceRepo3);
+
+          const notFoundError = new Error("Not Found Error");
+          notFoundError.CODE = "NOTFOUND_ERROR";
+          notFoundError.message = `Resource with id 100 can't be found.`;
+
+          await expect(() =>
+            getPilotsReport.execute()
+          ).rejects.toThrow(notFoundError);
+        });
+      });
+    });
+
     describe("when doesn't have any pilots", () => {
       it("returns empty array", async () => {
         let fakePilotRepo2 = factory.create("Pilots", []);
