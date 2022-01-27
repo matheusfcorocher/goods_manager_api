@@ -1,5 +1,7 @@
 const GetPlanetsReport = require("../../../../src/app/use_cases/reports/GetPlanetsReport");
-const { FakeRepositoriesFactory } = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
+const {
+  FakeRepositoriesFactory,
+} = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
 const { DataFactory } = require("../../../support/factories/data");
 
 const dataFactory = new DataFactory();
@@ -66,11 +68,14 @@ let fakeCargoRepo = factory.create("Cargos", cargos);
 let fakeContractRepo = factory.create("Contracts", contracts);
 let fakeResourceRepo = factory.create("Resources", resources);
 describe("GetPlanetsReport Tests", () => {
-  
   describe("execute", () => {
     describe("when getting planets report", () => {
       it("returns the correct report", async () => {
-        const getPlanetsReport = new GetPlanetsReport(fakeCargoRepo, fakeContractRepo, fakeResourceRepo);
+        const getPlanetsReport = new GetPlanetsReport(
+          fakeCargoRepo,
+          fakeContractRepo,
+          fakeResourceRepo
+        );
         const answer = {
           Andvari: {
             sent: {
@@ -82,7 +87,7 @@ describe("GetPlanetsReport Tests", () => {
               water: 0,
               food: 0,
               minerals: 0,
-            }
+            },
           },
           Aqua: {
             sent: {
@@ -94,7 +99,7 @@ describe("GetPlanetsReport Tests", () => {
               water: 0,
               food: 0,
               minerals: 0,
-            }
+            },
           },
           Calas: {
             sent: {
@@ -106,7 +111,7 @@ describe("GetPlanetsReport Tests", () => {
               water: 0,
               food: 0,
               minerals: 0,
-            }
+            },
           },
           Demeter: {
             sent: {
@@ -118,29 +123,119 @@ describe("GetPlanetsReport Tests", () => {
               water: 0,
               food: 0,
               minerals: 1000,
-            }
+            },
           },
         };
         expect(await getPlanetsReport.execute()).toEqual(answer);
       });
     });
-  });
 
-  describe("execute", () => {
+    describe("when calculating the total resources that a pilot has", () => {
+      describe("and his contract has a non-existent cargo id", () => {
+        it("returns not found error", async () => {
+          let cargos = [
+            dataFactory.create("Cargo", { id: 1, resourceIds: [1, 2, 3] }),
+            dataFactory.create("Cargo", { id: 2, resourceIds: [100] }),
+          ];
+
+          let resources = [];
+
+          let contracts = [
+            dataFactory.create("Contract", {
+              id: 5,
+              pilotCertification: 1234567,
+              cargoId: 100,
+              description: "food to Calas.",
+              originPlanet: "Demeter",
+              destinationPlanet: "Calas",
+              value: 4000,
+              contractStatus: "IN PROGRESS",
+            }),
+          ];
+
+          let fakeCargoRepo = factory.create("Cargos", cargos);
+          let fakeContractRepo = factory.create("Contracts", contracts);
+          let fakeResourceRepo = factory.create("Resources", resources);
+
+          const getPlanetsReport = new GetPlanetsReport(
+            fakeCargoRepo,
+            fakeContractRepo,
+            fakeResourceRepo
+          );
+
+          const notFoundError = new Error("Not Found Error");
+          notFoundError.CODE = "NOTFOUND_ERROR";
+          notFoundError.message = `Cargo with id 100 can't be found.`;
+
+          await expect(() => getPlanetsReport.execute()).rejects.toThrow(
+            notFoundError
+          );
+        });
+      });
+    });
+
+    describe("when calculating the total resources that a pilot has", () => {
+      describe("and his contract with cargo that has a non-existent resource id", () => {
+        it("returns not found error", async () => {
+          let cargos = [
+            dataFactory.create("Cargo", { id: 2, resourceIds: [100] }),
+          ];
+
+          let resources = [];
+
+          let contracts = [
+            dataFactory.create("Contract", {
+              id: 5,
+              pilotCertification: 1234567,
+              cargoId: 2,
+              description: "food to Calas.",
+              originPlanet: "Demeter",
+              destinationPlanet: "Calas",
+              value: 4000,
+              contractStatus: "IN PROGRESS",
+            }),
+          ];
+
+          let fakeCargoRepo = factory.create("Cargos", cargos);
+          let fakeContractRepo = factory.create("Contracts", contracts);
+          let fakeResourceRepo = factory.create("Resources", resources);
+
+          const getPlanetsReport = new GetPlanetsReport(
+            fakeCargoRepo,
+            fakeContractRepo,
+            fakeResourceRepo
+          );
+
+          const notFoundError = new Error("Not Found Error");
+          notFoundError.CODE = "NOTFOUND_ERROR";
+          notFoundError.message = `Resource with id 100 can't be found.`;
+
+          await expect(() => getPlanetsReport.execute()).rejects.toThrow(
+            notFoundError
+          );
+        });
+      });
+    });
     describe("when doesn't have any contracts", () => {
       it("returns the correct report", async () => {
-        let fakeContractRepo2 = factory.create("Contracts", [])
-        const getPlanetsReport = new GetPlanetsReport(fakeCargoRepo, fakeContractRepo2, fakeResourceRepo);
-        const resources = {sent: {
-          water: 0,
-          food: 0,
-          minerals: 0,
-        },
-        received: {
-          water: 0,
-          food: 0,
-          minerals: 0,
-        }};
+        let fakeContractRepo2 = factory.create("Contracts", []);
+        const getPlanetsReport = new GetPlanetsReport(
+          fakeCargoRepo,
+          fakeContractRepo2,
+          fakeResourceRepo
+        );
+        const resources = {
+          sent: {
+            water: 0,
+            food: 0,
+            minerals: 0,
+          },
+          received: {
+            water: 0,
+            food: 0,
+            minerals: 0,
+          },
+        };
         const answer = {
           Andvari: resources,
           Aqua: resources,
