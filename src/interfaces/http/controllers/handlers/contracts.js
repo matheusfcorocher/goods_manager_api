@@ -30,11 +30,11 @@ const acceptContractHandler = async (req, reply) => {
   try {
     const { id } = req.params;
     const acceptContract = new AcceptContract({
-      cargosRepository : cargoRepo,
-      contractsRepository : contractRepo,
-      pilotsRepository : pilotRepo,
-      shipsRepository : shipRepo,
-      resourcesRepository : resourceRepo
+      cargosRepository: cargoRepo,
+      contractsRepository: contractRepo,
+      pilotsRepository: pilotRepo,
+      shipsRepository: shipRepo,
+      resourcesRepository: resourceRepo,
     });
     const result = await acceptContract.execute(id, req.body);
     reply.send(ContractSerializer.serialize(result));
@@ -55,11 +55,10 @@ const fulfillContractHandler = async (req, reply) => {
     const { id } = req.params;
 
     const fulfillContract = new FulfillContract({
-      contractsRepository : contractRepo,
-      pilotsRepository : pilotRepo,
-      transactionsRepository : transactionRepo
-    }
-    );
+      contractsRepository: contractRepo,
+      pilotsRepository: pilotRepo,
+      transactionsRepository: transactionRepo,
+    });
     const result = await fulfillContract.execute(id);
     reply.send(result);
   } catch (error) {
@@ -94,13 +93,15 @@ const getAllContractsHandler = async (req, reply) => {
 
 const publishContractHandler = async (req, reply) => {
   try {
-    const publishContract = new PublishContract(contractRepo);
+    const publishContract = new PublishContract(contractRepo, cargoRepo);
     await publishContract.execute(req.body);
     reply.send("Contract was added successfully!");
   } catch (error) {
     switch (error.CODE) {
       case "VALIDATION_ERROR":
         return reply.status(400).send({ message: error.errors });
+      case "NOTFOUND_ERROR":
+        return reply.status(404).send({ message: error.message });
       default:
         return reply.status(500).send({
           message: "Internal Error",

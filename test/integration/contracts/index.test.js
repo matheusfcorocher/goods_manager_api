@@ -896,6 +896,35 @@ describe("Contract Routes Tests", () => {
       });
     });
 
+    describe("When add a contract with invalid cargoId", () => {
+      it("returns validation error", async () => {
+        await modelsFactory.createList("Resources", [
+          { name: "water", weight: 1000 },
+        ]);
+        await modelsFactory.createList("Cargos", [
+          { cargoId: 1, resourceId: 1 },
+        ]);
+
+        const data = {
+          cargoId: 100,
+          description: "water to Calas",
+          originPlanet: "Aqua",
+          destinationPlanet: "Calas",
+          value: 700,
+        };
+
+        const response = await supertest(app.server)
+          .post("/api/contracts/publish")
+          .send(data)
+          .set("Content-type", "application/json")
+          .expect(404);
+
+        messageError = `Cargo with id ${data.cargoId} can't be found.`;
+        expect(response.body).toEqual({ message: messageError });
+
+      });
+    });
+
     describe("When add a contract with invalid destination planet name", () => {
       it("returns validation error", async () => {
         await modelsFactory.createList("Resources", [

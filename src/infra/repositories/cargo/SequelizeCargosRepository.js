@@ -18,9 +18,9 @@ class SequelizeCargosRepository {
       });
     } catch (error) {
       if (error.name === "SequelizeEmptyResultError") {
-        const notFoundError = new Error("NotFoundError");
-        notFoundError.details = `Cargo with cargoId ${cargoId} can't be found.`;
-
+        const notFoundError = new Error("Not Found Error");
+        notFoundError.CODE = "NOTFOUND_ERROR";
+        notFoundError.message = `Cargo with id ${cargoId} can't be found.`;
         throw notFoundError;
       }
 
