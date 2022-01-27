@@ -10,6 +10,7 @@ describe("AcceptContract Tests", () => {
     dataFactory.create("Cargo", { id: 2, resourceIds: [2] }),
     dataFactory.create("Cargo", { id: 3, resourceIds: [3] }),
     dataFactory.create("Cargo", { id: 4, resourceIds: [4] }),
+    dataFactory.create("Cargo", { id: 20, resourceIds: [100] }),
   ];
 
   let resources = [
@@ -60,6 +61,46 @@ describe("AcceptContract Tests", () => {
       value: 4000,
       contractStatus: "CREATED",
     }),
+    dataFactory.create("Contract", {
+      id: 15,
+      pilotCertification: 1234444,
+      cargoId: 100,
+      description: "food to Calas.",
+      originPlanet: "Demeter",
+      destinationPlanet: "Calas",
+      value: 4000,
+      contractStatus: "IN PROGRESS",
+    }),
+    dataFactory.create("Contract", {
+      id: 20,
+      pilotCertification: 1234333,
+      cargoId: 20,
+      description: "food to Calas.",
+      originPlanet: "Demeter",
+      destinationPlanet: "Calas",
+      value: 4000,
+      contractStatus: "IN PROGRESS",
+    }),
+    dataFactory.create("Contract", {
+      id: 16,
+      pilotCertification: null,
+      cargoId: 100,
+      description: "food to Calas.",
+      originPlanet: "Demeter",
+      destinationPlanet: "Calas",
+      value: 4000,
+      contractStatus: "CREATED",
+    }),
+    dataFactory.create("Contract", {
+      id: 17,
+      pilotCertification: null,
+      cargoId: 20,
+      description: "food to Calas.",
+      originPlanet: "Demeter",
+      destinationPlanet: "Calas",
+      value: 4000,
+      contractStatus: "CREATED",
+    }),
   ];
   let pilots = [
     dataFactory.create("Pilot", {
@@ -94,6 +135,22 @@ describe("AcceptContract Tests", () => {
       credits: 2000,
       locationPlanet: "Demeter",
     }),
+    dataFactory.create("Pilot", {
+      id: 5,
+      pilotCertification: 1234444,
+      name: "Sully",
+      age: 60,
+      credits: 100,
+      locationPlanet: "Aqua",
+    }),
+    dataFactory.create("Pilot", {
+      id: 6,
+      pilotCertification: 1234333,
+      name: "Ethan",
+      age: 40,
+      credits: 100,
+      locationPlanet: "Aqua",
+    }),
   ];
   let ships = [
     dataFactory.create("Ship", {
@@ -113,6 +170,20 @@ describe("AcceptContract Tests", () => {
     dataFactory.create("Ship", {
       id: 3,
       pilotCertification: 1234588,
+      fuelCapacity: 1500,
+      fuelLevel: 500,
+      weightCapacity: 1999,
+    }),
+    dataFactory.create("Ship", {
+      id: 3,
+      pilotCertification: 1234444,
+      fuelCapacity: 1500,
+      fuelLevel: 500,
+      weightCapacity: 1999,
+    }),
+    dataFactory.create("Ship", {
+      id: 4,
+      pilotCertification: 1234333,
       fuelCapacity: 1500,
       fuelLevel: 500,
       weightCapacity: 1999,
@@ -239,6 +310,96 @@ describe("AcceptContract Tests", () => {
         await expect(
           () => acceptContract.execute(5, pilots[3])
         ).rejects.toThrow(validationError);
+      });
+    });
+
+    describe("when calculating the total resources that a pilot has", () => {
+      describe("and his contract has a non-existent cargo id", () => {
+        it("returns not found error", async () => {
+          const args = {
+            cargosRepository: fakeCargoRepo,
+            contractsRepository: fakeContractRepo,
+            pilotsRepository: fakePilotRepo,
+            shipsRepository: fakeShipRepo,
+            resourcesRepository: fakeResourceRepo,
+          };
+          const acceptContract = new AcceptContract(args);
+
+          const notFoundError = new Error("Not Found Error");
+          notFoundError.CODE = "NOTFOUND_ERROR";
+          notFoundError.message = `Cargo with id 100 can't be found.`;
+
+          
+          await expect(() =>
+            acceptContract.execute(1, pilots[4])
+          ).rejects.toThrow(notFoundError);
+        });
+      });
+    });
+
+    describe("when calculating the total resources that a pilot has", () => {
+      describe("and his contract with cargo that has a non-existent resource id", () => {
+        it("returns not found error", async () => {
+          const args = {
+            cargosRepository: fakeCargoRepo,
+            contractsRepository: fakeContractRepo,
+            pilotsRepository: fakePilotRepo,
+            shipsRepository: fakeShipRepo,
+            resourcesRepository: fakeResourceRepo,
+          };
+          const acceptContract = new AcceptContract(args);
+
+          const notFoundError = new Error("Not Found Error");
+          notFoundError.CODE = "NOTFOUND_ERROR";
+          notFoundError.message = `Resource with id 100 can't be found.`;
+
+          await expect(() =>
+            acceptContract.execute(1, pilots[5])
+          ).rejects.toThrow(notFoundError);
+        });
+      });
+    });
+
+    describe("when calculating a contract with non-existent cargo id ", () => {
+      it("returns not found error", async () => {
+        const args = {
+          cargosRepository: fakeCargoRepo,
+          contractsRepository: fakeContractRepo,
+          pilotsRepository: fakePilotRepo,
+          shipsRepository: fakeShipRepo,
+          resourcesRepository: fakeResourceRepo,
+        };
+        const acceptContract = new AcceptContract(args);
+
+        const notFoundError = new Error("Not Found Error");
+        notFoundError.CODE = "NOTFOUND_ERROR";
+        notFoundError.message = `Cargo with id 100 can't be found.`;
+
+        await expect(() =>
+            acceptContract.execute(16, pilots[3])
+          ).rejects.toThrow(notFoundError);
+      });
+    });
+
+    describe("when calculating a contract with cargo that has a non-existent resource id ", () => {
+      it("returns not found error", async () => {
+
+        const args = {
+          cargosRepository: fakeCargoRepo,
+          contractsRepository: fakeContractRepo,
+          pilotsRepository: fakePilotRepo,
+          shipsRepository: fakeShipRepo,
+          resourcesRepository: fakeResourceRepo,
+        };
+        const acceptContract = new AcceptContract(args);
+
+        const notFoundError = new Error("Not Found Error");
+        notFoundError.CODE = "NOTFOUND_ERROR";
+        notFoundError.message = `Resource with id 100 can't be found.`;
+
+        await expect(() =>
+            acceptContract.execute(17, pilots[3])
+          ).rejects.toThrow(notFoundError);
       });
     });
 
