@@ -64,30 +64,72 @@ describe("Infra :: Contract :: SequelizeContractsRepository", () => {
 
   describe("#getById", () => {
     describe("when contract do exist", () => {
-        it("returns a contract from the database", async () => {
-          const contract = await repository.getById(1);
-    
-          expect(contract).toBeInstanceOf(Contract);
-          expect(contract).toEqual(
-            dataFactory.create("Contract", {
-              pilotCertification: null,
-              cargoId: 1,
-              description: "water to Demeter.",
-              originPlanet: "Aqua",
-              destinationPlanet: "Demeter",
-              value: 4000,
-              contractStatus: "CREATED",
-            })
-          );
-        });
-    })
-    
+      it("returns a contract from the database", async () => {
+        const contract = await repository.getById(1);
+
+        expect(contract).toBeInstanceOf(Contract);
+        expect(contract).toEqual(
+          dataFactory.create("Contract", {
+            pilotCertification: null,
+            cargoId: 1,
+            description: "water to Demeter.",
+            originPlanet: "Aqua",
+            destinationPlanet: "Demeter",
+            value: 4000,
+            contractStatus: "CREATED",
+          })
+        );
+      });
+    });
+
     describe("when contract doesn't exist", () => {
       it("returns not found error", async () => {
         const notFoundError = new Error("Not Found Error");
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Contract with id 10 can't be found.`;
-        await expect(() => repository.getById(10)).rejects.toThrow(notFoundError);
+        await expect(() => repository.getById(10)).rejects.toThrow(
+          notFoundError
+        );
+      });
+    });
+  });
+
+  describe("#getByPilotCertification", () => {
+    describe("when contract do exist", () => {
+      it("returns a contract from the database", async () => {
+        const contract = await repository.getByPilotCertification(1234567);
+
+        expect(contract).toHaveLength(2);
+        expect(contract[0]).toBeInstanceOf(Contract);
+        expect(contract[0]).toEqual(
+          dataFactory.create("Contract", {
+            pilotCertification: 1234567,
+            cargoId: 2,
+            description: "food to Calas.",
+            originPlanet: "Aqua",
+            destinationPlanet: "Calas",
+            value: 5000,
+            contractStatus: "IN PROGRESS",
+          })
+        );
+        expect(contract[1]).toBeInstanceOf(Contract);
+        expect(contract[1]).toEqual(
+          dataFactory.create("Contract", {
+            pilotCertification: 1234567,
+            cargoId: 3,
+            description: "minerals to Andvari.",
+            originPlanet: "Demeter",
+            destinationPlanet: "Andvari",
+            value: 7000,
+            contractStatus: "FINISHED",
+          })
+        );
+      });
+    });
+
+    describe("when contract doesn't exist", () => {
+      it("returns empty array", async () => {
+        expect(await repository.getByPilotCertification(1234124)).toEqual([]);
       });
     });
   });
