@@ -6,8 +6,8 @@ const SequelizeTransactionMapper = {
         return new Transaction({id, about});
     },
     toDatabase(transaction) {
-        const { id, about } = transaction;
-        return { id, about };
+        const { about } = transaction;
+        return { about };
     }
 }
 
