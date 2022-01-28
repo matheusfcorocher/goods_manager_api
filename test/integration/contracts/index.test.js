@@ -1,6 +1,7 @@
 const supertest = require("supertest");
 const app = require("../../../app");
 const ContractSerializer = require("../../../src/interfaces/http/controllers/serializers/ContractSerializer");
+const { DatabaseHandler } = require("../../support/database");
 const { ModelsFactory } = require("../../support/factories/models");
 const {
   RepositoriesFactory,
@@ -921,7 +922,6 @@ describe("Contract Routes Tests", () => {
 
         messageError = `Cargo with id ${data.cargoId} can't be found.`;
         expect(response.body).toEqual({ message: messageError });
-
       });
     });
 

@@ -8,10 +8,6 @@ const SequelizeCargoMapper = {
     }
     let {cargoId} = cargos[0];
     return new Cargo({ id: cargoId, resourceIds });
-  },
-  toDatabase(cargo) {
-      const { id, cargoId, resourceId } = cargo;
-      return {  id, cargoId, resourceId };
   }
 };
 
