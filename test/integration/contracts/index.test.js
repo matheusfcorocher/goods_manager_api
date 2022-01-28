@@ -11,7 +11,7 @@ const { setupIntegrationTest } = require("../../support/setup");
 const modelsFactory = new ModelsFactory();
 
 describe("Contract Routes Tests", () => {
-  setupIntegrationTest(app);
+  setupIntegrationTest();
   describe("PUT /api/contracts/accept/:id", () => {
     describe("When it doesnt find the contract with a given id", () => {
       it("returns not found error", async () => {

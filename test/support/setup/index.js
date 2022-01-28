@@ -1,6 +1,6 @@
 const { DatabaseHandler } = require("../database");
 
-const setupIntegrationTest = (app) => {
+const setupIntegrationTest = () => {
   //Comment this line if you're not using a database
   beforeEach(async () => {
     await DatabaseHandler.cleanDatabase()

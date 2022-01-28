@@ -10,7 +10,7 @@ const { setupIntegrationTest } = require("../../support/setup");
 const modelsFactory = new ModelsFactory();
 
 describe("Pilots Routes Tests", () => {
-  setupIntegrationTest(app);
+  setupIntegrationTest();
   describe("POST /api/pilots/create", () => {
     describe("When pilot doesnt have minimum age for be a pilot", () => {
       it("returns validation error", async () => {

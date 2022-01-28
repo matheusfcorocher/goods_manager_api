@@ -9,7 +9,7 @@ const { setupIntegrationTest } = require("../../support/setup");
 const modelsFactory = new ModelsFactory();
 
 describe("Ships Routes Tests", () => {
-  setupIntegrationTest(app);
+  setupIntegrationTest();
   describe("POST /api/ships/create", () => {
     describe("when doesnt find pilot by a given pilot certification", () => {
       it("returns not found error", async () => {

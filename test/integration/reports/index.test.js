@@ -6,7 +6,7 @@ const { setupIntegrationTest } = require("../../support/setup");
 const modelsFactory = new ModelsFactory();
 
 describe("Reports Routes Tests", () => {
-  setupIntegrationTest(app);
+  setupIntegrationTest();
   describe("GET /api/reports/transactions", () => {
     describe("When has transactions in db", () => {
       it("returns a valid report", async () => {
