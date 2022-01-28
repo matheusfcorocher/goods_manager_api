@@ -23,7 +23,7 @@ describe("Infra :: Contract :: SequelizeContractMapper", () => {
 
   describe(".toDatabase", () => {
     it("returns prepared object to be persisted", () => {
-      let cargo = {
+      let contract = {
         cargoId: 1,
         description: "water, food and minerals to Demeter.",
         originPlanet: "Andvari",
@@ -32,9 +32,9 @@ describe("Infra :: Contract :: SequelizeContractMapper", () => {
         contractStatus: "CREATED",
       };
 
-      let entityCargo = dataFactory.create("Contract", cargo);
+      let entityCargo = dataFactory.create("Contract", contract);
 
-      expect(SequelizeContractMapper.toDatabase(entityCargo)).toEqual(cargo);
+      expect(SequelizeContractMapper.toDatabase(entityCargo)).toEqual(contract);
     });
   });
 });
