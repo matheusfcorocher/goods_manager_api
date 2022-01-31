@@ -54,13 +54,6 @@ class SequelizePilotsRepository {
     return PilotMapper.toEntity(pilot);
   }
 
-  async remove(certification) {
-    const pilot = await this._getByPilotCertification(certification);
-
-    await pilot.destroy();
-    return;
-  }
-
   async update(certification, newData) {
     const pilot = await this._getByPilotCertification(certification);
 

@@ -134,7 +134,7 @@ describe("Infra :: Contract :: SequelizeContractsRepository", () => {
     });
   });
 
-  describe("#getByPilotCertification", () => {
+  describe("#getAll", () => {
     describe("when contract has no options", () => {
       it("returns contracts from the database", async () => {
         const contract = await repository.getAll();
@@ -202,7 +202,7 @@ describe("Infra :: Contract :: SequelizeContractsRepository", () => {
 
   describe("#add", () => {
     describe("when adding a contract to the database", () => {
-      it("returns a the new contract", async () => {
+      it("returns the new contract", async () => {
         const contract = dataFactory.create("Contract", {
           pilotCertification: null,
           cargoId: 1,
@@ -248,7 +248,7 @@ describe("Infra :: Contract :: SequelizeContractsRepository", () => {
   });
 
   describe("#update", () => {
-    describe("when update a contract", () => {
+    describe("when contract do exist", () => {
       it("returns contract updated", async () => {
         const contract = dataFactory.create("Contract", {
           pilotCertification: null,
@@ -275,7 +275,7 @@ describe("Infra :: Contract :: SequelizeContractsRepository", () => {
       });
     });
 
-    describe("when doesn't find id of contract", () => {
+    describe("when contract doesn't exist", () => {
       it("returns not found error", async () => {
         const data = { };
 
