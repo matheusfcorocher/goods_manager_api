@@ -202,7 +202,7 @@ describe("Infra :: Contract :: SequelizeContractsRepository", () => {
 
   describe("#add", () => {
     describe("when adding a contract to the database", () => {
-      it("returns the new contract", async () => {
+      it("returns nothing", async () => {
         const contract = dataFactory.create("Contract", {
           pilotCertification: null,
           cargoId: 1,

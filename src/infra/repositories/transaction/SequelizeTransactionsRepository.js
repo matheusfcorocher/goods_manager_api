@@ -10,14 +10,15 @@ class SequelizeTransactionsRepository {
   async _getById(id) {
     try {
       return await this.TransactionModel.findOne({
-        where: { id: id},
+        where: { id: id },
         // raw: true,
         rejectOnEmpty: true,
       });
     } catch (error) {
       if (error.name === "SequelizeEmptyResultError") {
-        const notFoundError = new Error("NotFoundError");
-        notFoundError.details = `Transaction with transactionCertification ${id} can't be found.`;
+        const notFoundError = new Error("Not Found Error");
+        notFoundError.CODE = "NOTFOUND_ERROR";
+        notFoundError.message = `Transaction with id ${id} can't be found.`;
 
         throw notFoundError;
       }
@@ -31,14 +32,17 @@ class SequelizeTransactionsRepository {
   async add(transaction) {
     const { valid, errors } = transaction.validate();
 
-    if(!valid) {
-      const error = new Error('ValidationError');
-      error.details = errors;
+    if (!valid) {
+      const validationError = new Error("Validation error");
+      validationError.CODE = "VALIDATION_ERROR";
+      validationError.errors = errors;
 
-      throw error;
+      throw validationError;
     }
 
-    const newTransaction = await this.TransactionModel.create(TransactionMapper.toDatabase(transaction));
+    const newTransaction = await this.TransactionModel.create(
+      TransactionMapper.toDatabase(transaction)
+    );
     return TransactionMapper.toEntity(newTransaction);
   }
 
@@ -52,40 +56,6 @@ class SequelizeTransactionsRepository {
     const transaction = await this._getById(id);
     return TransactionMapper.toEntity(transaction);
   }
-
-  async remove(id) {
-    const transaction = await this._getById(id);
-    
-    await transaction.destroy();
-    return;
-  }
-
-  async update(id, newData) {
-    const t = await this._getById(id);;
-    
-    const transaction = await this.TransactionModel.sequelize.transaction();
-
-    try {
-      const updatedTransaction = await t.update(newData, { transaction: transaction });
-      const transactionEntity = TransactionMapper.toEntity(updatedTransaction);
-
-      const { valid, errors } = transactionEntity.validate();
-
-      if(!valid) {
-        const error = new Error('ValidationError');
-        error.details = errors;
-        throw error;
-      }
-
-      await transaction.commit();
-
-      return transactionEntity;
-    } catch(error) {
-      await transaction.rollback();
-      throw error;
-    }
-  }
-
 }
 
 module.exports = SequelizeTransactionsRepository;
