@@ -16,9 +16,9 @@ class SequelizeResourcesRepository {
       });
     } catch (error) {
       if (error.name === "SequelizeEmptyResultError") {
-        const notFoundError = new Error("NotFoundError");
-        notFoundError.details = `Resource with id ${id} can't be found.`;
-
+        const notFoundError = new Error("Not Found Error");
+        notFoundError.CODE = "NOTFOUND_ERROR";
+        notFoundError.message = `Resource with id ${id} can't be found.`;
         throw notFoundError;
       }
 
