@@ -55,12 +55,6 @@ class SequelizeShipsRepository {
     return ShipMapper.toEntity(newShip);
   }
 
-  async getAll() {
-    const ships = await this.ShipModel.findAll();
-
-    return ships.map(ShipMapper.toEntity);
-  }
-
   async getByPilotCertification(certification) {
     const ship = await this._getByPilotCertification(certification);
     return ShipMapper.toEntity(ship);
@@ -69,13 +63,6 @@ class SequelizeShipsRepository {
   async hasShip(certification) {
     const hasShip = await this._hasShip(certification);
     return hasShip;
-  }
-
-  async remove(certification) {
-    const ship = await this._getByPilotCertification(certification);
-
-    await ship.destroy();
-    return;
   }
 
   async update(certification, newData) {
