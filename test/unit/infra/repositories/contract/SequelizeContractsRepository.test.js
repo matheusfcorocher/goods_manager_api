@@ -199,4 +199,51 @@ describe("Infra :: Contract :: SequelizeContractsRepository", () => {
       });
     });
   });
+
+  describe("#add", () => {
+    describe("when adding a contract to the database", () => {
+      it("returns a the new contract", async () => {
+        const contract = dataFactory.create("Contract", {
+          pilotCertification: null,
+          cargoId: 1,
+          description: "minerals to Demeter.",
+          originPlanet: "Calas",
+          destinationPlanet: "Demeter",
+          value: 10000,
+          contractStatus: "CREATED",
+        });
+
+        await repository.add(contract);
+
+        const newContract = await repository.getById(4);
+        expect(newContract).toBeInstanceOf(Contract);
+        expect(newContract).toEqual(contract);
+      });
+    });
+
+    describe("when the new contract doesn't have cargoId, description, originPlanet, destinationPlanet, value", () => {
+      it("returns validation error", async () => {
+        const contract = dataFactory.create("Contract", {
+          pilotCertification: null,
+          contractStatus: "CREATED",
+        });
+        let errors = [
+          { message: '"cargoId" is required', path: ["cargoId"] },
+          { message: '"description" is required', path: ["description"] },
+          { message: '"originPlanet" is required', path: ["originPlanet"] },
+          {
+            message: '"destinationPlanet" is required',
+            path: ["destinationPlanet"],
+          },
+          { message: '"value" is required', path: ["value"] },
+        ];
+        const validationError = new Error("Validation error");
+        validationError.CODE = "VALIDATION_ERROR";
+        validationError.errors = errors;
+        await expect(() => repository.add(contract)).rejects.toThrow(
+          validationError
+        );
+      });
+    });
+  });
 });
