@@ -246,4 +246,49 @@ describe("Infra :: Contract :: SequelizeContractsRepository", () => {
       });
     });
   });
+
+  describe("#update", () => {
+    describe("when update a contract", () => {
+      it("returns contract updated", async () => {
+        const contract = dataFactory.create("Contract", {
+          pilotCertification: null,
+          cargoId: 2,
+          description: "food to Demeter.",
+          originPlanet: "Aqua",
+          destinationPlanet: "Demeter",
+          value: 5000,
+          contractStatus: "CREATED",
+        });
+
+        const data = {
+          cargoId: 2,
+          description: "food to Demeter.",
+          originPlanet: "Aqua",
+          destinationPlanet: "Demeter",
+          value: 5000,
+        };
+
+        const updatedContract = await repository.update(1, data);
+
+        expect(updatedContract).toBeInstanceOf(Contract);
+        expect(updatedContract).toEqual(contract);
+      });
+    });
+
+    describe("when doesn't find id of contract", () => {
+      it("returns not found error", async () => {
+        const data = { };
+
+        const notFoundError = new Error("Not Found Error");
+        notFoundError.CODE = "NOTFOUND_ERROR";
+        notFoundError.message = `Contract with id 10 can't be found.`;
+
+        await expect(() => repository.update(10, data)).rejects.toThrow(
+          notFoundError
+        );
+      });
+    });
+  });
+
+
 });
