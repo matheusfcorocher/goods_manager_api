@@ -500,7 +500,7 @@ describe("Ships Routes Tests", () => {
       })
       describe("with pilotCertification params has wrong data type", () => {
         it("returns bad request response", async () => {
-          const pilotCertification = "1234666";
+          const pilotCertification = "sas";
   
           const response = await supertest(app.server)
             .put("/api/ships/refill/"+ pilotCertification)

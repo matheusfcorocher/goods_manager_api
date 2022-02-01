@@ -119,6 +119,199 @@ describe("Pilots Routes Tests", () => {
         expect(response.text).toEqual(`Pilot ${data.name} added!`);
       });
     });
+
+    describe("when send a data to route", () => {
+      describe("without pilotCertification property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            // pilotCertification: 1234111,
+            name: "Ven",
+            age: 19,
+            credits: 1100,
+            locationPlanet: "Andvari",
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/pilots/create")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("without name property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            pilotCertification: 1234111,
+            // name: "Ven",
+            age: 19,
+            credits: 1100,
+            locationPlanet: "Andvari",
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/pilots/create")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("without age property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            pilotCertification: 1234111,
+            name: "Ven",
+            // age: 19,
+            credits: 1100,
+            locationPlanet: "Andvari",
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/pilots/create")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("without credits property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            pilotCertification: 1234111,
+            name: "Ven",
+            age: 19,
+            // credits: 1100,
+            locationPlanet: "Andvari",
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/pilots/create")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("without locationPlanet property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            pilotCertification: 1234111,
+            name: "Ven",
+            age: 19,
+            credits: 1100,
+            // locationPlanet: "Andvari",
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/pilots/create")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with wrong data type in pilotCertification property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            pilotCertification: "1234111",
+            name: "Ven",
+            age: 19,
+            credits: 1100,
+            locationPlanet: "Andvari",
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/pilots/create")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with wrong data type in name property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            pilotCertification: 1234111,
+            name: 13,
+            age: 19,
+            credits: 1100,
+            locationPlanet: "Andvari",
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/pilots/create")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with wrong data type in age property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            pilotCertification: 1234111,
+            name: "Ven",
+            age: "19",
+            credits: 1100,
+            locationPlanet: "Andvari",
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/pilots/create")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with wrong data type in credits property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            pilotCertification: 1234111,
+            name: "Ven",
+            age: 19,
+            credits: "1100",
+            locationPlanet: "Andvari",
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/pilots/create")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with wrong data type in locationPlanet property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            pilotCertification: 1234111,
+            name: "Ven",
+            age: 19,
+            credits: 1100,
+            locationPlanet: 321,
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/pilots/create")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+    });
   });
   describe("PUT /api/pilots/travel/:pilotCertification", () => {
     describe("When it gives invalid planet to travel", () => {
@@ -143,14 +336,14 @@ describe("Pilots Routes Tests", () => {
           destinationPlanet: "Alberta",
         };
         const pilotCertification = 1234555;
+
         const response = await supertest(app.server)
-          .put("/api/pilots/travel/" + pilotCertification)
+          .put(`/api/pilots/travel/${pilotCertification}`)
           .send(data)
           .set("Content-type", "application/json")
           .expect(400);
 
         const messageError = "Destination planet is unknown.";
-
         expect(response.body).toEqual({ message: messageError });
       });
     });
@@ -364,6 +557,68 @@ describe("Pilots Routes Tests", () => {
         ).toEqual(
           oldShip.fuelLevel - TravelFuelCostDomainService("Aqua", "Andvari")
         );
+      });
+    });
+
+    describe("when request travel pilot route", () => {
+      describe("without pilotCertification params", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            destinationPlanet: "Andvari",
+          };
+          const pilotCertification = "";
+
+          const response = await supertest(app.server)
+            .put("/api/pilots/travel/" + pilotCertification)
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with pilotCertification params has wrong data type", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            destinationPlanet: "Andvari",
+          };
+          const pilotCertification = "auhh";
+
+          const response = await supertest(app.server)
+            .put("/api/pilots/travel/" + pilotCertification)
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("without destinationPlanet in body request", () => {
+        it("returns bad request response", async () => {
+          const data = {};
+          const pilotCertification = 1234567;
+
+          const response = await supertest(app.server)
+            .put("/api/pilots/travel/" + pilotCertification)
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with destinationPlanet in body request has wrong data type", () => {
+        it("returns bad request response", async () => {
+          const data = {destinationPlanet: 1234,};
+          const pilotCertification = 1234567;
+
+          const response = await supertest(app.server)
+            .put("/api/pilots/travel/" + pilotCertification)
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
       });
     });
   });

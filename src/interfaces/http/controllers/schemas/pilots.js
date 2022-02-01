@@ -1,4 +1,4 @@
-const typeNumber = { type: "number" };
+const typeNumber = { type: "integer" };
 const typeString = { type: "string" };
 
 const pilot = {
@@ -35,6 +35,7 @@ const travelPilotSchema = {
     properties: {
       destinationPlanet: typeString,
     },
+    required: ['destinationPlanet'],
   },
   params: {
     pilotCertification: typeNumber, // convert pilotC... to number
