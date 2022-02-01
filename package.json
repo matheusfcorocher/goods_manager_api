@@ -40,6 +40,8 @@
     "test": "NODE_ENV=test jest --runInBand"
   },
   "jest": {
-      "setupFilesAfterEnv": ["./test/integration/config.js"]
+    "setupFilesAfterEnv": [
+      "./test/integration/config.js"
+    ]
   }
 }

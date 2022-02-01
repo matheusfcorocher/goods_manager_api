@@ -42,7 +42,7 @@ describe("Pilots Routes Tests", () => {
           .set("Content-type", "application/json")
           .expect(400);
 
-        let messageError =
+        const messageError =
           "Pilot doesn't fit the minimum age for a license or location planet is unknown.";
 
         expect(response.body).toEqual({ message: messageError });
@@ -64,7 +64,7 @@ describe("Pilots Routes Tests", () => {
             age: 20,
             credits: 500,
             locationPlanet: "Demeter",
-          }
+          },
         ]);
         const response = await supertest(app.server)
           .post("/api/pilots/create")
@@ -78,7 +78,7 @@ describe("Pilots Routes Tests", () => {
           .set("Content-type", "application/json")
           .expect(400);
 
-        let messageError =
+        const messageError =
           "Pilot doesn't fit the minimum age for a license or location planet is unknown.";
 
         expect(response.body).toEqual({ message: messageError });
@@ -100,7 +100,7 @@ describe("Pilots Routes Tests", () => {
             age: 20,
             credits: 500,
             locationPlanet: "Demeter",
-          }
+          },
         ]);
 
         const data = {
@@ -142,14 +142,14 @@ describe("Pilots Routes Tests", () => {
         const data = {
           destinationPlanet: "Alberta",
         };
-        let pilotCertification = 1234555;
+        const pilotCertification = 1234555;
         const response = await supertest(app.server)
           .put("/api/pilots/travel/" + pilotCertification)
           .send(data)
           .set("Content-type", "application/json")
           .expect(400);
 
-        let messageError = "Destination planet is unknown.";
+        const messageError = "Destination planet is unknown.";
 
         expect(response.body).toEqual({ message: messageError });
       });
@@ -175,14 +175,14 @@ describe("Pilots Routes Tests", () => {
         const data = {
           destinationPlanet: "Andvari",
         };
-        let pilotCertification = 1234555;
+        const pilotCertification = 1234555;
         const response = await supertest(app.server)
           .put("/api/pilots/travel/" + pilotCertification)
           .send(data)
           .set("Content-type", "application/json")
           .expect(404);
 
-        let messageError = `Ship with pilotCertification ${pilotCertification} can't be found.`;
+        const messageError = `Ship with pilotCertification ${pilotCertification} can't be found.`;
 
         expect(response.body).toEqual({ message: messageError });
       });
@@ -208,14 +208,14 @@ describe("Pilots Routes Tests", () => {
         const data = {
           destinationPlanet: "Andvari",
         };
-        let pilotCertification = 1234557;
+        const pilotCertification = 1234557;
         const response = await supertest(app.server)
           .put("/api/pilots/travel/" + pilotCertification)
           .send(data)
           .set("Content-type", "application/json")
           .expect(404);
 
-        let messageError = `Pilot with pilotCertification ${pilotCertification} can't be found.`;
+        const messageError = `Pilot with pilotCertification ${pilotCertification} can't be found.`;
 
         expect(response.body).toEqual({ message: messageError });
       });
@@ -257,14 +257,14 @@ describe("Pilots Routes Tests", () => {
         const data = {
           destinationPlanet: "Andvari",
         };
-        let pilotCertification = 1234555;
+        const pilotCertification = 1234555;
         const response = await supertest(app.server)
           .put("/api/pilots/travel/" + pilotCertification)
           .send(data)
           .set("Content-type", "application/json")
           .expect(400);
 
-        let messageError = `Ship doesn't have enough fuel to travel to destination planet.`;
+        const messageError = `Ship doesn't have enough fuel to travel to destination planet.`;
 
         expect(response.body).toEqual({ message: messageError });
       });
@@ -306,7 +306,7 @@ describe("Pilots Routes Tests", () => {
         const data = {
           destinationPlanet: "Andvari",
         };
-        let pilotCertification = 1234567;
+        const pilotCertification = 1234567;
         const response = await supertest(app.server)
           .put("/api/pilots/travel/" + pilotCertification)
           .send(data)
@@ -325,7 +325,7 @@ describe("Pilots Routes Tests", () => {
       it("update fuelLevel of Ship", async () => {
         const repoFactory = new RepositoriesFactory();
         const repoShip = repoFactory.create("Ships");
-        let oldShip = {
+        const oldShip = {
           id: "2",
           pilotCertification: 1234567,
           fuelLevel: 1000,
@@ -339,7 +339,7 @@ describe("Pilots Routes Tests", () => {
             age: 22,
             credits: 1000,
             locationPlanet: "Aqua",
-          }
+          },
         ]);
 
         await modelsFactory.createList("Ships", [
@@ -348,7 +348,7 @@ describe("Pilots Routes Tests", () => {
             fuelLevel: 1000,
             fuelCapacity: 1000,
             weightCapacity: 1000,
-          }
+          },
         ]);
         const data = {
           destinationPlanet: "Andvari",

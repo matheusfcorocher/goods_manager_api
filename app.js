@@ -1,4 +1,5 @@
 const app = require("fastify")({ logger: false });
+const Ajv = require('ajv')
 
 let opts = {
   schema: {
@@ -12,6 +13,20 @@ let opts = {
     }
   }
 }
+
+const ajv = new Ajv({
+  // the fastify defaults (if needed)
+  removeAdditional: true,
+  useDefaults: true,
+  coerceTypes: false,
+  nullable: true,
+  // any other options
+  // ...
+})
+app.setValidatorCompiler(({ schema, method, url, httpPart }) => {
+  return ajv.compile(schema)
+})
+
 app.get("/", opts, (req, reply) => {
   reply.send({message: "Let's go!"});
 });

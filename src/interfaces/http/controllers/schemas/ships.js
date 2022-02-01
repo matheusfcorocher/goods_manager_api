@@ -1,5 +1,5 @@
-const typeNumber = { type: "number" };
-const typeString = { type: "string" };
+const typeNumber = { type: 'integer' }
+const typeString = { type: "string" }
 
 const ship = {
   type: "object",
@@ -12,21 +12,23 @@ const ship = {
 };
 
 const createShipSchema = {
-  body: {
+  body: { 
     type: "object",
+    properties: {
+      pilotCertification: typeNumber,
+      fuelLevel: typeNumber,
+      fuelCapacity: typeNumber,
+      weightCapacity: typeNumber,
+    },
+    additionalProperties: false,
+    coerceTypes: false,
     required: [
       "pilotCertification",
       "fuelCapacity",
       "fuelLevel",
       "weightCapacity",
     ],
-    properties: {
-      pilotCertification: typeNumber,
-      fuelCapacity: typeNumber,
-      fuelLevel: typeNumber,
-      weightCapacity: typeNumber,
-    },
-  },
+  },  
   response: {
     200: typeString,
   },

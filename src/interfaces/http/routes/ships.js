@@ -10,14 +10,14 @@ const {
 
 const createShipOpts = {
   schema: createShipSchema,
-  handler: createShipHandler,
+  handler: createShipHandler
 };
 
 const refillShipOpts = {
   schema: refillShipSchema,
   handler: refillShipHandler,
 };
-
+//{schema: createShipSchema}, createShipHandler
 const shipsRoutes = (fastify, options, done) => {
   fastify.post("/api/ships/create", createShipOpts);
   fastify.put("/api/ships/refill/:pilotCertification", refillShipOpts);

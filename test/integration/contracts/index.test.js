@@ -15,7 +15,7 @@ describe("Contract Routes Tests", () => {
   describe("PUT /api/contracts/accept/:id", () => {
     describe("When it doesnt find the contract with a given id", () => {
       it("returns not found error", async () => {
-        let data = {
+        const data = {
           pilotCertification: 1234567,
         };
         const response = await supertest(app.server)
@@ -24,7 +24,7 @@ describe("Contract Routes Tests", () => {
           .set("Content-type", "application/json")
           .expect(404);
 
-        let messageError = `Contract with id 100 can't be found.`;
+        const messageError = `Contract with id 100 can't be found.`;
 
         expect(response.body).toEqual({ message: messageError });
       });
@@ -48,7 +48,7 @@ describe("Contract Routes Tests", () => {
             contractStatus: "CREATED",
           },
         ]);
-        let data = {
+        const data = {
           pilotCertification: 1234567,
         };
         const response = await supertest(app.server)
@@ -57,7 +57,7 @@ describe("Contract Routes Tests", () => {
           .set("Content-type", "application/json")
           .expect(404);
 
-        let messageError = `Pilot with pilotCertification ${data.pilotCertification} can't be found.`;
+        const messageError = `Pilot with pilotCertification ${data.pilotCertification} can't be found.`;
 
         expect(response.body).toEqual({ message: messageError });
       });
@@ -95,7 +95,7 @@ describe("Contract Routes Tests", () => {
           },
         ]);
 
-        let data = {
+        const data = {
           pilotCertification: 1234567,
         };
         const response = await supertest(app.server)
@@ -104,7 +104,7 @@ describe("Contract Routes Tests", () => {
           .set("Content-type", "application/json")
           .expect(400);
 
-        let messageError = `Contract 1 isn't available or pilot isn't in the origin planet of contract.`;
+        const messageError = `Contract 1 isn't available or pilot isn't in the origin planet of contract.`;
 
         expect(response.body).toEqual({ message: messageError });
       });
@@ -142,7 +142,7 @@ describe("Contract Routes Tests", () => {
             contractStatus: "FINISHED",
           },
         ]);
-        let data = {
+        const data = {
           pilotCertification: 1234567,
         };
         const response = await supertest(app.server)
@@ -151,7 +151,7 @@ describe("Contract Routes Tests", () => {
           .set("Content-type", "application/json")
           .expect(400);
 
-        let messageError = `Contract 1 isn't available or pilot isn't in the origin planet of contract.`;
+        const messageError = `Contract 1 isn't available or pilot isn't in the origin planet of contract.`;
 
         expect(response.body).toEqual({ message: messageError });
       });
@@ -189,7 +189,7 @@ describe("Contract Routes Tests", () => {
             contractStatus: "CREATED",
           },
         ]);
-        let data = {
+        const data = {
           pilotCertification: 1234567,
         };
         const response = await supertest(app.server)
@@ -198,7 +198,7 @@ describe("Contract Routes Tests", () => {
           .set("Content-type", "application/json")
           .expect(404);
 
-        let messageError = `Ship with pilotCertification 1234567 can't be found.`;
+        const messageError = `Ship with pilotCertification 1234567 can't be found.`;
 
         expect(response.body).toEqual({ message: messageError });
       });
@@ -244,7 +244,7 @@ describe("Contract Routes Tests", () => {
             contractStatus: "CREATED",
           },
         ]);
-        let data = {
+        const data = {
           pilotCertification: 1234567,
         };
         const response = await supertest(app.server)
@@ -253,7 +253,7 @@ describe("Contract Routes Tests", () => {
           .set("Content-type", "application/json")
           .expect(400);
 
-        let messageError = `The ship can't carry the required weight of contract`;
+        const messageError = `The ship can't carry the required weight of contract`;
 
         expect(response.body).toEqual({ message: messageError });
       });
@@ -299,9 +299,10 @@ describe("Contract Routes Tests", () => {
             contractStatus: "CREATED",
           },
         ]);
-        let data = {
+        const data = {
           pilotCertification: 1234567,
         };
+
         const response = await supertest(app.server)
           .put("/api/contracts/accept/" + 1)
           .send(data)
@@ -329,7 +330,7 @@ describe("Contract Routes Tests", () => {
           .put("/api/contracts/fulfill/" + 100)
           .expect(404);
 
-        let messageError = `Contract with id 100 can't be found.`;
+        const messageError = `Contract with id 100 can't be found.`;
 
         expect(response.body).toEqual({ message: messageError });
       });
@@ -362,7 +363,7 @@ describe("Contract Routes Tests", () => {
           .put("/api/contracts/fulfill/" + 1)
           .expect(404);
 
-        let messageError = `Pilot with pilotCertification 0 can't be found.`;
+        const messageError = `Pilot with pilotCertification 0 can't be found.`;
 
         expect(response.body).toEqual({ message: messageError });
       });
@@ -405,7 +406,7 @@ describe("Contract Routes Tests", () => {
           .put("/api/contracts/fulfill/" + 1)
           .expect(400);
 
-        let messageError = `Contract 1 is not in progress or the location of pilot isn't the same as the destination planet of contract.`;
+        const messageError = `Contract 1 is not in progress or the location of pilot isn't the same as the destination planet of contract.`;
 
         expect(response.body).toEqual({ message: messageError });
       });
@@ -448,7 +449,7 @@ describe("Contract Routes Tests", () => {
           .put("/api/contracts/fulfill/" + 1)
           .expect(400);
 
-        let messageError = `Contract 1 is not in progress or the location of pilot isn't the same as the destination planet of contract.`;
+        const messageError = `Contract 1 is not in progress or the location of pilot isn't the same as the destination planet of contract.`;
 
         expect(response.body).toEqual({ message: messageError });
       });
@@ -491,7 +492,7 @@ describe("Contract Routes Tests", () => {
           .put("/api/contracts/fulfill/" + 1)
           .expect(200);
 
-        let message = "Contract was fullfilled!";
+        const message = "Contract was fullfilled!";
 
         expect(response.text).toEqual(message);
       });
@@ -825,7 +826,7 @@ describe("Contract Routes Tests", () => {
           .set("Content-type", "application/json")
           .expect(200);
 
-        let message = "Contract was added successfully!";
+        const message = "Contract was added successfully!";
 
         expect(response.text).toEqual(message);
       });
@@ -892,7 +893,7 @@ describe("Contract Routes Tests", () => {
           .set("Content-type", "application/json")
           .expect(400);
 
-        messageError = "The origin planet or destination planet is invalid.";
+        const messageError = "The origin planet or destination planet is invalid.";
         expect(response.body).toEqual({ message: messageError });
       });
     });
@@ -920,7 +921,7 @@ describe("Contract Routes Tests", () => {
           .set("Content-type", "application/json")
           .expect(404);
 
-        messageError = `Cargo with id ${data.cargoId} can't be found.`;
+        const messageError = `Cargo with id ${data.cargoId} can't be found.`;
         expect(response.body).toEqual({ message: messageError });
       });
     });
@@ -948,7 +949,7 @@ describe("Contract Routes Tests", () => {
           .set("Content-type", "application/json")
           .expect(400);
 
-        messageError = "The origin planet or destination planet is invalid.";
+        const messageError = "The origin planet or destination planet is invalid.";
         expect(response.body).toEqual({ message: messageError });
       });
     });
