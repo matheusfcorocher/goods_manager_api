@@ -48,7 +48,10 @@ const getAllContractsSchema = {
     },
   },
   querystring: {
-    contractStatus: typeString,
+    contractStatus: {
+      type: "string",
+      enum: ["CREATED", "IN PROGRESS", "FINISHED"]
+    }
   }
 };
 

@@ -321,6 +321,71 @@ describe("Contract Routes Tests", () => {
         });
       });
     });
+
+    describe("When request aceept contract route", () => {
+      describe("without id params", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            pilotCertification: 1234567,
+          };
+          const id = "";
+
+          const response = await supertest(app.server)
+            .put("/api/contracts/accept/" + id)
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with id params has wrong data type", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            pilotCertification: 1234567,
+          };
+          const id = "ItIsNotId";
+
+          const response = await supertest(app.server)
+            .put("/api/contracts/accept/" + id)
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("without pilotCertification in body request", () => {
+        it("returns bad request response", async () => {
+          const data = {};
+          const id = 12;
+
+          const response = await supertest(app.server)
+            .put("/api/contracts/accept/" + id)
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with pilotCertification in body request has wrong data type", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            pilotCertification: "super",
+          };
+          const id = 12;
+
+          const response = await supertest(app.server)
+            .put("/api/contracts/accept/" + id)
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+    });
   });
 
   describe("PUT /api/contracts/fulfill/:id", () => {
@@ -625,6 +690,31 @@ describe("Contract Routes Tests", () => {
         );
       });
     });
+
+    describe("When request fulfill contract route", () => {
+      describe("without id params", () => {
+        it("returns bad request response", async () => {
+          const response = await supertest(app.server)
+            .put("/api/contracts/fulfill/")
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with id params has wrong data type", () => {
+        it("returns bad request response", async () => {
+          const id = "ItIsNotId";
+
+          const response = await supertest(app.server)
+            .put("/api/contracts/fulfill/" + id)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+    });
   });
 
   describe("GET /api/contracts", () => {
@@ -800,6 +890,41 @@ describe("Contract Routes Tests", () => {
         expect(response.body).toEqual(answer);
       });
     });
+
+    describe("When request get all contract route", () => {
+      describe("without querystring", () => {
+        it("returns bad request response", async () => {
+          const querystring = "";
+
+          const response = await supertest(app.server)
+            .get(`/api/contracts?contractStatus=${querystring}`)
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with querystring has wrong data type", () => {
+        it("returns bad request response", async () => {
+          const querystring = 111;
+
+          const response = await supertest(app.server)
+            .get(`/api/contracts?contractStatus=${querystring}`)
+            .expect(400);
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with querystring has contractStatus value differ from 'CREATED', 'IN PROGRESS', 'FINISHED'", () => {
+        it("returns bad request response", async () => {
+          const querystring = "DELETED";
+
+          const response = await supertest(app.server)
+            .get(`/api/contracts?contractStatus=${querystring}`)
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+    });
   });
 
   describe("POST /api/contracts/publish", () => {
@@ -893,7 +1018,8 @@ describe("Contract Routes Tests", () => {
           .set("Content-type", "application/json")
           .expect(400);
 
-        const messageError = "The origin planet or destination planet is invalid.";
+        const messageError =
+          "The origin planet or destination planet is invalid.";
         expect(response.body).toEqual({ message: messageError });
       });
     });
@@ -949,8 +1075,202 @@ describe("Contract Routes Tests", () => {
           .set("Content-type", "application/json")
           .expect(400);
 
-        const messageError = "The origin planet or destination planet is invalid.";
+        const messageError =
+          "The origin planet or destination planet is invalid.";
         expect(response.body).toEqual({ message: messageError });
+      });
+    });
+
+    describe("when send a data to route", () => {
+      describe("without cargoId property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            // cargoId: 1,
+            description: "food to Xalas",
+            originPlanet: "Andvari",
+            destinationPlanet: "Xalas",
+            value: 700,
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/contracts/publish")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("without description property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            cargoId: 1,
+            // description: "food to Xalas",
+            originPlanet: "Andvari",
+            destinationPlanet: "Xalas",
+            value: 700,
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/contracts/publish")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("without originPlanet property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            cargoId: 1,
+            description: "food to Xalas",
+            // originPlanet: "Andvari",
+            destinationPlanet: "Xalas",
+            value: 700,
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/contracts/publish")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("without destinationPlanet property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            cargoId: 1,
+            description: "food to Xalas",
+            originPlanet: "Andvari",
+            // destinationPlanet: "Xalas",
+            value: 700,
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/contracts/publish")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("without value property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            cargoId: 1,
+            description: "food to Xalas",
+            originPlanet: "Andvari",
+            destinationPlanet: "Xalas",
+            // value: 700,
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/contracts/publish")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with wrong data type in cargoId property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            cargoId: "1",
+            description: "food to Xalas",
+            originPlanet: "Andvari",
+            destinationPlanet: "Xalas",
+            value: 700,
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/contracts/publish")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with wrong data type in description property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            cargoId: 1,
+            description: 321,
+            originPlanet: "Andvari",
+            destinationPlanet: "Xalas",
+            value: 700,
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/contracts/publish")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with wrong data type in originPlanet property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            cargoId: 1,
+            description: "food to Xalas",
+            originPlanet: 33,
+            destinationPlanet: "Aqua",
+            value: 700,
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/contracts/publish")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with wrong data type in destinationPlanet property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            cargoId: 1,
+            description: "food to Xalas",
+            originPlanet: "Aqua",
+            destinationPlanet: 33,
+            value: 700,
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/contracts/publish")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
+      });
+      describe("with wrong data type in value property", () => {
+        it("returns bad request response", async () => {
+          const data = {
+            cargoId: 1,
+            description: "food to Xalas",
+            originPlanet: "Aqua",
+            destinationPlanet: 33,
+            value: "700",
+          };
+
+          const response = await supertest(app.server)
+            .post("/api/contracts/publish")
+            .send(data)
+            .set("Content-type", "application/json")
+            .expect(400);
+
+          expect(response.status).toEqual(400);
+        });
       });
     });
   });
