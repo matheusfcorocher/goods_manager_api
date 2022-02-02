@@ -45,7 +45,8 @@ const acceptContractHandler = async (req, reply) => {
       case "NOTFOUND_ERROR":
         return reply.status(404).send({ message: error.message });
       default:
-        return reply.status(500).send({ message: error.message });
+        const {message, details} = error;
+        return reply.status(500).send({message, details});
     }
   }
 };
@@ -68,9 +69,8 @@ const fulfillContractHandler = async (req, reply) => {
       case "NOTFOUND_ERROR":
         return reply.status(404).send({ message: error.message });
       default:
-        return reply.status(500).send({
-          message: "Internal Error",
-        });
+        const {message, details} = error;
+        return reply.status(500).send({message, details});
     }
   }
 };
@@ -84,9 +84,8 @@ const getAllContractsHandler = async (req, reply) => {
   } catch (error) {
     switch (error.CODE) {
       default:
-        return reply.status(500).send({
-          message: "Internal Error",
-        });
+        const {message, details} = error;
+        return reply.status(500).send({message, details});
     }
   }
 };
@@ -103,9 +102,8 @@ const publishContractHandler = async (req, reply) => {
       case "NOTFOUND_ERROR":
         return reply.status(404).send({ message: error.message });
       default:
-        return reply.status(500).send({
-          message: "Internal Error",
-        });
+        const {message, details} = error;
+        return reply.status(500).send({message, details});
     }
   }
 };

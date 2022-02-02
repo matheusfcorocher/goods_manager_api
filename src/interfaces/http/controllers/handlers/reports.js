@@ -33,9 +33,8 @@ const getPlanetsReportHandler = async (req, reply) => {
   } catch (error) {
     switch (error.CODE) {
       default:
-        return reply.status(500).send({
-          message: "Internal Error",
-        });
+        const {message, details} = error;
+        return reply.status(500).send({message, details});
     }
   }
 };
@@ -53,9 +52,8 @@ const getPilotsReportHandler = async (req, reply) => {
   } catch (error) {
     switch (error.CODE) {
       default:
-        return reply.status(500).send({
-          message: "Internal Error",
-        });
+        const {message, details} = error;
+        return reply.status(500).send({message, details});
     }
   }
 };
@@ -68,9 +66,8 @@ const getTransactionsReportHandler = async (req, reply) => {
   } catch (error) {
     switch (error.CODE) {
       default:
-        return reply.status(500).send({
-          message: "Internal Error",
-        });
+        const {message, details} = error;
+        return reply.status(500).send({message, details});
     }
   }
 };

@@ -26,11 +26,12 @@ class CreateShip {
       return await this.shipsRepository.add(ship);
       
     } catch (error) {
-      if (!error.CODE) {
-        console.log(error);
-        error = new Error("Internal Error");
-        error.CODE = "INTERNAL_ERROR";
-        error.message = "Internal Error";
+      if(!error.CODE) {
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+        throw internalError;
       }
       throw error;
     }

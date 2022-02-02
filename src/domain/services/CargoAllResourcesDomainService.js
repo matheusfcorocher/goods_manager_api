@@ -5,7 +5,7 @@ class CargoAllResourcesDomainService {
     this.resourceRepo = resourceRepository;
   }
 
-  getAllResourcesCargo = async (cargoId) => {
+  getAllResourcesByCargoId = async (cargoId) => {
     const cargo = await this.cargoRepo.getById(cargoId);
     let cargoAllResources = {
       water: 0,
@@ -20,12 +20,12 @@ class CargoAllResourcesDomainService {
     return cargoAllResources;
   };
 
-  getAllResourcesContract = async (id) => {
+  getAllResourcesByContractId = async (id) => {
     const contract = await this.contractRepo.getById(id);
-    return this.getAllResourcesCargo(contract.cargoId);
+    return this.getAllResourcesByCargoId(contract.cargoId);
   };
 
-  getAllResourcesPilot = async (pilotCertification) => {
+  getAllResourcesByPilotCertification = async (pilotCertification) => {
     const contracts = await this.contractRepo.getByPilotCertification(
       pilotCertification
     );
@@ -37,7 +37,7 @@ class CargoAllResourcesDomainService {
     };
     for (let contract of contracts) {
       if (contract.isInProgress()) {
-        let cargo = await this.getAllResourcesContract(contract.id);
+        let cargo = await this.getAllResourcesByContractId(contract.id);
         totalCargo.water += cargo.water;
         totalCargo.food += cargo.food;
         totalCargo.minerals += cargo.minerals;

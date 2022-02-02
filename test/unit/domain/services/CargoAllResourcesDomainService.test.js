@@ -102,7 +102,7 @@ describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
           food: 300,
           minerals: 1000,
         };
-        expect(await service.getAllResourcesCargo(1)).toEqual(result);
+        expect(await service.getAllResourcesByCargoId(1)).toEqual(result);
       });
     });
     describe("when calculating a cargo with non-existent cargo id", () => {
@@ -111,7 +111,7 @@ describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Cargo with id 4 can't be found.`;
 
-        await expect(() => service.getAllResourcesCargo(4)).rejects.toThrow(
+        await expect(() => service.getAllResourcesByCargoId(4)).rejects.toThrow(
           notFoundError
         );
       });
@@ -123,7 +123,7 @@ describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Resource with id 7 can't be found.`;
 
-        await expect(() => service.getAllResourcesCargo(5)).rejects.toThrow(
+        await expect(() => service.getAllResourcesByCargoId(5)).rejects.toThrow(
           notFoundError
         );
       });
@@ -136,12 +136,12 @@ describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
           food: 0,
           minerals: 0,
         };
-        expect(await service.getAllResourcesCargo(8)).toEqual(result);
+        expect(await service.getAllResourcesByCargoId(8)).toEqual(result);
       });
     });
   });
 
-  describe("getAllResourcesContract", () => {
+  describe("getAllResourcesByContractId", () => {
     describe("when calculating the total resources contract has", () => {
       it("returns correctly all resources", async () => {
         const result = {
@@ -149,7 +149,7 @@ describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
           food: 300,
           minerals: 1000,
         };
-        expect(await service.getAllResourcesContract(1)).toEqual(result);
+        expect(await service.getAllResourcesByContractId(1)).toEqual(result);
       });
     });
     describe("when calculating a contract with non-existent contract id ", () => {
@@ -159,7 +159,7 @@ describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
         notFoundError.message = `Contract with id 100 can't be found.`;
 
         await expect(() =>
-          service.getAllResourcesContract(100)
+          service.getAllResourcesByContractId(100)
         ).rejects.toThrow(notFoundError);
       });
     });
@@ -169,7 +169,7 @@ describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Cargo with id 10 can't be found.`;
 
-        await expect(() => service.getAllResourcesContract(20)).rejects.toThrow(
+        await expect(() => service.getAllResourcesByContractId(20)).rejects.toThrow(
           notFoundError
         );
       });
@@ -180,7 +180,7 @@ describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Resource with id 7 can't be found.`;
 
-        await expect(() => service.getAllResourcesContract(10)).rejects.toThrow(
+        await expect(() => service.getAllResourcesByContractId(10)).rejects.toThrow(
           notFoundError
         );
       });
@@ -193,12 +193,12 @@ describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
           food: 0,
           minerals: 0,
         };
-        expect(await service.getAllResourcesContract(11)).toEqual(result);
+        expect(await service.getAllResourcesByContractId(11)).toEqual(result);
       });
     });
   });
 
-  describe("getAllResourcesPilot", () => {
+  describe("getAllResourcesByPilotCertification", () => {
     describe("when calculating the total resources that a pilot has", () => {
       it("returns correctly all resources", async () => {
         const result = {
@@ -207,7 +207,7 @@ describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
           minerals: 1000,
         };
         expect(
-          await service.getAllResourcesPilot(contracts[1].pilotCertification)
+          await service.getAllResourcesByPilotCertification(contracts[1].pilotCertification)
         ).toEqual(result);
       });
     });
@@ -219,7 +219,7 @@ describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
             food: 0,
             minerals: 0,
           };
-          expect(await service.getAllResourcesPilot(1234566)).toEqual(result);
+          expect(await service.getAllResourcesByPilotCertification(1234566)).toEqual(result);
         });
       });
     });
@@ -231,7 +231,7 @@ describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
           notFoundError.message = `Cargo with id 10 can't be found.`;
 
           await expect(() =>
-            service.getAllResourcesPilot(1111111)
+            service.getAllResourcesByPilotCertification(1111111)
           ).rejects.toThrow(notFoundError);
         });
       });
@@ -245,7 +245,7 @@ describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
           notFoundError.message = `Resource with id 7 can't be found.`;
 
           await expect(() =>
-            service.getAllResourcesPilot(1222227)
+            service.getAllResourcesByPilotCertification(1222227)
           ).rejects.toThrow(notFoundError);
         });
       });
@@ -260,7 +260,7 @@ describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
             minerals: 0,
           };
 
-          expect(await service.getAllResourcesPilot(1234551)).toEqual(result);
+          expect(await service.getAllResourcesByPilotCertification(1234551)).toEqual(result);
         });
       });
     });

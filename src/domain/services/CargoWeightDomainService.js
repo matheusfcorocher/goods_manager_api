@@ -5,7 +5,7 @@ class CargoWeightDomainService {
     this.resourceRepo = resourceRepository;
   }
 
-  getCargoWeight = async (cargoId) => {
+  getCargoWeightByCargoId = async (cargoId) => {
     const cargo = await this.cargoRepo.getById(cargoId);
     let cargoWeight = 0;
     for (let id of cargo.resourceIds) {
@@ -15,12 +15,12 @@ class CargoWeightDomainService {
     return cargoWeight;
   };
 
-  getCargoWeightContract = async (id) => {
+  getCargoWeightByContractId = async (id) => {
     const contract = await this.contractRepo.getById(id);
-    return await this.getCargoWeight(contract.cargoId);
+    return await this.getCargoWeightByCargoId(contract.cargoId);
   };
 
-  getCargoWeightPilot = async (pilotCertification) => {
+  getCargoWeightByPilotCertification = async (pilotCertification) => {
     const contracts = await this.contractRepo.getByPilotCertification(
       pilotCertification
     );
@@ -28,7 +28,7 @@ class CargoWeightDomainService {
     let cargoWeightPilot = 0;
     for (let contract of contracts) {
       if (contract.isInProgress())
-        cargoWeightPilot += await this.getCargoWeightContract(contract.id);
+        cargoWeightPilot += await this.getCargoWeightByContractId(contract.id);
     }
     return cargoWeightPilot;
   };

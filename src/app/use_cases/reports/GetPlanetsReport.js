@@ -44,7 +44,7 @@ class GetPlanetsReport {
       let planetsReport = this._reportFormat(Planets);
 
       for (let contract of contracts) {
-        const { food, minerals, water } = await cargoService.getAllResourcesContract(contract.id);
+        const { food, minerals, water } = await cargoService.getAllResourcesByContractId(contract.id);
         const { destinationPlanet, originPlanet } = contract;
         if (contract.isFinished()) {
           planetsReport[destinationPlanet] = {
@@ -69,9 +69,11 @@ class GetPlanetsReport {
       return planetsReport;
     } catch (error) {
       if(!error.CODE) {
-        error = new Error("Internal Error");
-        error.CODE = "INTERNAL_ERROR";
-        error.message = "Internal Error";
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+        throw internalError;
       }
       throw error;
     }

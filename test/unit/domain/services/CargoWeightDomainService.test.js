@@ -94,10 +94,10 @@ describe("Domain :: Service :: CargoWeightDomainService", () => {
     resourceRepository: fakeResourceRepo,
   };
   const service = new CargoWeightDomainService(args);
-  describe("getCargoWeight", () => {
+  describe("getCargoWeightByCargoId", () => {
     describe("when calculating the weight", () => {
       it("returns the correct weight", async () => {
-        expect(await service.getCargoWeight(1)).toEqual(1400);
+        expect(await service.getCargoWeightByCargoId(1)).toEqual(1400);
       });
     });
 
@@ -107,7 +107,7 @@ describe("Domain :: Service :: CargoWeightDomainService", () => {
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Cargo with id 100 can't be found.`;
 
-        await expect(() => service.getCargoWeight(100)).rejects.toThrow(
+        await expect(() => service.getCargoWeightByCargoId(100)).rejects.toThrow(
           notFoundError
         );
       });
@@ -119,7 +119,7 @@ describe("Domain :: Service :: CargoWeightDomainService", () => {
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Resource with id 100 can't be found.`;
 
-        await expect(() => service.getCargoWeight(4)).rejects.toThrow(
+        await expect(() => service.getCargoWeightByCargoId(4)).rejects.toThrow(
           notFoundError
         );
       });
@@ -128,15 +128,15 @@ describe("Domain :: Service :: CargoWeightDomainService", () => {
     describe("when calculating a cargo that doesnt have any resource id", () => {
       it("returns 0", async () => {
         const result = 0;
-        expect(await service.getCargoWeight(5)).toEqual(result);
+        expect(await service.getCargoWeightByCargoId(5)).toEqual(result);
       });
     });
   });
 
-  describe("getCargoWeightContract", () => {
+  describe("getCargoWeightByContractId", () => {
     describe("when calculating the weight", () => {
       it("returns the correct weight", async () => {
-        expect(await service.getCargoWeightContract(2)).toEqual(300);
+        expect(await service.getCargoWeightByContractId(2)).toEqual(300);
       });
     });
 
@@ -146,7 +146,7 @@ describe("Domain :: Service :: CargoWeightDomainService", () => {
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Contract with id 100 can't be found.`;
 
-        await expect(() => service.getCargoWeightContract(100)).rejects.toThrow(
+        await expect(() => service.getCargoWeightByContractId(100)).rejects.toThrow(
           notFoundError
         );
       });
@@ -158,7 +158,7 @@ describe("Domain :: Service :: CargoWeightDomainService", () => {
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Cargo with id 100 can't be found.`;
 
-        await expect(() => service.getCargoWeightContract(4)).rejects.toThrow(
+        await expect(() => service.getCargoWeightByContractId(4)).rejects.toThrow(
           notFoundError
         );
       });
@@ -170,7 +170,7 @@ describe("Domain :: Service :: CargoWeightDomainService", () => {
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Resource with id 100 can't be found.`;
 
-        await expect(() => service.getCargoWeightContract(5)).rejects.toThrow(
+        await expect(() => service.getCargoWeightByContractId(5)).rejects.toThrow(
           notFoundError
         );
       });
@@ -179,16 +179,16 @@ describe("Domain :: Service :: CargoWeightDomainService", () => {
     describe("when calculating a contract with cargo that doesnt have any resource id", () => {
       it("returns 0", async () => {
         const result = 0;
-        expect(await service.getCargoWeightContract(6)).toEqual(result);
+        expect(await service.getCargoWeightByContractId(6)).toEqual(result);
       });
     });
   });
 
-  describe("getCargoWeightPilot", () => {
+  describe("getCargoWeightByPilotCertification", () => {
     describe("when calculating the weight", () => {
       it("returns the correct weight", async () => {
         expect(
-          await service.getCargoWeightPilot(contracts[2].pilotCertification)
+          await service.getCargoWeightByPilotCertification(contracts[2].pilotCertification)
         ).toEqual(1000);
       });
     });
@@ -197,7 +197,7 @@ describe("Domain :: Service :: CargoWeightDomainService", () => {
       describe("and he doesnt have any contract", () => {
         it("returns object with all properties with 0", async () => {
           const result = 0;
-          expect(await service.getCargoWeightPilot(1234653)).toEqual(result);
+          expect(await service.getCargoWeightByPilotCertification(1234653)).toEqual(result);
         });
       });
     });
@@ -210,7 +210,7 @@ describe("Domain :: Service :: CargoWeightDomainService", () => {
           notFoundError.message = `Cargo with id 100 can't be found.`;
 
           await expect(() =>
-            service.getCargoWeightPilot(1234111)
+            service.getCargoWeightByPilotCertification(1234111)
           ).rejects.toThrow(notFoundError);
         });
       });
@@ -224,7 +224,7 @@ describe("Domain :: Service :: CargoWeightDomainService", () => {
           notFoundError.message = `Resource with id 100 can't be found.`;
 
           await expect(() =>
-            service.getCargoWeightPilot(1234112)
+            service.getCargoWeightByPilotCertification(1234112)
           ).rejects.toThrow(notFoundError);
         });
       });
@@ -235,7 +235,7 @@ describe("Domain :: Service :: CargoWeightDomainService", () => {
           it("returns object with all properties with 0", async () => {
             const result = 0
     
-            expect(await service.getCargoWeightPilot(1234113)).toEqual(result);
+            expect(await service.getCargoWeightByPilotCertification(1234113)).toEqual(result);
           });
         });
       });

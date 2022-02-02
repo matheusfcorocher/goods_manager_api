@@ -33,10 +33,10 @@ class AcceptContract {
           contractRepository: this.contractsRepository,
           resourceRepository: this.resourcesRepository,
         });
-        const cargoWeightPilot = await cargoService.getCargoWeightPilot(
+        const cargoWeightPilot = await cargoService.getCargoWeightByPilotCertification(
           pilotCertification
         );
-        const cargoWeightContract = await cargoService.getCargoWeightContract(
+        const cargoWeightContract = await cargoService.getCargoWeightByContractId(
           contractId
         );
         if (
@@ -59,9 +59,11 @@ class AcceptContract {
       throw validationError;
     } catch (error) {
       if(!error.CODE) {
-        error = new Error("Internal Error");
-        error.CODE = "INTERNAL_ERROR";
-        error.message = "Internal Error";
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+        throw internalError;
       }
       throw error;
     }

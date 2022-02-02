@@ -18,9 +18,11 @@ class CreatePilot {
       return await this.pilotsRepository.add(pilot);
     } catch(error) {
       if(!error.CODE) {
-        error = new Error("Internal Error");
-        error.CODE = "INTERNAL_ERROR";
-        error.message = "Internal Error";
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+        throw internalError;
       }
       throw error;
     }

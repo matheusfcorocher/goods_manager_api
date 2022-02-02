@@ -42,7 +42,7 @@ class GetPilotsReport {
       );
 
       for (let pilot of pilots) {
-        const { food, minerals, water } = await cargoService.getAllResourcesPilot(
+        const { food, minerals, water } = await cargoService.getAllResourcesByPilotCertification(
           pilot.pilotCertification
         );
         let total = food + minerals + water;
@@ -55,9 +55,11 @@ class GetPilotsReport {
       return pilots.sort(compareValues("id", "asc"));
     } catch (error) {
       if(!error.CODE) {
-        error = new Error("Internal Error");
-        error.CODE = "INTERNAL_ERROR";
-        error.message = "Internal Error";
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+        throw internalError;
       }
       throw error;
     }

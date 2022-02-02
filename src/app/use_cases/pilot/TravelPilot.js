@@ -41,10 +41,12 @@ class TravelPilot {
       validationError.errors = `Ship doesn't have enough fuel to travel to destination planet.`;
       throw validationError;
     } catch (error) {
-      if (!error.CODE) {
-        error = new Error("Internal Error");
-        error.CODE = "INTERNAL_ERROR";
-        error.message = "Internal Error";
+      if(!error.CODE) {
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+        throw internalError;
       }
       throw error;
     }
