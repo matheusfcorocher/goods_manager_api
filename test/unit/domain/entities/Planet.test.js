@@ -1,6 +1,6 @@
 const { isValidPlanet } = require("../../../../src/domain/entities/Planet");
 
-describe("Planet Tests", () => {
+describe("Domain :: Entity :: Planet", () => {
     describe("isValidPlanet", () => {
       describe("If the planet name is valid", () => {
         it("returns true", () => {

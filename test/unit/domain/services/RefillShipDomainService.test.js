@@ -3,7 +3,7 @@ const RefillShipDomainService = require("../../../../src/domain/services/RefillS
 
 const dataFactory = new DataFactory();
 
-describe("RefillShipDomainService", () => {
+describe("Domain :: Service :: RefillShipDomainService", () => {
   describe("when pilot has 0 credits to pay the entire fulfillment of ship", () => {
     it("returns 0 credits and the the same fuel level", () => {
       let pilot0 = dataFactory.create("Pilot", {

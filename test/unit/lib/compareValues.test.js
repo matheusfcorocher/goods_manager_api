@@ -1,6 +1,6 @@
 const { compareValues } = require("../../../src/lib/compareValues");
 
-describe("Helpers Tests ", () => {
+describe("Lib", () => {
   describe("compareValues", () => {
     describe("when passes an array of objects", () => {
       let array = [

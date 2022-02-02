@@ -4,7 +4,7 @@ const { DataFactory } = require("../../../support/factories/data");
 
 const dataFactory = new DataFactory();
 
-describe("AcceptContract Tests", () => {
+describe("App :: UseCases :: AcceptContract", () => {
   let cargos = [
     dataFactory.create("Cargo", { id: 1, resourceIds: [1, 2, 3] }),
     dataFactory.create("Cargo", { id: 2, resourceIds: [2] }),
@@ -197,7 +197,7 @@ describe("AcceptContract Tests", () => {
   let fakeShipRepo = factory.create("Ships", ships);
   let fakeResourceRepo = factory.create("Resources", resources);
 
-  describe("execute", () => {
+  describe("#execute", () => {
     describe("When it doesnt find the contract with a given id", () => {
       it("returns not found error exception", async () => {
         const args = { contractsRepository: fakeContractRepo };

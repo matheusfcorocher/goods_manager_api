@@ -67,8 +67,8 @@ const factory = new FakeRepositoriesFactory();
 let fakePilotRepo = factory.create("Pilots", pilots);
 let fakeShipRepo = factory.create("Ships", ships);
 
-describe("CreateShip tests", () => {
-  describe("execute", () => {
+describe("App :: UseCases :: CreateShip", () => {
+  describe("#execute", () => {
     describe("when doesnt find pilot by a given pilot certification", () => {
       it("returns not found error", async () => {
         const createShip = new CreateShip(fakeShipRepo, fakePilotRepo);

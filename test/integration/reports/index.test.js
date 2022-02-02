@@ -5,9 +5,9 @@ const { setupIntegrationTest } = require("../../support/setup");
 
 const modelsFactory = new ModelsFactory();
 
-describe("Reports Routes Tests", () => {
+describe("Reports Routes", () => {
   setupIntegrationTest();
-  describe("GET /api/reports/transactions", () => {
+  describe("API :: GET /api/reports/transactions", () => {
     describe("When has transactions in db", () => {
       it("returns a valid report", async () => {
         await modelsFactory.createList("Transactions", [
@@ -32,7 +32,7 @@ describe("Reports Routes Tests", () => {
     });
   });
 
-  describe("GET /api/reports/pilots", () => {
+  describe("API :: GET /api/reports/pilots", () => {
     describe("when it gets pilots report", () => {
       it("returns the correct report", async () => {
         await modelsFactory.createList("Resources", [
@@ -177,7 +177,7 @@ describe("Reports Routes Tests", () => {
     });
   });
 
-  describe("GET /api/reports/planets", () => {
+  describe("API :: GET /api/reports/planets", () => {
     describe("when it gets planets report", () => {
       it("returns the correct report", async () => {
         await modelsFactory.createList("Resources", [

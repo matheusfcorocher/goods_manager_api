@@ -6,7 +6,7 @@ const { DataFactory } = require("../../../support/factories/data");
 
 const dataFactory = new DataFactory();
 
-describe("CargoWeightDomainService tests", () => {
+describe("Domain :: Service :: CargoWeightDomainService", () => {
   let cargos = [
     dataFactory.create("Cargo", { id: 1, resourceIds: [1, 2, 3] }),
     dataFactory.create("Cargo", { id: 2, resourceIds: [2] }),

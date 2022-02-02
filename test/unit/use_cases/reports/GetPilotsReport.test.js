@@ -100,8 +100,8 @@ let fakeContractRepo = factory.create("Contracts", contracts);
 let fakePilotRepo = factory.create("Pilots", pilots);
 let fakeResourceRepo = factory.create("Resources", resources);
 
-describe("GetPilotsReport Tests", () => {
-  describe("execute", () => {
+describe("App :: UseCases :: GetPilotsReport", () => {
+  describe("#execute", () => {
     describe("when it gets pilots report", () => {
       it("returns the correct report", async () => {
         const getPilotsReport = new GetPilotsReport(fakeCargoRepo, fakeContractRepo, fakePilotRepo, fakeResourceRepo);

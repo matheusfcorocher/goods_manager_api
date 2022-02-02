@@ -13,8 +13,8 @@ let transactions = [
 const factory = new FakeRepositoriesFactory();
 let fakeTransactionRepo = factory.create("Transactions", transactions);
 
-describe("GetTransactionsReport", () => {
-    describe("execute", () => {
+describe("App :: UseCases :: GetTransactionsReport", () => {
+    describe("#execute", () => {
         describe("when it gets transactions report", () => {
             it("returns the correct report", async () => {
                 const getTransactionsReport = new GetTransactionsReport(fakeTransactionRepo);

@@ -67,8 +67,8 @@ let fakePilotRepo = factory.create("Pilots", pilots);
 let fakeShipRepo = factory.create("Ships", ships);
 let fakeTransactionRepo = factory.create("Transactions", transactions);
 
-describe("RefillShip tests", () => {
-    describe("execute", () => {
+describe("App :: UseCases :: RefillShip", () => {
+    describe("#execute", () => {
       describe("when doesnt find pilot by a given pilot certification", () => {
         it("returns not found error", async () => {
           const refillShip = new RefillShip(fakeShipRepo, fakePilotRepo, fakeTransactionRepo)

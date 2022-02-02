@@ -9,9 +9,9 @@ const { setupIntegrationTest } = require("../../support/setup");
 
 const modelsFactory = new ModelsFactory();
 
-describe("Pilots Routes Tests", () => {
+describe("Pilots Routes", () => {
   setupIntegrationTest();
-  describe("POST /api/pilots/create", () => {
+  describe("API :: POST /api/pilots/create", () => {
     describe("When pilot doesnt have minimum age for be a pilot", () => {
       it("returns validation error", async () => {
         await modelsFactory.createList("Pilots", [
@@ -313,7 +313,7 @@ describe("Pilots Routes Tests", () => {
       });
     });
   });
-  describe("PUT /api/pilots/travel/:pilotCertification", () => {
+  describe("API :: PUT /api/pilots/travel/:pilotCertification", () => {
     describe("When it gives invalid planet to travel", () => {
       it("returns validation error", async () => {
         await modelsFactory.createList("Pilots", [

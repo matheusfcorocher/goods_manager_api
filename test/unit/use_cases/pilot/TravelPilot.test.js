@@ -68,8 +68,8 @@ const factory = new FakeRepositoriesFactory();
 let fakePilotRepo = factory.create("Pilots", pilots);
 let fakeShipRepo = factory.create("Ships", ships);
 
-describe("TravelPilot Tests", () => {
-  describe("execute", () => {
+describe("App :: UseCases :: TravelPilot", () => {
+  describe("#execute", () => {
     describe("When it gives invalid planet to travel", () => {
       it("returns validation error", async () => {
         const travelPilot = new TravelPilot(fakePilotRepo, fakeShipRepo);

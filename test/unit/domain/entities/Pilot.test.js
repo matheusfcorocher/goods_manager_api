@@ -1,7 +1,7 @@
 const { DataFactory } = require("../../../support/factories/data");
 const dataFactory = new DataFactory();
 
-describe("Pilot Tests ", () => {
+describe("Domain :: Entity :: Pilot", () => {
   describe("isLegal", () => {
     describe("if pilot has age equals or more than 18", () => {
       it("returns true", () => {

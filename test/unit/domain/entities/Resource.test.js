@@ -1,7 +1,7 @@
 const { DataFactory } = require("../../../support/factories/data");
 const dataFactory = new DataFactory();
 
-describe("Resource Tests ", () => {
+describe("Domain :: Entity :: Resource", () => {
     describe("verifyName", () => {
       let resource = dataFactory.create("Resource", { id: 1, name: "water", weight: 100 });
       describe("if resource name is water", () => {

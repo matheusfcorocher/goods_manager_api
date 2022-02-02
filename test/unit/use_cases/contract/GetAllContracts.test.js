@@ -5,7 +5,7 @@ const {
 const { DataFactory } = require("../../../support/factories/data");
 
 const dataFactory = new DataFactory();
-describe("GetAllContracts Tests", () => {
+describe("App :: UseCases :: GetAllContracts", () => {
   let contracts = [
     dataFactory.create("Contract", {
       id: 1,
@@ -54,7 +54,7 @@ describe("GetAllContracts Tests", () => {
   const factory = new FakeRepositoriesFactory();
   let fakeContractRepo = factory.create("Contracts", contracts);
   let fakeContractRepo2 = factory.create("Contracts", contracts2);
-  describe("execute", () => {
+  describe("#execute", () => {
     describe("When gets contracts with asc order", () => {
       it("returns the correct array", async () => {
         const getAllContracts = new GetAllContracts(fakeContractRepo);

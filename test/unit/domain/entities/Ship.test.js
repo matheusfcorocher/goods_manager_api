@@ -1,7 +1,7 @@
 const { DataFactory } = require("../../../support/factories/data");
 const dataFactory = new DataFactory();
 
-describe("Ship Tests ", () => {
+describe("Domain :: Entity :: Ship", () => {
 describe("canCarry", () => {
   let ship = dataFactory.create("Ship", {
     id: 1,

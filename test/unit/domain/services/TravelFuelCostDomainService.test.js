@@ -1,6 +1,6 @@
 const TravelFuelCostDomainService = require("../../../../src/domain/services/TravelFuelCostDomainService");
 
-describe("TravelFuelCostDomainService", () => {
+describe("Domain :: Service :: TravelFuelCostDomainService", () => {
   describe("If origin planet is Andvari", () => {
     it("returns 0 when destination planet is Andvari", () => {
       expect(TravelFuelCostDomainService("Andvari", "Andvari")).toEqual(0);

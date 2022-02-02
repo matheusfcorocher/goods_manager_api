@@ -8,9 +8,9 @@ const { setupIntegrationTest } = require("../../support/setup");
 
 const modelsFactory = new ModelsFactory();
 
-describe("Ships Routes Tests", () => {
+describe("Ships Routes", () => {
   setupIntegrationTest();
-  describe("POST /api/ships/create", () => {
+  describe("API :: POST /api/ships/create", () => {
     describe("when doesnt find pilot by a given pilot certification", () => {
       it("returns not found error", async () => {
         await modelsFactory.createList("Pilots", [
@@ -268,7 +268,7 @@ describe("Ships Routes Tests", () => {
       })
     });
   });
-  describe("PUT /api/ships/refill/:pilotCertification", () => {
+  describe("API :: PUT /api/ships/refill/:pilotCertification", () => {
     describe("when doesnt find pilot by a given pilot certification", () => {
       it("returns not found error", async () => {
         await modelsFactory.createList("Pilots", [

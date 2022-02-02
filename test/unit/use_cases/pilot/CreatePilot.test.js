@@ -44,8 +44,8 @@ let pilots = [
 const factory = new FakeRepositoriesFactory();
 let fakePilotRepo = factory.create("Pilots", pilots);
 
-describe("CreatePilot Tests", () => {
-  describe("execute", () => {
+describe("App :: UseCases :: CreatePilot", () => {
+  describe("#execute", () => {
     describe("When pilot doesnt have minimum age for be a pilot", () => {
       it("returns validation error", async () => {
         const createPilot = new CreatePilot(fakePilotRepo);

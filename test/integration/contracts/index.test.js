@@ -1,7 +1,6 @@
 const supertest = require("supertest");
 const app = require("../../../app");
 const ContractSerializer = require("../../../src/interfaces/http/controllers/serializers/ContractSerializer");
-const { DatabaseHandler } = require("../../support/database");
 const { ModelsFactory } = require("../../support/factories/models");
 const {
   RepositoriesFactory,
@@ -10,9 +9,9 @@ const { setupIntegrationTest } = require("../../support/setup");
 
 const modelsFactory = new ModelsFactory();
 
-describe("Contract Routes Tests", () => {
+describe("Contract Routes", () => {
   setupIntegrationTest();
-  describe("PUT /api/contracts/accept/:id", () => {
+  describe("API :: PUT /api/contracts/accept/:id", () => {
     describe("When it doesnt find the contract with a given id", () => {
       it("returns not found error", async () => {
         const data = {
@@ -388,7 +387,7 @@ describe("Contract Routes Tests", () => {
     });
   });
 
-  describe("PUT /api/contracts/fulfill/:id", () => {
+  describe("API :: PUT /api/contracts/fulfill/:id", () => {
     describe("When it doesnt find the contract with a given id", () => {
       it("returns not found error", async () => {
         const response = await supertest(app.server)
@@ -717,7 +716,7 @@ describe("Contract Routes Tests", () => {
     });
   });
 
-  describe("GET /api/contracts", () => {
+  describe("API :: GET /api/contracts", () => {
     describe("When gets contracts with asc order", () => {
       it("returns the correct array", async () => {
         await modelsFactory.createList("Resources", [
@@ -927,7 +926,7 @@ describe("Contract Routes Tests", () => {
     });
   });
 
-  describe("POST /api/contracts/publish", () => {
+  describe("API :: POST /api/contracts/publish", () => {
     describe("When add a contract with correct values", () => {
       it("returns success message", async () => {
         await modelsFactory.createList("Resources", [

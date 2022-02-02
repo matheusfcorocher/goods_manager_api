@@ -5,7 +5,7 @@ const {
 const { DataFactory } = require("../../../support/factories/data");
 
 const dataFactory = new DataFactory();
-describe("PublishContract Tests", () => {
+describe("App :: UseCases :: PublishContract", () => {
   let contracts = [];
   let cargos = [
     dataFactory.create("Cargo", { id: 4, resourceIds: [4] }),
@@ -16,7 +16,7 @@ describe("PublishContract Tests", () => {
   let fakeContractRepo = factory.create("Contracts", contracts);
   let fakeCargoRepo = factory.create("Cargos", cargos);
 
-  describe("execute", () => {
+  describe("#execute", () => {
     describe("When add a contract with correct values", () => {
       it("returns success message", async () => {
         const publishContract = new PublishContract(fakeContractRepo, fakeCargoRepo);

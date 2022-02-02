@@ -6,7 +6,7 @@ const {
   FakeRepositoriesFactory,
 } = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
 
-describe("CargoAllResourcesDomainService tests", () => {
+describe("Domain :: Service :: CargoAllResourcesDomainService", () => {
   let cargos = [
     new Cargo({ id: 1, resourceIds: [1, 2, 3] }),
     new Cargo({ id: 2, resourceIds: [2] }),
