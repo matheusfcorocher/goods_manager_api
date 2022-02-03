@@ -58,7 +58,7 @@ const opts = {
   },
 };
 
-app.get("/", opts, (req, reply) => {
+app.get("/api/", opts, (req, reply) => {
   reply.send({ message: "Let's go!" });
 });
 

@@ -10,13 +10,11 @@
     "jest": "^27.4.5",
     "nodemon": "^2.0.15",
     "sequelize-cli": "^6.3.0",
-    "supertest": "^6.2.2",
-    "tap": "^15.1.5"
+    "supertest": "^6.2.2"
   },
   "dependencies": {
     "config": "^3.3.6",
     "dotenv": "^10.0.0",
-    "factory-girl": "^5.0.4",
     "fastify": "^3.24.0",
     "mysql2": "^2.3.3",
     "pg": "^8.7.1",
