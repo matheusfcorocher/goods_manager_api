@@ -1,7 +1,7 @@
-const { RefillShip } = require("../../../../src/app/use_cases/ship");
-const Pilot = require("../../../../src/domain/entities/Pilot");
-const Ship = require("../../../../src/domain/entities/Ship");
-const { FakeRepositoriesFactory } = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
+const { RefillShip } = require("../../../../../src/app/use_cases/ship");
+const Pilot = require("../../../../../src/domain/entities/Pilot");
+const Ship = require("../../../../../src/domain/entities/Ship");
+const { FakeRepositoriesFactory } = require("../../../../support/factories/repository/FakeRepositoriesFactory.js");
 
 let pilots = [
   new Pilot({
@@ -127,5 +127,25 @@ describe("App :: UseCases :: RefillShip", () => {
           expect((await fakeShipRepo.getById(2)).fuelLevel).toEqual(1214);
         });
       })
+
+      describe("When user try to refill a ship", () => {
+        it("but only returns internal error", async () => {
+          const error = new Error("Internal Error");
+          error.original = { detail: `Server instance is not available!` };
+          fakePilotRepo.getByPilotCertification = (data) => {
+            throw error;
+          };
+          const refillShip = new RefillShip(fakeShipRepo, fakePilotRepo, fakeTransactionRepo)
+          let pilotCertification = 1234566;
+          const internalError = new Error("Internal Error");
+          internalError.CODE = "INTERNAL_ERROR";
+          internalError.message = "Internal Error";
+          internalError.details = error.original.detail;
+  
+          await expect(() => refillShip.execute(pilotCertification)).rejects.toThrow(
+            internalError
+          );
+        });
+      });
     });
   });

@@ -1,6 +1,6 @@
-const FulfillContract = require("../../../../src/app/use_cases/contract/FulfillContract");
-const { FakeRepositoriesFactory } = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
-const { DataFactory } = require("../../../support/factories/data");
+const FulfillContract = require("../../../../../src/app/use_cases/contract/FulfillContract");
+const { FakeRepositoriesFactory } = require("../../../../support/factories/repository/FakeRepositoriesFactory.js");
+const { DataFactory } = require("../../../../support/factories/data");
 
 const dataFactory = new DataFactory();
 
@@ -167,6 +167,30 @@ describe("App :: UseCases :: FulfillContract", () => {
       });
       it('contractStatus equals "FINISHED"', async () => {
         expect((await fakeContractRepo.getById(3)).contractStatus).toEqual("FINISHED");
+      });
+    });
+
+    describe("When a pilot try to fulfill a contract", () => {
+      it("but only returns internal error", async () => {
+        const error = new Error("Internal Error");
+        error.original = {detail : `Server instance is not available!`}
+        fakeContractRepo.getById = (id) => {
+          throw error
+        };
+        const args = {
+          contractsRepository: fakeContractRepo,
+          pilotsRepository: fakePilotRepo,
+          transactionsRepository: fakeTransactionRepo,
+        };
+        const fulfillContract = new FulfillContract(args);
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+
+        await expect(() =>
+          fulfillContract.execute(4)
+        ).rejects.toThrow(internalError);
       });
     });
   });

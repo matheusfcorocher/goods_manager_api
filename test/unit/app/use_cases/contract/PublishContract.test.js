@@ -1,8 +1,8 @@
-const PublishContract = require("../../../../src/app/use_cases/contract/PublishContract");
+const PublishContract = require("../../../../../src/app/use_cases/contract/PublishContract");
 const {
   FakeRepositoriesFactory,
-} = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
-const { DataFactory } = require("../../../support/factories/data");
+} = require("../../../../support/factories/repository/FakeRepositoriesFactory.js");
+const { DataFactory } = require("../../../../support/factories/data");
 
 const dataFactory = new DataFactory();
 describe("App :: UseCases :: PublishContract", () => {
@@ -104,6 +104,32 @@ describe("App :: UseCases :: PublishContract", () => {
         await expect(() => publishContract.execute(data)).rejects.toThrow(
           validationError
         );
+      });
+    });
+
+    describe("When user try to publish a contract", () => {
+      it("but only returns internal error", async () => {
+        const error = new Error("Internal Error");
+        error.original = {detail : `Server instance is not available!`}
+        fakeCargoRepo.getById = (cargoId) => {
+          throw error
+        };
+        const publishContract = new PublishContract(fakeContractRepo, fakeCargoRepo);
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+        const data = {
+          cargoId: 4,
+          description: "food to Calas",
+          originPlanet: "Andvari",
+          destinationPlanet: "Calas",
+          value: 700,
+        };
+
+        await expect(() =>
+          publishContract.execute(data)
+        ).rejects.toThrow(internalError);
       });
     });
   });

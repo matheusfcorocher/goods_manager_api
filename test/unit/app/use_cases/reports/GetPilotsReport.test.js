@@ -1,6 +1,6 @@
-const GetPilotsReport = require("../../../../src/app/use_cases/reports/GetPilotsReport");
-const { FakeRepositoriesFactory } = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
-const { DataFactory } = require("../../../support/factories/data");
+const GetPilotsReport = require("../../../../../src/app/use_cases/reports/GetPilotsReport");
+const { FakeRepositoriesFactory } = require("../../../../support/factories/repository/FakeRepositoriesFactory.js");
+const { DataFactory } = require("../../../../support/factories/data");
 
 const dataFactory = new DataFactory();
 let cargos = [
@@ -248,6 +248,25 @@ describe("App :: UseCases :: GetPilotsReport", () => {
         const getPilotsReport = new GetPilotsReport(fakeCargoRepo, fakeContractRepo, fakePilotRepo2, fakeResourceRepo);
         const answer = [];
         expect(await getPilotsReport.execute()).toEqual(answer);
+      });
+    });
+
+    describe("When user try to get pilots reports", () => {
+      it("but only returns internal error", async () => {
+        const error = new Error("Internal Error");
+        error.original = {detail : `Server instance is not available!`}
+        fakePilotRepo.getAll = () => {
+          throw error
+        };
+        const getPilotsReport = new GetPilotsReport(fakeCargoRepo, fakeContractRepo, fakePilotRepo, fakeResourceRepo);
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+
+        await expect(() =>
+          getPilotsReport.execute()
+        ).rejects.toThrow(internalError);
       });
     });
   });

@@ -1,12 +1,12 @@
-const { CreateShip } = require("../../../../src/app/use_cases/ship");
-const Ship = require("../../../../src/domain/entities/Ship");
-const Pilot = require("../../../../src/domain/entities/Pilot");
-const { FakeRepositoriesFactory } = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
-const { DataFactory } = require("../../../support/factories/data");
+const { CreateShip } = require("../../../../../src/app/use_cases/ship");
+const {
+  FakeRepositoriesFactory,
+} = require("../../../../support/factories/repository/FakeRepositoriesFactory.js");
+const { DataFactory } = require("../../../../support/factories/data");
 
 const dataFactory = new DataFactory();
 let pilots = [
-  dataFactory.create("Pilot",{
+  dataFactory.create("Pilot", {
     id: 1,
     pilotCertification: 1234567,
     name: "Matheus",
@@ -14,7 +14,7 @@ let pilots = [
     credits: 0,
     locationPlanet: "Aqua",
   }),
-  dataFactory.create("Pilot",{
+  dataFactory.create("Pilot", {
     id: 2,
     pilotCertification: 1234566,
     name: "Kael",
@@ -22,7 +22,7 @@ let pilots = [
     credits: 5000,
     locationPlanet: "Aqua",
   }),
-  dataFactory.create("Pilot",{
+  dataFactory.create("Pilot", {
     id: 3,
     pilotCertification: 1234577,
     name: "Tom",
@@ -30,7 +30,7 @@ let pilots = [
     credits: 2000,
     locationPlanet: "Calas",
   }),
-  dataFactory.create("Pilot",{
+  dataFactory.create("Pilot", {
     id: 4,
     pilotCertification: 1234588,
     name: "Jerry",
@@ -40,21 +40,21 @@ let pilots = [
   }),
 ];
 let ships = [
-  dataFactory.create("Ship",{
+  dataFactory.create("Ship", {
     id: 1,
     pilotCertification: 1234567,
     fuelCapacity: 1500,
     fuelLevel: 50,
     weightCapacity: 2000,
   }),
-  dataFactory.create("Ship",{
+  dataFactory.create("Ship", {
     id: 2,
     pilotCertification: 1234566,
     fuelCapacity: 1500,
     fuelLevel: 500,
     weightCapacity: 1000,
   }),
-  dataFactory.create("Ship",{
+  dataFactory.create("Ship", {
     id: 3,
     pilotCertification: 1234588,
     fuelCapacity: 1500,
@@ -114,12 +114,37 @@ describe("App :: UseCases :: CreateShip", () => {
           weightCapacity: 1000,
         };
 
-        const answer = dataFactory.create("Ship",{
+        const answer = dataFactory.create("Ship", {
           id: 4,
-          ...data
+          ...data,
         });
 
         expect(await createShip.execute(data)).toEqual(answer);
+      });
+    });
+
+    describe("When user try to create a ship", () => {
+      it("but only returns internal error", async () => {
+        const error = new Error("Internal Error");
+        error.original = { detail: `Server instance is not available!` };
+        fakePilotRepo.getByPilotCertification = (data) => {
+          throw error;
+        };
+        const createShip = new CreateShip(fakeShipRepo, fakePilotRepo);
+        let data = {
+          pilotCertification: 1234577,
+          fuelCapacity: 2000,
+          fuelLevel: 2000,
+          weightCapacity: 1000,
+        };
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+
+        await expect(() => createShip.execute(data)).rejects.toThrow(
+          internalError
+        );
       });
     });
   });

@@ -1,8 +1,8 @@
-const GetPlanetsReport = require("../../../../src/app/use_cases/reports/GetPlanetsReport");
+const GetPlanetsReport = require("../../../../../src/app/use_cases/reports/GetPlanetsReport");
 const {
   FakeRepositoriesFactory,
-} = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
-const { DataFactory } = require("../../../support/factories/data");
+} = require("../../../../support/factories/repository/FakeRepositoriesFactory.js");
+const { DataFactory } = require("../../../../support/factories/data");
 
 const dataFactory = new DataFactory();
 
@@ -243,6 +243,29 @@ describe("App :: UseCases :: GetPlanetsReport", () => {
           Demeter: resources,
         };
         expect(await getPlanetsReport.execute()).toEqual(answer);
+      });
+    });
+
+    describe("When user try to get planets reports", () => {
+      it("but only returns internal error", async () => {
+        const error = new Error("Internal Error");
+        error.original = { detail: `Server instance is not available!` };
+        fakeContractRepo.getAll = () => {
+          throw error;
+        };
+        const getPlanetsReport = new GetPlanetsReport(
+          fakeCargoRepo,
+          fakeContractRepo,
+          fakeResourceRepo
+        );
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+
+        await expect(() => getPlanetsReport.execute()).rejects.toThrow(
+          internalError
+        );
       });
     });
   });

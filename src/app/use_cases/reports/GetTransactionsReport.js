@@ -5,16 +5,13 @@ class GetTransactionsReport {
 
   async execute() {
     try {
-      return (await this.transactionsRepository.getAll()).map(t => t.about);
-    } catch(error) {
-      if(!error.CODE) {
-        const internalError = new Error("Internal Error");
-        internalError.CODE = "INTERNAL_ERROR";
-        internalError.message = "Internal Error";
-        internalError.details = error.original.detail;
-        throw internalError;
-      }
-      throw error;
+      return (await this.transactionsRepository.getAll()).map((t) => t.about);
+    } catch (error) {
+      const internalError = new Error("Internal Error");
+      internalError.CODE = "INTERNAL_ERROR";
+      internalError.message = "Internal Error";
+      internalError.details = error.original.detail;
+      throw internalError;
     }
   }
 }

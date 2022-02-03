@@ -33,14 +33,11 @@ class GetAllContracts {
         .map((c) => this._serializer(c))
         .sort(compareValues("id", "asc"));
     } catch (error) {
-      if(!error.CODE) {
-        const internalError = new Error("Internal Error");
-        internalError.CODE = "INTERNAL_ERROR";
-        internalError.message = "Internal Error";
-        internalError.details = error.original.detail;
-        throw internalError;
-      }
-      throw error;
+      const internalError = new Error("Internal Error");
+      internalError.CODE = "INTERNAL_ERROR";
+      internalError.message = "Internal Error";
+      internalError.details = error.original.detail;
+      throw internalError;
     }
   }
 }

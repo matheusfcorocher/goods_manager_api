@@ -1,6 +1,8 @@
-const AcceptContract = require("../../../../src/app/use_cases/contract/AcceptContract");
-const { FakeRepositoriesFactory } = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
-const { DataFactory } = require("../../../support/factories/data");
+const AcceptContract = require("../../../../../src/app/use_cases/contract/AcceptContract");
+const {
+  FakeRepositoriesFactory,
+} = require("../../../../support/factories/repository/FakeRepositoriesFactory.js");
+const { DataFactory } = require("../../../../support/factories/data");
 
 const dataFactory = new DataFactory();
 
@@ -206,8 +208,8 @@ describe("App :: UseCases :: AcceptContract", () => {
         const notFoundError = new Error("Not Found Error");
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Contract with id 4 can't be found.`;
-        await expect(
-          () => acceptContract.execute(4, pilots[0])
+        await expect(() =>
+          acceptContract.execute(4, pilots[0])
         ).rejects.toThrow(notFoundError);
       });
     });
@@ -230,8 +232,8 @@ describe("App :: UseCases :: AcceptContract", () => {
         const notFoundError = new Error("Not Found Error");
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Pilot with pilotCertification ${fakePilot.pilotCertification} can't be found.`;
-        await expect(
-          () => acceptContract.execute(3, fakePilot)
+        await expect(() =>
+          acceptContract.execute(3, fakePilot)
         ).rejects.toThrow(notFoundError);
       });
     });
@@ -250,8 +252,8 @@ describe("App :: UseCases :: AcceptContract", () => {
         const validationError = new Error("Validation Error");
         validationError.CODE = "VALIDATION_ERROR";
         validationError.errors = `Contract 3 isn't available or pilot isn't in the origin planet of contract.`;
-        await expect(
-          () =>  acceptContract.execute(3, pilots[0])
+        await expect(() =>
+          acceptContract.execute(3, pilots[0])
         ).rejects.toThrow(validationError);
       });
     });
@@ -269,8 +271,8 @@ describe("App :: UseCases :: AcceptContract", () => {
         const validationError = new Error("Validation Error");
         validationError.CODE = "VALIDATION_ERROR";
         validationError.errors = `Contract 3 isn't available or pilot isn't in the origin planet of contract.`;
-        await expect(
-          () => acceptContract.execute(2, pilots[0])
+        await expect(() =>
+          acceptContract.execute(2, pilots[0])
         ).rejects.toThrow(validationError);
       });
     });
@@ -287,8 +289,8 @@ describe("App :: UseCases :: AcceptContract", () => {
         const notFoundError = new Error("Not Found Error");
         notFoundError.CODE = "NOTFOUND_ERROR";
         notFoundError.message = `Ship with pilotCertification 1234577 can't be found.`;
-        await expect(
-           () => acceptContract.execute(3, pilots[2])
+        await expect(() =>
+          acceptContract.execute(3, pilots[2])
         ).rejects.toThrow(notFoundError);
       });
     });
@@ -307,8 +309,8 @@ describe("App :: UseCases :: AcceptContract", () => {
         const validationError = new Error("Validation Error");
         validationError.CODE = "VALIDATION_ERROR";
         validationError.errors = `The ship can't carry the required weight of contract`;
-        await expect(
-          () => acceptContract.execute(5, pilots[3])
+        await expect(() =>
+          acceptContract.execute(5, pilots[3])
         ).rejects.toThrow(validationError);
       });
     });
@@ -329,7 +331,6 @@ describe("App :: UseCases :: AcceptContract", () => {
           notFoundError.CODE = "NOTFOUND_ERROR";
           notFoundError.message = `Cargo with id 100 can't be found.`;
 
-          
           await expect(() =>
             acceptContract.execute(1, pilots[4])
           ).rejects.toThrow(notFoundError);
@@ -376,14 +377,13 @@ describe("App :: UseCases :: AcceptContract", () => {
         notFoundError.message = `Cargo with id 100 can't be found.`;
 
         await expect(() =>
-            acceptContract.execute(16, pilots[3])
-          ).rejects.toThrow(notFoundError);
+          acceptContract.execute(16, pilots[3])
+        ).rejects.toThrow(notFoundError);
       });
     });
 
     describe("when calculating a contract with cargo that has a non-existent resource id ", () => {
       it("returns not found error", async () => {
-
         const args = {
           cargosRepository: fakeCargoRepo,
           contractsRepository: fakeContractRepo,
@@ -398,8 +398,8 @@ describe("App :: UseCases :: AcceptContract", () => {
         notFoundError.message = `Resource with id 100 can't be found.`;
 
         await expect(() =>
-            acceptContract.execute(17, pilots[3])
-          ).rejects.toThrow(notFoundError);
+          acceptContract.execute(17, pilots[3])
+        ).rejects.toThrow(notFoundError);
       });
     });
 
@@ -423,6 +423,32 @@ describe("App :: UseCases :: AcceptContract", () => {
           contractStatus: "IN PROGRESS",
           value: 4000,
         });
+      });
+    });
+
+    describe("When a pilot try to accept a contract", () => {
+      it("but only returns internal error", async () => {
+        const error = new Error("Internal Error");
+        error.original = {detail : `Server instance is not available!`}
+        fakeContractRepo.getById = (id) => {
+          throw error
+        };
+        const args = {
+          cargosRepository: fakeCargoRepo,
+          contractsRepository: fakeContractRepo,
+          pilotsRepository: fakePilotRepo,
+          shipsRepository: fakeShipRepo,
+          resourcesRepository: fakeResourceRepo,
+        };
+        const acceptContract = new AcceptContract(args);
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+
+        await expect(() =>
+          acceptContract.execute(1, pilots[0])
+        ).rejects.toThrow(internalError);
       });
     });
   });

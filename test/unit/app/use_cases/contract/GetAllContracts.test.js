@@ -1,8 +1,8 @@
-const GetAllContracts = require("../../../../src/app/use_cases/contract/GetAllContracts");
+const GetAllContracts = require("../../../../../src/app/use_cases/contract/GetAllContracts");
 const {
   FakeRepositoriesFactory,
-} = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
-const { DataFactory } = require("../../../support/factories/data");
+} = require("../../../../support/factories/repository/FakeRepositoriesFactory.js");
+const { DataFactory } = require("../../../../support/factories/data");
 
 const dataFactory = new DataFactory();
 describe("App :: UseCases :: GetAllContracts", () => {
@@ -128,6 +128,25 @@ describe("App :: UseCases :: GetAllContracts", () => {
         const getAllContracts = new GetAllContracts(fakeContractRepo2);
 
         expect(await getAllContracts.execute()).toEqual([]);
+      });
+    });
+
+    describe("When user try to get all contracts", () => {
+      it("but only returns internal error", async () => {
+        const error = new Error("Internal Error");
+        error.original = {detail : `Server instance is not available!`}
+        fakeContractRepo2.getAll = (contractStatus) => {
+          throw error
+        };
+        const getAllContracts = new GetAllContracts(fakeContractRepo2);
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+
+        await expect(() =>
+          getAllContracts.execute()
+        ).rejects.toThrow(internalError);
       });
     });
   });

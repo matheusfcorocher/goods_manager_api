@@ -1,8 +1,8 @@
-const CreatePilot = require("../../../../src/app/use_cases/pilot/CreatePilot");
+const CreatePilot = require("../../../../../src/app/use_cases/pilot/CreatePilot");
 const {
   FakeRepositoriesFactory,
-} = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
-const { DataFactory } = require("../../../support/factories/data");
+} = require("../../../../support/factories/repository/FakeRepositoriesFactory.js");
+const { DataFactory } = require("../../../../support/factories/data");
 
 const dataFactory = new DataFactory();
 
@@ -111,6 +111,33 @@ describe("App :: UseCases :: CreatePilot", () => {
             locationPlanet: "Andvari",
           })
         );
+      });
+    });
+
+    describe("When user try to register a pilot", () => {
+      it("but only returns internal error", async () => {
+        const error = new Error("Internal Error");
+        error.original = {detail : `Server instance is not available!`}
+        fakePilotRepo.add = (data) => {
+          throw error
+        };
+        const createPilot = new CreatePilot(fakePilotRepo);
+
+        const data = {
+          pilotCertification: 1234111,
+          name: "Ven",
+          age: 19,
+          credits: 1100,
+          locationPlanet: "Andvari",
+        };
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+
+        await expect(() =>
+          createPilot.execute(data)
+        ).rejects.toThrow(internalError);
       });
     });
   });

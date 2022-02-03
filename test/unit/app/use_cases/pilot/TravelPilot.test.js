@@ -1,9 +1,7 @@
-const TravelPilot = require("../../../../src/app/use_cases/pilot/TravelPilot");
-const Pilot = require("../../../../src/domain/entities/Pilot");
-const Ship = require("../../../../src/domain/entities/Ship");
-const TravelFuelCostDomainService = require("../../../../src/domain/services/TravelFuelCostDomainService");
-const { FakeRepositoriesFactory } = require("../../../support/factories/repository/FakeRepositoriesFactory.js");
-const { DataFactory } = require("../../../support/factories/data");
+const TravelPilot = require("../../../../../src/app/use_cases/pilot/TravelPilot");
+const TravelFuelCostDomainService = require("../../../../../src/domain/services/TravelFuelCostDomainService");
+const { FakeRepositoriesFactory } = require("../../../../support/factories/repository/FakeRepositoriesFactory.js");
+const { DataFactory } = require("../../../../support/factories/data");
 
 const dataFactory = new DataFactory();
 let pilots = [
@@ -168,6 +166,28 @@ describe("App :: UseCases :: TravelPilot", () => {
         })
         expect((await fakeShipRepo.getById(2)).fuelLevel
         ).toEqual(oldShip.fuelLevel - TravelFuelCostDomainService("Aqua", "Andvari"));
+      });
+    });
+
+    describe("When pilot try to travel to another planet", () => {
+      it("but only returns internal error", async () => {
+        const error = new Error("Internal Error");
+        error.original = {detail : `Server instance is not available!`}
+        fakePilotRepo.getByPilotCertification = (certification) => {
+          throw error
+        };
+        const travelPilot = new TravelPilot(fakePilotRepo, fakeShipRepo);
+
+        const internalError = new Error("Internal Error");
+        internalError.CODE = "INTERNAL_ERROR";
+        internalError.message = "Internal Error";
+        internalError.details = error.original.detail;
+
+        await expect(() =>
+        travelPilot.execute(pilots[1].pilotCertification, {
+          destinationPlanet: "Andvari",
+        })
+        ).rejects.toThrow(internalError);
       });
     });
   });
