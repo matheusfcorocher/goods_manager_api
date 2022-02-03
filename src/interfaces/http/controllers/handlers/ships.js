@@ -1,24 +1,8 @@
-const {
-  CreateShip,
-  RefillShip,
-} = require("../../../../app/use_cases/ship/index.js");
-const models = require("../../../../infra/database/models/index.js");
-const SequelizePilotsRepository = require("../../../../infra/repositories/pilot/SequelizePilotsRepository.js");
-const SequelizeShipsRepository = require("../../../../infra/repositories/ship/SequelizeShipsRepository.js");
-const SequelizeTransactionsRepository = require("../../../../infra/repositories/transaction/SequelizeTransactionsRepository.js");
-
-const { Ships, Pilots, Transactions } = models;
-
-const shipModel = models.Ships;
-const pilotModel = models.Pilots;
-const transactionModel = models.Transactions;
-const shipRepo = new SequelizeShipsRepository(shipModel);
-const pilotRepo = new SequelizePilotsRepository(pilotModel);
-const transactionRepo = new SequelizeTransactionsRepository(transactionModel);
+const { createShip, refillShip } = require("../../../../container");
 
 const createShipHandler = async (req, reply) => {
   try {
-    const createShip = new CreateShip(shipRepo, pilotRepo);
+    const { createShip } = req.container.ships;
     const result = await createShip.execute(req.body);
     reply.send(`Ship ${result.id} added!`);
   } catch (error) {
@@ -36,8 +20,8 @@ const createShipHandler = async (req, reply) => {
 
 const refillShipHandler = async (req, reply) => {
   try {
+    const { refillShip } = req.container.ships;
     const { pilotCertification } = req.params;
-    const refillShip = new RefillShip(shipRepo, pilotRepo, transactionRepo);
     const result = await refillShip.execute(pilotCertification);
     reply.send(result);
   } catch (error) {
